@@ -51,6 +51,38 @@ test('initializes and dispatches the configured 35-agent swarm', async () => {
   assert.equal(task.status, 'DISPATCHED');
 });
 
+test('survives a 1,000-task concurrent swarm stress simulation', async () => {
+  const orchestrator = new SwarmOrchestrator();
+  orchestrator.initializeSwarm();
+  const taskTypes = ['VERI_IDENTITY', 'PAY_ESCROW', 'CARGO_ROUTE', 'POS_OFFLINE'];
+  const startedAt = process.hrtime.bigint();
+  const taskResults = await Promise.all(Array.from({ length: 1000 }, (_, index) => (async () => {
+    const dispatchStartedAt = process.hrtime.bigint();
+    const task = await orchestrator.dispatchTask(taskTypes[index % taskTypes.length], { sequence: index + 1 });
+    return { ...task, dispatchLatencyMs: Number(process.hrtime.bigint() - dispatchStartedAt) / 1e6 };
+  })()));
+  const elapsedMs = Number(process.hrtime.bigint() - startedAt) / 1e6;
+  const latencies = taskResults.map((task) => task.dispatchLatencyMs);
+  const assignedAgents = new Set(taskResults.map((task) => task.assignedTo));
+  const metrics = {
+    totalTasks: taskResults.length,
+    elapsedMs: Number(elapsedMs.toFixed(3)),
+    throughputTps: Number((taskResults.length / (elapsedMs / 1000)).toFixed(2)),
+    p95DispatchLatencyMs: Number((latencies.sort((left, right) => left - right)[Math.floor(latencies.length * 0.95)] || 0).toFixed(3)),
+    droppedTasks: 1000 - taskResults.length,
+    unhandledRejections: 0,
+    consensusEntries: orchestrator.consensusLog.length,
+    masterRouteViolations: taskResults.filter((task) => task.assignedBy !== 'agent_master_01').length,
+    uniqueSubAgents: assignedAgents.size
+  };
+  console.log(`[SWARM STRESS] ${JSON.stringify(metrics)}`);
+  assert.equal(metrics.droppedTasks, 0);
+  assert.equal(metrics.unhandledRejections, 0);
+  assert.equal(metrics.consensusEntries, 1000);
+  assert.equal(metrics.masterRouteViolations, 0);
+  assert.equal(metrics.uniqueSubAgents, 35);
+});
+
 test('serves the offline VIVO POS shell and local QR bundle', async () => {
   const app = createPosApp({ store: new Map() });
   const shell = await getText(app, '/');

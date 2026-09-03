@@ -10,6 +10,9 @@ class SwarmOrchestrator {
     this.configPath = activePath;
     this.config = yaml.load(fs.readFileSync(activePath, 'utf8'));
     this.agents = new Map();
+    this.consensusLog = [];
+    this.roundRobinOffsets = new Map();
+    this.taskSequence = 0;
   }
 
   initializeSwarm() {
@@ -17,6 +20,9 @@ class SwarmOrchestrator {
     const groups = this.config.orchestration?.sub_agents;
     if (!master?.id || !Array.isArray(groups)) throw new Error('invalid swarm configuration');
 
+    this.agents.clear();
+    this.consensusLog = [];
+    this.roundRobinOffsets.clear();
     this.agents.set(master.id, { ...master, status: 'ACTIVE_LEADER' });
     let totalSpawned = 0;
     groups.forEach((group) => {
@@ -32,9 +38,21 @@ class SwarmOrchestrator {
   async dispatchTask(taskType, payload) {
     const master = this.agents.get(this.config.orchestration.master_agent.id);
     if (!master) throw new Error('swarm is not initialized');
-    const group = this.config.orchestration.sub_agents.find((candidate) => taskType.toUpperCase().startsWith(candidate.group.split('_')[0]));
-    const assignedAgent = group ? [...this.agents.values()].find((agent) => agent.group === group.group) : null;
-    return { taskId: `task_${Date.now()}`, assignedBy: master.id, assignedTo: assignedAgent?.id || null, status: 'DISPATCHED', payload };
+    const normalizedTaskType = String(taskType).toUpperCase();
+    const groupMatchers = {
+      VERI_SHIELD_COMPLIANCE: ['VERI', 'RENAP', 'IDENTITY', 'KYC', 'FRAUD', 'SAT'],
+      PAY_VIVO_FINANCE: ['PAY', 'ESCROW', 'LEDGER', 'SETTLEMENT'],
+      CARGO_VIVO_LOGISTICS: ['CARGO', 'ROUTE', 'SHIPMENT', 'DELIVERY'],
+      VIVO_POS_OPERATIONS: ['POS', 'QR', 'OFFLINE', 'INVOICE']
+    };
+    const group = this.config.orchestration.sub_agents.find((candidate) => groupMatchers[candidate.group]?.some((keyword) => normalizedTaskType.includes(keyword)));
+    const candidates = group ? [...this.agents.values()].filter((agent) => agent.group === group.group) : [];
+    const offset = group ? this.roundRobinOffsets.get(group.group) || 0 : 0;
+    const assignedAgent = candidates.length ? candidates[offset % candidates.length] : null;
+    if (group) this.roundRobinOffsets.set(group.group, offset + 1);
+    const task = { taskId: `task_${++this.taskSequence}`, assignedBy: master.id, assignedTo: assignedAgent?.id || null, status: 'DISPATCHED', payload };
+    this.consensusLog.push({ taskId: task.taskId, assignedBy: task.assignedBy, assignedTo: task.assignedTo, status: task.status, recordedAt: Date.now() });
+    return task;
   }
 }
 
