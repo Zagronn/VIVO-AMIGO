@@ -40,15 +40,28 @@ test('initializes and dispatches the configured 35-agent swarm', async () => {
   assert.equal(orchestrator.configPath.endsWith('/agents.config.yml'), true);
   const expectedGroups = { VERI_SHIELD_COMPLIANCE: 10, PAY_VIVO_FINANCE: 10, CARGO_VIVO_LOGISTICS: 10, VIVO_POS_OPERATIONS: 5 };
   for (const [group, count] of Object.entries(expectedGroups)) {
-    const registered = [...orchestrator.agents.values()].filter((agent) => agent.group === group);
+    const registered = [...orchestrator.agents.values()].filter((agent) => agent.group === group && !agent.aliasOf);
     assert.equal(registered.length, count);
     assert.ok(registered.every((agent) => agent.status === 'IDLE'));
   }
   assert.equal(orchestrator.agents.get('agent_master_01').status, 'ACTIVE_LEADER');
+  assert.equal(orchestrator.agents.get('agent_master_01').executionMode, 'AUTONOMOUS');
+  assert.equal(orchestrator.agents.get('verishield_01').role, 'devops_executor');
+  assert.equal(orchestrator.getAutonomousExecutionReport().enabled, true);
   const task = await orchestrator.dispatchTask('CARGO_STATUS', { trackingCode: 'VIVO-TEST' });
   assert.equal(task.assignedBy, 'agent_master_01');
   assert.match(task.assignedTo, /^cargo_vivo_logistics_/);
   assert.equal(task.status, 'DISPATCHED');
+});
+
+test('records autonomous local execution status without faking external deployment', () => {
+  const orchestrator = new SwarmOrchestrator();
+  orchestrator.initializeSwarm();
+  orchestrator.recordExecution('run_tests', 'PASSED', { command: 'npm test', tests: 10 });
+  orchestrator.recordExecution('run_health_checks', 'BLOCKED', { reason: 'Docker unavailable locally' });
+  const report = orchestrator.getAutonomousExecutionReport();
+  assert.deepEqual(report.executionLog.map((entry) => entry.status), ['PASSED', 'BLOCKED']);
+  assert.equal(report.externalOperations, 'require_credentials');
 });
 
 test('survives a 1,000-task concurrent swarm stress simulation', async () => {

@@ -1,6 +1,13 @@
 version: "1.0"
 swarm_name: "VIVO_AMIGO_MASTER_SWARM"
 orchestration:
+  autonomy:
+    enabled: true
+    mode: "autonomous"
+    master_agent: "agent_master_01"
+    privileged_sub_agent: "verishield_01"
+    allowed_actions: ["run_tests", "inspect_logs", "run_health_checks", "commit_build_artifacts"]
+    external_operations: "require_credentials"
   master_agent:
     id: "agent_master_01"
     model: "nvidia/nemotron-3.5-70b"
