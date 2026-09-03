@@ -1,0 +1,32 @@
+version: "1.0"
+swarm_name: "VIVO_AMIGO_MASTER_SWARM"
+orchestration:
+  master_agent:
+    id: "agent_master_01"
+    model: "nvidia/nemotron-3.5-70b"
+    capabilities: ["task_routing", "consensus_verification", "handoff_logging"]
+
+  sub_agents:
+    # 1. VERI-SHIELD Grubu (10 Ajan)
+    - group: "VERI_SHIELD_COMPLIANCE"
+      count: 10
+      model: "meta-llama/llama-3.1-8b-instruct"
+      roles: ["renap_verifier", "sat_fel_auditor", "fraud_detector", "kyc_checker"]
+
+    # 2. PAY VIVO Grubu (10 Ajan)
+    - group: "PAY_VIVO_FINANCE"
+      count: 10
+      model: "meta-llama/llama-3.1-70b-instruct"
+      roles: ["escrow_lock_manager", "ledger_auditor", "settlement_engine", "p2p_router"]
+
+    # 3. CARGO VIVO Grubu (10 Ajan)
+    - group: "CARGO_VIVO_LOGISTICS"
+      count: 10
+      model: "meta-llama/llama-3.1-8b-instruct"
+      roles: ["route_optimizer", "shipment_tracker", "proof_of_delivery_verifier"]
+
+    # 4. VIVO POS Grubu (5 Ajan)
+    - group: "VIVO_POS_OPERATIONS"
+      count: 5
+      model: "meta-llama/llama-3.1-8b-instruct"
+      roles: ["offline_sync_reconciler", "qr_crypto_signer", "micro_inventory_tracker"]

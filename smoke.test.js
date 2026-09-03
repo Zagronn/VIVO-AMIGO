@@ -4,6 +4,7 @@ const os = require('node:os');
 const path = require('node:path');
 const test = require('node:test');
 const { createComplianceApp } = require('./compliance.api');
+const { SwarmOrchestrator } = require('./agents.service');
 const { createLocalSqliteStore, createPosApp, generateQrPayload } = require('./vivopos.service');
 
 async function request(app, path, body, method = 'POST', extraHeaders = {}) {
@@ -31,6 +32,23 @@ test('generates a signed, expiring QR payload', () => {
   const qr = generateQrPayload({ terminalId: 'T-1', amount: 12.5 }, 'test-secret');
   assert.match(qr.qrData, /^vivo:\/\/pay\/.+\..+$/);
   assert.ok(qr.expiresAt > Date.now());
+});
+
+test('initializes and dispatches the configured 35-agent swarm', async () => {
+  const orchestrator = new SwarmOrchestrator();
+  assert.deepEqual(orchestrator.initializeSwarm(), { totalAgents: 36, subAgents: 35, masterAgent: 'agent_master_01' });
+  assert.equal(orchestrator.configPath.endsWith('/agents.config.yml'), true);
+  const expectedGroups = { VERI_SHIELD_COMPLIANCE: 10, PAY_VIVO_FINANCE: 10, CARGO_VIVO_LOGISTICS: 10, VIVO_POS_OPERATIONS: 5 };
+  for (const [group, count] of Object.entries(expectedGroups)) {
+    const registered = [...orchestrator.agents.values()].filter((agent) => agent.group === group);
+    assert.equal(registered.length, count);
+    assert.ok(registered.every((agent) => agent.status === 'IDLE'));
+  }
+  assert.equal(orchestrator.agents.get('agent_master_01').status, 'ACTIVE_LEADER');
+  const task = await orchestrator.dispatchTask('CARGO_STATUS', { trackingCode: 'VIVO-TEST' });
+  assert.equal(task.assignedBy, 'agent_master_01');
+  assert.match(task.assignedTo, /^cargo_vivo_logistics_/);
+  assert.equal(task.status, 'DISPATCHED');
 });
 
 test('serves the offline VIVO POS shell and local QR bundle', async () => {

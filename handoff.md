@@ -2,7 +2,7 @@
 
 **Execution date:** 2026-09-03
 **Master Agent:** GitHub Copilot
-**Active agent status:** Phase 6 complete; production domain routing and CORS allowlisting added for the Cloudflare registrations.
+**Active agent status:** Phase 6 complete; YAML-backed master swarm orchestration is initialized and verified.
 
 ## Completed
 
@@ -22,6 +22,10 @@
 - Production domains: `vivoamigo.com` (ecosystem), `payvivoamigo.com` (PAY VIVO), and `cargovivo.com` (CARGO VIVO) are recorded in `PROJECT_CONTEXT.md`.
 - `compliance.api.js`: strict `VIVO_ALLOWED_ORIGINS` CORS whitelist with local development defaults, credentials support, preflight handling, and `403` rejection for unknown origins.
 - `.env.example`: production origin, database, Redis, and POS secret configuration template.
+- `agents.service.js`: CommonJS swarm orchestrator loading the YAML definition, spawning the 35 configured sub-agents plus master, and dispatching tasks to matching groups.
+- `agents.config.yml`: canonical orchestrator configuration consumed by `agents.service.js`.
+- `swarm.config.yml`: persisted master-agent and subgroup model/role configuration.
+- `agent-swarm` Compose service: one-shot production container initializes the configured swarm after Redis becomes healthy, with production origin routing injected.
 - SQLite fallback: `vivopos.service.js` now persists offline sales through `node:sqlite` when available, with an in-memory compatibility fallback for older Node builds.
 - `package.json` and `package-lock.json`: Node runtime metadata and Express dependency.
 
@@ -33,6 +37,11 @@
 - PWA asset serving: POS Express returned `200` for both `/` and `/vendor/qrcode.min.js`.
 - `npm test`: passed, 7 tests, 0 failures; includes PWA shell/bundle availability alongside all core workflows.
 - `npm test`: passed, 8 tests, 0 failures; includes allowed and denied production-origin CORS behavior.
+- `npm test`: passed, 9 tests, 0 failures; includes 35 sub-agent spawning, master registration, and CARGO task dispatch.
+- `agents.config.yml` validation: YAML parsed successfully with 35 sub-agents across VERI-SHIELD, PAY VIVO, CARGO VIVO, and VIVO POS; all registrations and statuses are covered by smoke tests.
+- `npm test`: passed, 9 tests, 0 failures after adding canonical swarm configuration coverage.
+- `agent-swarm` validation: Compose YAML contains the Redis health-gated service, and the exact initialization command loaded 36 agents locally.
+- `npm test`: passed, 9 tests, 0 failures after adding `agent-swarm` orchestration.
 - Docker build/up: not run because Docker is unavailable in the local environment.
 - PostgreSQL direct execution: not run because `psql` is unavailable in the environment.
 - Live RENAP/SAT calls: not run; adapters are intentionally injected and default to a clear `503` until credentials and provider clients are configured.
