@@ -1,0 +1,79 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: vivo_amigo
+      POSTGRES_USER: vivo
+      POSTGRES_PASSWORD: vivo_local_change_me
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/001-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vivo -d vivo_amigo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  compliance-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["node", "compliance.api.js"]
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgresql://vivo:vivo_local_change_me@postgres:5432/vivo_amigo
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/health').then(r => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pos-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["node", "vivopos.service.js"]
+    environment:
+      PORT: 3002
+      VIVO_POS_QR_SECRET: change-me-in-production
+      VIVO_POS_SQLITE_PATH: /data/pos.sqlite
+      DATABASE_URL: postgresql://vivo:vivo_local_change_me@postgres:5432/vivo_amigo
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - pos-data:/data
+    ports:
+      - "3002:3002"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3002/health').then(r => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:
+  redis-data:
+  pos-data:

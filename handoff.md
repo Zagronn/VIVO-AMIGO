@@ -2,7 +2,7 @@
 
 **Execution date:** 2026-09-03
 **Master Agent:** GitHub Copilot
-**Active agent status:** Phase 4 complete; end-to-end mock integration verified across VERI-SHIELD, PAY VIVO, CARGO VIVO, and VIVO POS.
+**Active agent status:** Phase 5 complete; container orchestration is defined for the four-module MVP and its PostgreSQL/Redis dependencies.
 
 ## Completed
 
@@ -13,6 +13,9 @@
 - `vivopos.service.js`: Express VIVO POS API with signed expiring payment QR payloads, idempotent offline sale synchronization, and injectable SAT micro-FEL issuance.
 - `smoke.test.js`: Focused HTTP tests for QR generation, RENAP/SAT routing, PAY VIVO escrow accounting, CARGO VIVO tracking, and offline sync idempotency.
 - End-to-end scenario: verified RENAP identity, linked the returned reference to PAY VIVO wallet escrow, advanced the linked CARGO VIVO shipment, synchronized the POS sale, and issued its mock SAT FEL invoice.
+- `Dockerfile`: non-root Node 22 production image shared by the Express services.
+- `docker-compose.yml`: compliance API, POS API, PostgreSQL 16, and Redis 7 services with health checks, dependency gating, and persistent volumes.
+- `.dockerignore`: excludes Git metadata, dependencies, local SQLite files, and tests from the image context.
 - SQLite fallback: `vivopos.service.js` now persists offline sales through `node:sqlite` when available, with an in-memory compatibility fallback for older Node builds.
 - `package.json` and `package-lock.json`: Node runtime metadata and Express dependency.
 
@@ -20,11 +23,15 @@
 
 - `npm install --no-audit --no-fund`: passed.
 - `npm test`: passed, 6 tests, 0 failures; includes the complete VERI-SHIELD -> PAY VIVO -> CARGO VIVO -> VIVO POS FEL scenario.
+- Container configuration: YAML, package JSON, Dockerfile references, and Compose service references passed static validation.
+- Docker build/up: not run because Docker is unavailable in the local environment.
 - PostgreSQL direct execution: not run because `psql` is unavailable in the environment.
 - Live RENAP/SAT calls: not run; adapters are intentionally injected and default to a clear `503` until credentials and provider clients are configured.
 
 ## Next activation steps
 
-1. Provision PostgreSQL and apply `schema.sql` through the deployment migration runner.
-2. Implement authenticated RENAP and SAT adapters with production secrets stored outside source control.
-3. Connect POS sync and FEL issuance to the database transaction layer and add provider contract tests.
+1. Install Docker Desktop, then run `docker compose up --build` from the repository root.
+2. Confirm `http://localhost:3001/health` and `http://localhost:3002/health` return `status: ok`.
+3. Replace the sample PostgreSQL password and `VIVO_POS_QR_SECRET` with deployment secrets before sharing the stack.
+4. Provision PostgreSQL and apply `schema.sql` through the deployment migration runner.
+5. Implement authenticated RENAP and SAT adapters with production secrets stored outside source control.
