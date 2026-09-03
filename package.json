@@ -1,0 +1,15 @@
+{
+  "name": "vivo-amigo-sovereign-os",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "test": "node --test smoke.test.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
