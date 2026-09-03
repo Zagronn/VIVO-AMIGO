@@ -42,6 +42,9 @@
 - `npm test`: passed, 9 tests, 0 failures after adding canonical swarm configuration coverage.
 - `agent-swarm` validation: Compose YAML contains the Redis health-gated service, and the exact initialization command loaded 36 agents locally.
 - `npm test`: passed, 9 tests, 0 failures after adding `agent-swarm` orchestration.
+- Swarm stress simulation: 1,000 concurrent VERI-SHIELD, PAY VIVO, CARGO VIVO, and VIVO POS task dispatches completed with 0 drops, 0 unhandled rejections, 1,000 consensus-log entries, 0 master-route violations, and all 35 sub-agents exercised.
+- Stress metrics: 2.723 ms aggregate dispatch time, 367,197.11 TPS, and 2.163 ms p95 dispatch latency. These are the latest in-process orchestration measurements and exclude external provider/database/network latency.
+- `npm test`: passed, 10 tests, 0 failures after swarm stress coverage.
 - Docker build/up: not run because Docker is unavailable in the local environment.
 - PostgreSQL direct execution: not run because `psql` is unavailable in the environment.
 - Live RENAP/SAT calls: not run; adapters are intentionally injected and default to a clear `503` until credentials and provider clients are configured.
