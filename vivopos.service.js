@@ -1,4 +1,5 @@
 const crypto = require('node:crypto');
+const path = require('node:path');
 const express = require('express');
 
 function createLocalSqliteStore(filename = process.env.VIVO_POS_SQLITE_PATH || ':memory:') {
@@ -45,6 +46,8 @@ function generateQrPayload({ terminalId, amount, currency = 'GTQ', expiresInSeco
 function createPosApp({ secret = process.env.VIVO_POS_QR_SECRET || 'local-development-secret', store = createLocalSqliteStore(), issueFel = async () => ({ status: 'queued' }) } = {}) {
   const app = express();
   app.use(express.json({ limit: '256kb' }));
+  app.use('/vendor', express.static(path.join(__dirname, 'node_modules/qrcode/build')));
+  app.use(express.static(path.join(__dirname, 'public')));
 
   app.get('/health', (_request, response) => response.json({ service: 'vivo-pos', status: 'ok' }));
 

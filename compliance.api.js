@@ -1,6 +1,40 @@
 const crypto = require('node:crypto');
 const express = require('express');
 
+const PRODUCTION_ORIGINS = {
+  ecosystem: 'https://vivoamigo.com',
+  pay: 'https://payvivoamigo.com',
+  cargo: 'https://cargovivo.com'
+};
+
+function allowedOrigins() {
+  const configured = process.env.VIVO_ALLOWED_ORIGINS || [
+    process.env.VIVO_ECOSYSTEM_ORIGIN || PRODUCTION_ORIGINS.ecosystem,
+    process.env.PAY_VIVO_ORIGIN || PRODUCTION_ORIGINS.pay,
+    process.env.CARGO_VIVO_ORIGIN || PRODUCTION_ORIGINS.cargo,
+    'http://localhost:3001',
+    'http://localhost:3002'
+  ].join(',');
+  return new Set(configured.split(',').map((origin) => origin.trim()).filter(Boolean));
+}
+
+function corsWhitelist(request, response, next) {
+  const origin = request.get('Origin');
+  const origins = allowedOrigins();
+  if (origin && !origins.has(origin)) return response.status(403).json({ error: 'origin is not allowed' });
+  if (origin) {
+    response.set('Access-Control-Allow-Origin', origin);
+    response.set('Access-Control-Allow-Credentials', 'true');
+    response.set('Vary', 'Origin');
+  }
+  if (request.method === 'OPTIONS') {
+    response.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    response.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return response.sendStatus(204);
+  }
+  return next();
+}
+
 function requiredString(value, field) {
   if (typeof value !== 'string' || value.trim() === '') {
     const error = new Error(`${field} is required`);
@@ -35,6 +69,7 @@ function createComplianceApp({
   shipments = new Map()
 } = {}) {
   const app = express();
+  app.use(corsWhitelist);
   app.use(express.json({ limit: '32kb' }));
 
   app.get('/health', (_request, response) => response.json({ service: 'veri-shield', status: 'ok' }));
@@ -152,7 +187,7 @@ function createComplianceApp({
   return app;
 }
 
-module.exports = { createComplianceApp };
+module.exports = { PRODUCTION_ORIGINS, createComplianceApp };
 
 if (require.main === module) {
   createComplianceApp().listen(process.env.PORT || 3001, () => {

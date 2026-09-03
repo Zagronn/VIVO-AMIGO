@@ -2,7 +2,7 @@
 
 **Execution date:** 2026-09-03
 **Master Agent:** GitHub Copilot
-**Active agent status:** Phase 5 complete; container orchestration is defined for the four-module MVP and its PostgreSQL/Redis dependencies.
+**Active agent status:** Phase 6 complete; production domain routing and CORS allowlisting added for the Cloudflare registrations.
 
 ## Completed
 
@@ -16,6 +16,12 @@
 - `Dockerfile`: non-root Node 22 production image shared by the Express services.
 - `docker-compose.yml`: compliance API, POS API, PostgreSQL 16, and Redis 7 services with health checks, dependency gating, and persistent volumes.
 - `.dockerignore`: excludes Git metadata, dependencies, local SQLite files, and tests from the image context.
+- `public/`: minimalist installable VIVO POS PWA with responsive vendor terminal UI, local scannable QR rendering, device-persisted offline sales queue, automatic online replay, and mock FEL issuance controls.
+- `public/sw.js` and `public/manifest.webmanifest`: cached offline shell and standalone PWA metadata.
+- `public/vendor/qrcode.min.js`: bundled local QR renderer; no QR image network dependency.
+- Production domains: `vivoamigo.com` (ecosystem), `payvivoamigo.com` (PAY VIVO), and `cargovivo.com` (CARGO VIVO) are recorded in `PROJECT_CONTEXT.md`.
+- `compliance.api.js`: strict `VIVO_ALLOWED_ORIGINS` CORS whitelist with local development defaults, credentials support, preflight handling, and `403` rejection for unknown origins.
+- `.env.example`: production origin, database, Redis, and POS secret configuration template.
 - SQLite fallback: `vivopos.service.js` now persists offline sales through `node:sqlite` when available, with an in-memory compatibility fallback for older Node builds.
 - `package.json` and `package-lock.json`: Node runtime metadata and Express dependency.
 
@@ -24,6 +30,9 @@
 - `npm install --no-audit --no-fund`: passed.
 - `npm test`: passed, 6 tests, 0 failures; includes the complete VERI-SHIELD -> PAY VIVO -> CARGO VIVO -> VIVO POS FEL scenario.
 - Container configuration: YAML, package JSON, Dockerfile references, and Compose service references passed static validation.
+- PWA asset serving: POS Express returned `200` for both `/` and `/vendor/qrcode.min.js`.
+- `npm test`: passed, 7 tests, 0 failures; includes PWA shell/bundle availability alongside all core workflows.
+- `npm test`: passed, 8 tests, 0 failures; includes allowed and denied production-origin CORS behavior.
 - Docker build/up: not run because Docker is unavailable in the local environment.
 - PostgreSQL direct execution: not run because `psql` is unavailable in the environment.
 - Live RENAP/SAT calls: not run; adapters are intentionally injected and default to a clear `503` until credentials and provider clients are configured.

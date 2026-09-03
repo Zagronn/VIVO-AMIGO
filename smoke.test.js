@@ -6,11 +6,11 @@ const test = require('node:test');
 const { createComplianceApp } = require('./compliance.api');
 const { createLocalSqliteStore, createPosApp, generateQrPayload } = require('./vivopos.service');
 
-async function request(app, path, body, method = 'POST') {
+async function request(app, path, body, method = 'POST', extraHeaders = {}) {
   const server = app.listen(0);
   await new Promise((resolve) => server.once('listening', resolve));
   const url = `http://127.0.0.1:${server.address().port}${path}`;
-  const options = { method, headers: { 'content-type': 'application/json' } };
+  const options = { method, headers: { 'content-type': 'application/json', ...extraHeaders } };
   if (body !== undefined) options.body = JSON.stringify(body);
   const response = await fetch(url, options);
   const json = await response.json();
@@ -18,10 +18,29 @@ async function request(app, path, body, method = 'POST') {
   return { status: response.status, json };
 }
 
+async function getText(app, path) {
+  const server = app.listen(0);
+  await new Promise((resolve) => server.once('listening', resolve));
+  const response = await fetch(`http://127.0.0.1:${server.address().port}${path}`);
+  const text = await response.text();
+  await new Promise((resolve) => server.close(resolve));
+  return { status: response.status, text };
+}
+
 test('generates a signed, expiring QR payload', () => {
   const qr = generateQrPayload({ terminalId: 'T-1', amount: 12.5 }, 'test-secret');
   assert.match(qr.qrData, /^vivo:\/\/pay\/.+\..+$/);
   assert.ok(qr.expiresAt > Date.now());
+});
+
+test('serves the offline VIVO POS shell and local QR bundle', async () => {
+  const app = createPosApp({ store: new Map() });
+  const shell = await getText(app, '/');
+  const qrBundle = await getText(app, '/vendor/qrcode.min.js');
+  assert.equal(shell.status, 200);
+  assert.match(shell.text, /VIVO POS/);
+  assert.equal(qrBundle.status, 200);
+  assert.match(qrBundle.text, /QRCode/);
 });
 
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
@@ -32,6 +51,14 @@ test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   assert.deepEqual(await request(app, '/v1/compliance/renap/verify', { nationalId: '123' }), { status: 200, json: { provider: 'RENAP', verified: true, reference: 'RENAP-1' } });
   assert.deepEqual(await request(app, '/v1/compliance/sat/verify', { taxId: '456' }), { status: 200, json: { provider: 'SAT', verified: true, reference: 'SAT-1' } });
   assert.deepEqual(await request(app, '/v1/compliance/sat/verify', {}), { status: 400, json: { error: 'taxId is required' } });
+});
+
+test('restricts compliance API CORS to registered VIVO origins', async () => {
+  const app = createComplianceApp({ verifySat: async () => ({ verified: true, reference: 'SAT-CORS' }) });
+  const allowed = await request(app, '/v1/compliance/sat/verify', { taxId: '456' }, 'POST', { Origin: 'https://payvivoamigo.com' });
+  assert.equal(allowed.status, 200);
+  const denied = await request(app, '/v1/compliance/sat/verify', { taxId: '456' }, 'POST', { Origin: 'https://untrusted.example' });
+  assert.deepEqual(denied, { status: 403, json: { error: 'origin is not allowed' } });
 });
 
 test('holds and releases PAY VIVO escrow funds', async () => {

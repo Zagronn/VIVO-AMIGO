@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a2a">
+  <meta name="description" content="VIVO POS offline-ready street vendor terminal">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+  <title>VIVO POS</title>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true">V</div>
+      <div>
+        <p class="eyebrow">VIVO AMIGO / STREET COMMERCE</p>
+        <h1>VIVO POS</h1>
+      </div>
+      <div class="connection" id="connectionStatus"><span></span> Online</div>
+    </header>
+
+    <section class="workspace" aria-label="Point of sale terminal">
+      <section class="qr-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PAY VIVO</p>
+            <h2>Request payment</h2>
+          </div>
+          <span class="terminal-chip" id="terminalLabel">Terminal POS-01</span>
+        </div>
+        <form id="paymentForm" class="payment-form">
+          <label for="amount">Amount <span>GTQ</span></label>
+          <div class="amount-field"><span>Q</span><input id="amount" name="amount" inputmode="decimal" type="number" min="0.01" step="0.01" placeholder="0.00" required></div>
+          <button class="primary-action" type="submit">Generate payment QR <span aria-hidden="true">↗</span></button>
+          <button class="queue-action" id="queueSaleButton" type="button">Save sale to device <span aria-hidden="true">＋</span></button>
+        </form>
+        <div class="qr-stage" id="qrStage" aria-live="polite">
+          <div class="qr-placeholder"><span>QR</span><small>Enter an amount to begin</small></div>
+        </div>
+        <div class="qr-meta" id="qrMeta" hidden>
+          <span id="qrAmount"></span><span id="qrExpiry"></span>
+        </div>
+      </section>
+
+      <aside class="sales-panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">LOCAL LEDGER</p><h2>Sales queue</h2></div>
+          <strong class="queue-count" id="queueCount">0</strong>
+        </div>
+        <div class="queue-list" id="queueList"><div class="empty-state">No pending sales.<br>Completed sales appear here when offline.</div></div>
+        <button class="secondary-action" id="syncButton" type="button" disabled>Sync queue <span aria-hidden="true">↻</span></button>
+        <p class="sync-note" id="syncNote">Your queue is stored on this device.</p>
+      </aside>
+    </section>
+
+    <section class="fel-strip" aria-label="Invoice status">
+      <div><p class="eyebrow">SAT MICRO-FEL</p><h2>Invoice ready when you are</h2></div>
+      <button class="text-action" id="invoiceButton" type="button" disabled>Issue invoice <span aria-hidden="true">→</span></button>
+      <p class="fel-status" id="felStatus">Select a synced sale to issue its FEL.</p>
+    </section>
+  </main>
+  <script src="/vendor/qrcode.min.js" defer></script>
+  <script src="/app.js" defer></script>
+</body>
+</html>
