@@ -123,6 +123,7 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(shell.text, /MARKETPLACE/);
   assert.match(manifest.text, /VIVO AMIGO Commerce/);
   assert.match(manifest.text, /#111111/);
+  assert.match(manifest.text, /images\/logo\.png/);
   assert.equal(brandMark.status, 200);
   assert.match(brandMark.text, /VIVO AMIGO VA shield mark/);
   assert.match(brandMark.text, /#FF6A00/);
@@ -142,6 +143,7 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(tailwind, /silver: '#7A808A'/);
   assert.match(tailwind, /accent: '#FF6A00'/);
   assert.match(serviceWorker.text, /vendor\/qrcode\.min\.js/);
+  assert.match(serviceWorker.text, /images\/logo\.png/);
   assert.match(serviceWorker.text, /request\.mode === 'navigate'/);
   assert.match(serviceWorker.text, /pathname\.startsWith\('\/v1\/'\)/);
   assert.match(index.text, /apple-mobile-web-app-capable/);
@@ -425,7 +427,7 @@ test('defines the VIVO AMIGO sticky Guatemala navbar', () => {
   const navbar = fs.readFileSync(path.join(__dirname, 'components', 'Navbar.tsx'), 'utf8');
   assert.match(navbar, /next\/image/);
   assert.match(navbar, /next\/link/);
-  assert.match(navbar, /brand-mark\.svg/);
+  assert.match(navbar, /images\/logo\.png/);
   assert.match(navbar, /sticky top-0/);
   assert.match(navbar, /Guatemala City/);
 });
@@ -442,7 +444,7 @@ test('defines VIVO AMIGO Guatemala metadata and root layout', () => {
   const layout = fs.readFileSync(path.join(__dirname, 'app', 'layout.tsx'), 'utf8');
   assert.match(layout, /VIVO AMIGO \| Mercado Digital Guatemala/);
   assert.match(layout, /Escrow seguro en Guatemala/);
-  assert.match(layout, /brand-mark\.svg/);
+  assert.match(layout, /images\/logo\.png/);
   assert.match(layout, /export default function RootLayout/);
   assert.match(layout, /lang="es"/);
 });

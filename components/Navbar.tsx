@@ -6,7 +6,7 @@ export const Navbar = () => (
     <div className="mx-auto flex max-w-7xl items-center justify-between">
       <Link href="/" className="flex items-center gap-2" aria-label="VIVO AMIGO inicio">
         <Image
-          src="/brand-mark.svg"
+          src="/images/logo.png"
           alt="VIVO AMIGO VA Shield Logo"
           width={160}
           height={50}

@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   title: 'VIVO AMIGO | Mercado Digital Guatemala',
   description: 'Compra, venta, servicios y vehículos con Escrow seguro en Guatemala.',
   icons: {
-    icon: '/brand-mark.svg',
-    apple: '/brand-mark.svg'
+    icon: '/images/logo.png',
+    apple: '/images/logo.png'
   },
   openGraph: {
     title: 'VIVO AMIGO | Mercado Digital',
     description: 'Compra, venta, servicios y vehículos con Escrow seguro en Guatemala.',
-    images: ['/brand-mark.svg'],
+    images: ['/images/logo.png'],
     locale: 'es_GT',
     type: 'website'
   }
