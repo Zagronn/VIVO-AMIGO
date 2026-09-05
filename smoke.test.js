@@ -407,6 +407,16 @@ test('defines consent-gated privacy shield and sensitive data masking', () => {
   assert.match(privacy, /maskedEmail/);
 });
 
+test('defines the privacy-aware personalized offer card', () => {
+  const offer = fs.readFileSync(path.join(__dirname, 'components', 'PersonalizedOfferCard.tsx'), 'utf8');
+  assert.match(offer, /PersonalizedOfferCard/);
+  assert.match(offer, /Oportunidad Exclusiva/);
+  assert.match(offer, /VIVO AMIGO Shield/);
+  assert.match(offer, /wa\\\.me/);
+  assert.match(offer, /noopener noreferrer/);
+  assert.match(offer, /actionLink/);
+});
+
 test('defines the 15-day corporate job listing engine', () => {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   const policy = fs.readFileSync(path.join(__dirname, 'services', 'jobListingPolicy.ts'), 'utf8');
