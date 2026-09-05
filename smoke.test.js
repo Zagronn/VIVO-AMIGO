@@ -522,6 +522,21 @@ test('defines the production VIVO AMIGO health endpoint', () => {
   assert.equal(fs.existsSync(path.join(__dirname, 'app', 'api', 'v1', 'health', 'route.ts')), true);
 });
 
+test('serves the VIVO POS versioned health endpoint as JSON', async () => {
+  const response = await getText(createPosApp({ store: new Map() }), '/api/v1/health');
+  assert.equal(response.status, 200);
+  assert.match(response.text, /"service":"vivo-amigo"/);
+  assert.match(response.text, /"status":"ONLINE"/);
+});
+
+test('documents the overnight deployment truth', () => {
+  const log = fs.readFileSync(path.join(__dirname, 'OVERNIGHT_DEPLOYMENT_LOG.md'), 'utf8');
+  assert.match(log, /npm test/);
+  assert.match(log, /\/api\/v1\/health/);
+  assert.match(log, /npm run build/);
+  assert.match(log, /not claimed/);
+});
+
 test('defines the VIVO AMIGO sticky Guatemala navbar', () => {
   const navbar = fs.readFileSync(path.join(__dirname, 'components', 'Navbar.tsx'), 'utf8');
   assert.match(navbar, /next\/image/);
