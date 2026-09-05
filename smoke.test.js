@@ -417,6 +417,18 @@ test('defines the privacy-aware personalized offer card', () => {
   assert.match(offer, /actionLink/);
 });
 
+test('defines predictive analytics and legal consent shield public modules', () => {
+  const predictive = fs.readFileSync(path.join(__dirname, 'services', 'predictiveDataEngine.ts'), 'utf8');
+  const legal = fs.readFileSync(path.join(__dirname, 'services', 'legalConsentShield.ts'), 'utf8');
+  const offer = fs.readFileSync(path.join(__dirname, 'components', 'PersonalizedOfferCard.tsx'), 'utf8');
+  assert.match(predictive, /predictCommercialIntent/);
+  assert.match(predictive, /validatePrivacyShield/);
+  assert.match(predictive, /analyzeUserIntentAndTriggerCampaign/);
+  assert.match(legal, /GDPR_GUATEMALA_CONSENT_REQUIRED/);
+  assert.match(legal, /maskSensitiveUserData/);
+  assert.match(offer, /PersonalizedOfferCard/);
+});
+
 test('defines the 15-day corporate job listing engine', () => {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   const policy = fs.readFileSync(path.join(__dirname, 'services', 'jobListingPolicy.ts'), 'utf8');
