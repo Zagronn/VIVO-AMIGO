@@ -19,24 +19,26 @@ export function evaluateRiskAndBlacklist(
     deviceFingerprint,
     suspiciousActivityScore: riskScore,
     shouldBan,
-    banReason: shouldBan ? 'Automated Ban: Suspicious behavior and high risk score' : undefined
+    banReason: shouldBan ? 'Blacklist AI: Şüpheli IP/Cihaz davranışı ve yüksek risk skoru' : undefined
   };
 }
 
-export function executeEscrowLock(amountGTQ: number, kycData: KYCUserData, inspectionReport?: InspectionReport): EscrowLockResult {
+export function executeSmartEscrowLock(amountGTQ: number, kycData: KYCUserData, inspectionReport?: InspectionReport): EscrowLockResult {
   if (!Number.isFinite(amountGTQ) || amountGTQ <= 0) throw new Error('amountGTQ must be greater than zero');
-  if (kycData.verificationLevel !== 'KYC_VERIFIED') throw new Error('Escrow işlemi için KYC doğrulaması zorunludur.');
+  if (kycData.verificationLevel !== 'KYC_VERIFIED' && kycData.verificationLevel !== 'GOVERNMENT_ESCROW_APPROVED') throw new Error('Smart Escrow işlemi için KYC kimlik doğrulaması zorunludur.');
   if (inspectionReport && (inspectionReport.overallScore < 1 || inspectionReport.overallScore > 100)) throw new Error('inspection score must be between 1 and 100');
 
   return {
-    escrowId: `ESCROW-${Date.now()}`,
+    escrowId: `ESCROW-GTQ-${Date.now()}`,
     amountLockedGTQ: Number(amountGTQ.toFixed(2)),
     status: 'FUNDS_LOCKED_IN_ESCROW',
-    hasInspectionPassed: inspectionReport ? inspectionReport.overallScore > 70 : true,
+    hasInspectionPassed: inspectionReport ? inspectionReport.overallScore >= 70 : true,
     qrVerificationCode: inspectionReport?.qrVerificationUrl,
     timestamp: new Date().toISOString()
   };
 }
+
+export const executeEscrowLock = executeSmartEscrowLock;
 
 export interface EscrowLockResult {
   escrowId: string;

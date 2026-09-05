@@ -378,7 +378,10 @@ test('defines proactive blacklist risk and KYC escrow guards', () => {
   assert.match(security, /rapidActionCount > 20/);
   assert.match(security, /riskScore >= 70/);
   assert.match(security, /executeEscrowLock/);
-  assert.match(security, /KYC doğrulaması zorunludur/);
+  assert.match(security, /executeSmartEscrowLock/);
+  assert.match(security, /GOVERNMENT_ESCROW_APPROVED/);
+  assert.match(security, /ESCROW-GTQ/);
+  assert.match(security, /Smart Escrow işlemi için KYC kimlik doğrulaması zorunludur/);
   assert.match(security, /FUNDS_LOCKED_IN_ESCROW/);
   assert.match(exports, /interface EscrowLock/);
 });
