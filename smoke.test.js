@@ -351,6 +351,16 @@ test('defines tokenized card and DPI identity verification', () => {
   assert.match(card, /randomUUID/);
 });
 
+test('defines bid hold and fraud penalty security controls', () => {
+  const bid = fs.readFileSync(path.join(__dirname, 'services', 'bidSecurity.ts'), 'utf8');
+  assert.match(bid, /BidHoldRequest/);
+  assert.match(bid, /BID_HOLD_RATE = 0\.01/);
+  assert.match(bid, /TEMPORARY_HOLD_ACTIVE/);
+  assert.match(bid, /FRAUD_PENALTY_GTQ = 500\.00/);
+  assert.match(bid, /PERMANENTLY_BAN_BLACK_LIST/);
+  assert.match(bid, /cardToken/);
+});
+
 test('defines the 15-day corporate job listing engine', () => {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   const policy = fs.readFileSync(path.join(__dirname, 'services', 'jobListingPolicy.ts'), 'utf8');
