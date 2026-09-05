@@ -1,4 +1,4 @@
-export type TransactionType = 'VEHICLE_SALE' | 'REAL_ESTATE_SALE' | 'SERVICE_JOB' | 'WHOLESALE' | 'ESCROW_PAYMENT';
+export type TransactionType = 'VEHICLE_SALE' | 'REAL_ESTATE_SALE' | 'SERVICE_JOB' | 'WHOLESALE' | 'ESCROW_PAYMENT' | 'BYD_LEAD';
 
 export interface FeeCalculationInput {
   type: TransactionType;
@@ -20,7 +20,8 @@ const FEE_BPS: Record<TransactionType, number> = {
   REAL_ESTATE_SALE: 50,
   SERVICE_JOB: 750,
   WHOLESALE: 50,
-  ESCROW_PAYMENT: 300
+  ESCROW_PAYMENT: 300,
+  BYD_LEAD: 10_000
 };
 
 export function calculateVivoAmigoFee(input: FeeCalculationInput): FeeCalculation {

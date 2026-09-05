@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { calculateVivoAmigoFee, type TransactionType } from '../../../../services/commissionEngine';
 
-const TRANSACTION_TYPES = new Set<TransactionType>(['VEHICLE_SALE', 'REAL_ESTATE_SALE', 'SERVICE_JOB', 'WHOLESALE', 'ESCROW_PAYMENT']);
+const TRANSACTION_TYPES = new Set<TransactionType>(['VEHICLE_SALE', 'REAL_ESTATE_SALE', 'SERVICE_JOB', 'WHOLESALE', 'ESCROW_PAYMENT', 'BYD_LEAD']);
 
 export async function POST(request: Request) {
   try {

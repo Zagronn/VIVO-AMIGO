@@ -311,11 +311,21 @@ test('defines the escrow transaction fee API contract', () => {
   assert.match(engine, /VEHICLE_SALE: 100/);
   assert.match(engine, /SERVICE_JOB: 750/);
   assert.match(engine, /ESCROW_PAYMENT: 300/);
+  assert.match(engine, /BYD_LEAD: 10_000/);
   assert.match(engine, /sellerPayoutGTQ/);
   assert.equal(fs.existsSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts')), true);
   assert.match(route, /ESCROW_HELD/);
   assert.match(route, /status: 201/);
   assert.match(route, /isGoldSubscriber/);
+});
+
+test('defines the BYD test drive lead form', () => {
+  const form = fs.readFileSync(path.join(__dirname, 'components', 'BydLeadForm.tsx'), 'utf8');
+  assert.match(form, /transactionType: 'BYD_LEAD'/);
+  assert.match(form, /amountGTQ: 195/);
+  assert.match(form, /50200000000/);
+  assert.match(form, /noopener,noreferrer/);
+  assert.match(form, /role="alert"/);
 });
 
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
