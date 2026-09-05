@@ -374,6 +374,18 @@ test('exposes requested logistics escrow, credit, and anti-scam modules', () => 
   assert.match(credit, /propertyPriceGTQ/);
 });
 
+test('defines Guatemala Next.js production configuration', () => {
+  const nextConfig = fs.readFileSync(path.join(__dirname, 'next.config.js'), 'utf8');
+  assert.match(nextConfig, /reactStrictMode: true/);
+  assert.match(nextConfig, /swcMinify: true/);
+  assert.match(nextConfig, /cdn\.vivoamigo\.com/);
+  assert.match(nextConfig, /cargoexpreso\.com/);
+  assert.match(nextConfig, /guateex\.com/);
+  assert.match(nextConfig, /NEXT_PUBLIC_SITE_URL: 'https:\/\/vivoamigo\.com'/);
+  assert.match(nextConfig, /NEXT_PUBLIC_DEFAULT_CURRENCY: 'GTQ'/);
+  assert.match(nextConfig, /NEXT_PUBLIC_LAUNCH_CITY: 'Guatemala City'/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
