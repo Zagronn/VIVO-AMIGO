@@ -382,6 +382,16 @@ test('defines proactive blacklist risk and KYC escrow guards', () => {
   assert.match(security, /FUNDS_LOCKED_IN_ESCROW/);
 });
 
+test('defines the inspection transparency badge', () => {
+  const badge = fs.readFileSync(path.join(__dirname, 'components', 'InspectionBadge.tsx'), 'utf8');
+  assert.match(badge, /InspectionBadge/);
+  assert.match(badge, /Ekspertiz Onaylı/);
+  assert.match(badge, /safeScore/);
+  assert.match(badge, /PDF Raporu İncele/);
+  assert.match(badge, /QR doğrulama kodu/);
+  assert.match(badge, /tabular-nums/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
