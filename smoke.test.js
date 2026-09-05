@@ -389,9 +389,9 @@ test('defines proactive blacklist risk and KYC escrow guards', () => {
 test('defines the inspection transparency badge', () => {
   const badge = fs.readFileSync(path.join(__dirname, 'components', 'InspectionBadge.tsx'), 'utf8');
   assert.match(badge, /InspectionBadge/);
-  assert.match(badge, /Ekspertiz Onaylı/);
+  assert.match(badge, /Ekspertiz Onaylı \/ %100 Şeffaflık/);
   assert.match(badge, /safeScore/);
-  assert.match(badge, /PDF Raporu İncele/);
+  assert.match(badge, /Resmi Ekspertiz Raporu \(PDF\)/);
   assert.match(badge, /QR doğrulama kodu/);
   assert.match(badge, /tabular-nums/);
 });
