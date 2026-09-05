@@ -370,6 +370,18 @@ test('defines KYC, inspection, and blacklist verification contracts', () => {
   assert.match(verification, /shouldBan/);
 });
 
+test('defines proactive blacklist risk and KYC escrow guards', () => {
+  const security = fs.readFileSync(path.join(__dirname, 'services', 'securityModule.ts'), 'utf8');
+  const exports = fs.readFileSync(path.join(__dirname, 'types', 'securityModule.ts'), 'utf8');
+  assert.match(exports, /export type.*BlacklistEvaluation/);
+  assert.match(security, /evaluateRiskAndBlacklist/);
+  assert.match(security, /rapidActionCount > 20/);
+  assert.match(security, /riskScore >= 70/);
+  assert.match(security, /executeEscrowLock/);
+  assert.match(security, /KYC doğrulaması zorunludur/);
+  assert.match(security, /FUNDS_LOCKED_IN_ESCROW/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
