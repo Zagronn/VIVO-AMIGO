@@ -1,0 +1,22 @@
+{
+  "TableName": "VivoAmigo_Production_Listings",
+  "KeySchema": [
+    { "AttributeName": "zone_category", "KeyType": "HASH" },
+    { "AttributeName": "listing_id", "KeyType": "RANGE" }
+  ],
+  "AttributeDefinitions": [
+    { "AttributeName": "zone_category", "AttributeType": "S" },
+    { "AttributeName": "listing_id", "AttributeType": "S" },
+    { "AttributeName": "is_vecino_confiable", "AttributeType": "N" }
+  ],
+  "GlobalSecondaryIndexes": [
+    {
+      "IndexName": "VecinoConfiableIndex",
+      "KeySchema": [
+        { "AttributeName": "is_vecino_confiable", "KeyType": "HASH" }
+      ],
+      "Projection": { "ProjectionType": "ALL" }
+    }
+  ],
+  "BillingMode": "PAY_PER_REQUEST"
+}

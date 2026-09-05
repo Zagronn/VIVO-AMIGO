@@ -233,6 +233,14 @@ test('defines the Cloudflare edge listings and WhatsApp tracking worker', () => 
   assert.match(schema, /whatsapp_click_count INTEGER NOT NULL DEFAULT 0/);
 });
 
+test('defines the production DynamoDB listings table contract', () => {
+  const table = JSON.parse(fs.readFileSync(path.join(__dirname, 'deploy', 'dynamodb', 'VivoAmigo_Production_Listings.json'), 'utf8'));
+  assert.equal(table.TableName, 'VivoAmigo_Production_Listings');
+  assert.deepEqual(table.KeySchema, [{ AttributeName: 'zone_category', KeyType: 'HASH' }, { AttributeName: 'listing_id', KeyType: 'RANGE' }]);
+  assert.equal(table.GlobalSecondaryIndexes[0].IndexName, 'VecinoConfiableIndex');
+  assert.equal(table.BillingMode, 'PAY_PER_REQUEST');
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
