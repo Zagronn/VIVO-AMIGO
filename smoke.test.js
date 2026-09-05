@@ -384,6 +384,18 @@ test('defines PCI card security, penalty engine, checkout, and onboarding integr
   assert.match(onboarding, /CardVerificationBadge/);
 });
 
+test('defines privacy-aware intent campaign triggers', () => {
+  const campaign = fs.readFileSync(path.join(__dirname, 'services', 'intentCampaignEngine.ts'), 'utf8');
+  assert.match(campaign, /CAR_EXPERT_COMPLETED/);
+  assert.match(campaign, /PROPERTY_RENTAL_SEARCH/);
+  assert.match(campaign, /phoneHash/);
+  assert.match(campaign, /BYD Guatemala/);
+  assert.match(campaign, /CARGO VIVO & HomePartners/);
+  assert.match(campaign, /campaignChannel: 'WHATSAPP'/);
+  assert.match(campaign, /campaignChannel: 'SMS'/);
+  assert.match(campaign, /toLowerCase/);
+});
+
 test('defines the 15-day corporate job listing engine', () => {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   const policy = fs.readFileSync(path.join(__dirname, 'services', 'jobListingPolicy.ts'), 'utf8');
