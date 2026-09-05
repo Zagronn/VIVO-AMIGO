@@ -341,6 +341,16 @@ test('defines the VIVO AMIGO master launch blueprint', () => {
   assert.match(blueprint, /server-side/);
 });
 
+test('defines tokenized card and DPI identity verification', () => {
+  const card = fs.readFileSync(path.join(__dirname, 'services', 'cardVerification.ts'), 'utf8');
+  assert.match(card, /CardVerificationRequest/);
+  assert.match(card, /cardNumberToken/);
+  assert.match(card, /normalize\('NFKD'\)/);
+  assert.match(card, /nunca envíe el número de tarjeta/);
+  assert.match(card, /Visanet\/NeoNet/);
+  assert.match(card, /randomUUID/);
+});
+
 test('defines the 15-day corporate job listing engine', () => {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   const policy = fs.readFileSync(path.join(__dirname, 'services', 'jobListingPolicy.ts'), 'utf8');
