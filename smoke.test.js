@@ -447,6 +447,10 @@ test('defines VIVO AMIGO Guatemala metadata and root layout', () => {
   assert.match(layout, /images\/logo\.png/);
   assert.match(layout, /export default function RootLayout/);
   assert.match(layout, /lang="es"/);
+  assert.match(layout, /next\/font\/google/);
+  assert.match(layout, /weight: \['400', '500', '700', '900'\]/);
+  assert.match(layout, /font-sans bg-\[#E3E6E6\]/);
+  assert.equal(fs.existsSync(path.join(__dirname, 'app', 'globals.css')), true);
 });
 
 test('defines the escrow transaction fee API contract', () => {
