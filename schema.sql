@@ -48,6 +48,33 @@ CREATE TABLE IF NOT EXISTS merchant_subscriptions (
     UNIQUE (user_id, plan_id)
 );
 
+CREATE TABLE IF NOT EXISTS corporate_verifications (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    legal_name TEXT NOT NULL,
+    nit TEXT NOT NULL,
+    mercantile_registration_number TEXT NOT NULL,
+    mercantile_document_url TEXT NOT NULL,
+    tax_certificate_url TEXT NOT NULL,
+    verification_level TEXT NOT NULL DEFAULT 'submitted' CHECK (verification_level IN ('submitted', 'ai_review', 'government_verified', 'admin_approved', 'rejected', 'expired')),
+    government_reference TEXT,
+    verified_at TIMESTAMPTZ,
+    expires_at TIMESTAMPTZ,
+    rejection_reason TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS admin_approvals (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    resource_type TEXT NOT NULL CHECK (resource_type IN ('CORPORATE_ACCOUNT', 'PROPERTY_LISTING', 'TRANSACTION', 'ESCROW_RELEASE')),
+    resource_id UUID NOT NULL,
+    admin_user_id UUID NOT NULL REFERENCES users(id),
+    decision TEXT NOT NULL CHECK (decision IN ('approved', 'rejected', 'returned')),
+    notes TEXT,
+    decided_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS listings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     vendor_id UUID REFERENCES users(id) ON DELETE SET NULL,
@@ -119,6 +146,8 @@ CREATE TABLE IF NOT EXISTS escrow_orders (
     held_amount NUMERIC(18, 2) NOT NULL CHECK (held_amount >= 0),
     buyer_fee_bps INTEGER NOT NULL CHECK (buyer_fee_bps BETWEEN 0 AND 10000),
     status TEXT NOT NULL DEFAULT 'funds_pending' CHECK (status IN ('funds_pending', 'funds_held', 'released', 'refunded', 'disputed')),
+    delivery_code TEXT UNIQUE,
+    delivery_code_issued_at TIMESTAMPTZ,
     release_after TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -131,6 +160,31 @@ CREATE TABLE IF NOT EXISTS ad_leads (
     attribution_source TEXT NOT NULL DEFAULT 'direct',
     payout_amount_usd NUMERIC(12, 2) NOT NULL DEFAULT 0 CHECK (payout_amount_usd >= 0),
     status TEXT NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'qualified', 'converted', 'rejected')),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS property_documents (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    listing_id UUID NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+    document_type TEXT NOT NULL CHECK (document_type IN ('LIBERTAD_GRAVAMEN', 'NOTARIZED_TITLE', 'LOCATION_PROOF')),
+    document_url TEXT NOT NULL,
+    ocr_status TEXT NOT NULL DEFAULT 'pending' CHECK (ocr_status IN ('pending', 'passed', 'failed', 'manual_review')),
+    seal_detected BOOLEAN,
+    document_date DATE,
+    extracted_area NUMERIC(14, 2),
+    extracted_zone TEXT,
+    admin_status TEXT NOT NULL DEFAULT 'pending' CHECK (admin_status IN ('pending', 'approved', 'rejected')),
+    rejection_reason TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS signed_contracts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    transaction_id UUID UNIQUE NOT NULL REFERENCES marketplace_transactions(id) ON DELETE CASCADE,
+    buyer_signed_at TIMESTAMPTZ,
+    seller_signed_at TIMESTAMPTZ,
+    contract_url TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'partially_signed', 'fully_signed', 'voided')),
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

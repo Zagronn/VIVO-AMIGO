@@ -304,6 +304,18 @@ test('defines the Guatemala transaction revenue engine', () => {
   assert.match(brief, /Do not release escrow on a click/);
 });
 
+test('defines the corporate and notarized trust chain', () => {
+  const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
+  const brief = fs.readFileSync(path.join(__dirname, 'docs', 'corporate-trust-chain.md'), 'utf8');
+  for (const table of ['corporate_verifications', 'property_documents', 'admin_approvals', 'signed_contracts']) assert.match(schema, new RegExp(`CREATE TABLE IF NOT EXISTS ${table}`));
+  assert.match(schema, /LIBERTAD_GRAVAMEN/);
+  assert.match(schema, /NOTARIZED_TITLE/);
+  assert.match(schema, /delivery_code TEXT UNIQUE/);
+  assert.match(brief, /Registro Mercantil/);
+  assert.match(brief, /fully_signed/);
+  assert.match(brief, /Do not issue `delivery_code`/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
