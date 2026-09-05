@@ -338,6 +338,15 @@ test('defines store subscription posting eligibility', () => {
   assert.match(subscription, /Tienda activa/);
 });
 
+test('defines the store rent payment badge', () => {
+  const badge = fs.readFileSync(path.join(__dirname, 'components', 'StoreRentBadge.tsx'), 'utf8');
+  assert.match(badge, /StoreRentBadge/);
+  assert.match(badge, /Tienda Activa \(Q50\/mes\)/);
+  assert.match(badge, /Pago Pendiente/);
+  assert.match(badge, /checkout\?amount=50&type=STORE_RENTAL/);
+  assert.match(badge, /Pagar Q50/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
