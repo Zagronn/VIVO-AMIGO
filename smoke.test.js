@@ -406,6 +406,7 @@ test('defines the production VIVO AMIGO health endpoint', () => {
   assert.match(health, /smartEscrow: true/);
   assert.match(health, /antiScamGuard: true/);
   assert.match(health, /new Date\(\)\.toISOString/);
+  assert.equal(fs.existsSync(path.join(__dirname, 'app', 'api', 'v1', 'health', 'route.ts')), true);
 });
 
 test('defines the escrow transaction fee API contract', () => {
