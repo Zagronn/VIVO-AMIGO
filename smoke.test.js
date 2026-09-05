@@ -438,6 +438,15 @@ test('defines Next.js root and dynamic listing page exports', () => {
   assert.match(listing, /dynamicParams = true/);
 });
 
+test('defines VIVO AMIGO Guatemala metadata and root layout', () => {
+  const layout = fs.readFileSync(path.join(__dirname, 'app', 'layout.tsx'), 'utf8');
+  assert.match(layout, /VIVO AMIGO \| Mercado Digital Guatemala/);
+  assert.match(layout, /Escrow seguro en Guatemala/);
+  assert.match(layout, /brand-mark\.svg/);
+  assert.match(layout, /export default function RootLayout/);
+  assert.match(layout, /lang="es"/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
