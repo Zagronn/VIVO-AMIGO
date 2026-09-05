@@ -330,6 +330,17 @@ test('defines the 15-day corporate job listing engine', () => {
   assert.match(brief, /job_escrow_closures/);
 });
 
+test('defines CARGO delivery escrow release rules', () => {
+  const cargo = fs.readFileSync(path.join(__dirname, 'services', 'cargoEscrow.ts'), 'utf8');
+  assert.match(cargo, /PENDING_PICKUP/);
+  assert.match(cargo, /CARGO_EXPRESO/);
+  assert.match(cargo, /GUATE_EX/);
+  assert.match(cargo, /PAYOUT_HOLD_HOURS = 24/);
+  assert.match(cargo, /status !== 'DELIVERED'/);
+  assert.match(cargo, /isPayoutApproved: true/);
+  assert.match(cargo, /DISPUTED/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
