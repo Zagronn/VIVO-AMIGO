@@ -115,6 +115,7 @@ test('advertises complete web and native product surfaces', async () => {
   const marketplace = fs.readFileSync(path.join(__dirname, 'public', 'app.js'), 'utf8');
   const tailwind = fs.readFileSync(path.join(__dirname, 'tailwind.config.js'), 'utf8');
   const serviceWorker = await getText(app, '/sw.js');
+  const index = await getText(app, '/');
   const mobileTargets = require('./mobile/src').APPS;
   const { PRODUCTION_ENDPOINTS } = require('./mobile/src/config');
   assert.match(shell.text, /VIVOAMIGOPAY/);
@@ -138,6 +139,10 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(tailwind, /silver: '#7A808A'/);
   assert.match(tailwind, /accent: '#FF6A00'/);
   assert.match(serviceWorker.text, /vendor\/qrcode\.min\.js/);
+  assert.match(serviceWorker.text, /request\.mode === 'navigate'/);
+  assert.match(serviceWorker.text, /pathname\.startsWith\('\/v1\/'\)/);
+  assert.match(index.text, /apple-mobile-web-app-capable/);
+  assert.match(index.text, /apple-touch-icon/);
   assert.deepEqual(Object.keys(mobileTargets).sort(), ['cargo', 'pay', 'pos']);
   assert.deepEqual(PRODUCTION_ENDPOINTS, { ecosystem: 'https://vivoamigo.com', payment: 'https://payvivoamigo.com', cargo: 'https://cargovivo.com', pos: 'https://pos.vivoamigo.com' });
   assert.equal(mobileTargets.pay.name, 'VIVOAMIGOPAY');
@@ -153,6 +158,17 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'AndroidManifest.xml'), 'utf8'), /USE_BIOMETRIC/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'res', 'drawable', 'va_splash.xml'), 'utf8'), /vivo_black/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'native-placeholder', 'LaunchScreen.storyboard'), 'utf8'), /VivoAmigoMark/);
+});
+
+test('ships production edge routing and HTTPS configuration', () => {
+  const nginx = fs.readFileSync(path.join(__dirname, 'deploy', 'nginx.conf'), 'utf8');
+  const tls = fs.readFileSync(path.join(__dirname, 'deploy', 'snippets', 'vivo-tls.conf'), 'utf8');
+  assert.match(nginx, /server_name vivoamigo\.com/);
+  assert.match(nginx, /server_name payvivoamigo\.com/);
+  assert.match(nginx, /server_name cargovivo\.com/);
+  assert.match(nginx, /return 301 https:\/\/\$host\$request_uri/);
+  assert.match(nginx, /proxy_pass http:\/\/veri_shield/);
+  assert.match(tls, /Strict-Transport-Security/);
 });
 
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {

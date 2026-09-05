@@ -1,4 +1,7 @@
 node_modules/
+mobile/android/.gradle/
+mobile/android/build/
+mobile/android/app/build/
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
