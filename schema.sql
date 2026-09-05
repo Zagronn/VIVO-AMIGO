@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS listings (
     category_id UUID NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
     zone TEXT,
     description TEXT NOT NULL DEFAULT '',
+    whatsapp_click_count INTEGER NOT NULL DEFAULT 0 CHECK (whatsapp_click_count >= 0),
     category TEXT NOT NULL DEFAULT 'GENERAL',
     status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE', 'SOLD', 'DRAFT')),
     embedding vector(1536),

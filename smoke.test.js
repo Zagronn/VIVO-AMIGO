@@ -221,6 +221,18 @@ test('wires Guatemala marketplace culture components together', () => {
   assert.match(experience, /isOfficialDealer=\{item\.isOfficialDealer\}/);
 });
 
+test('defines the Cloudflare edge listings and WhatsApp tracking worker', () => {
+  const worker = fs.readFileSync(path.join(__dirname, 'src', 'worker.ts'), 'utf8');
+  const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
+  assert.match(worker, /LISTINGS_KV/);
+  assert.match(worker, /VECTOR_INDEX/);
+  assert.match(worker, /whatsapp-click/);
+  assert.match(worker, /X-Cache/);
+  assert.match(worker, /expirationTtl: 60/);
+  assert.match(worker, /category/);
+  assert.match(schema, /whatsapp_click_count INTEGER NOT NULL DEFAULT 0/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
