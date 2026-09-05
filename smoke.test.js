@@ -292,6 +292,15 @@ test('defines the VIVO AMIGO SEO sitemap routes', () => {
   assert.match(sitemap, /\/buscar\/\$\{item\.slug\}/);
 });
 
+test('integrates trust and financing modules into listing detail pages', () => {
+  const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
+  assert.match(listing, /InspectionBadge/);
+  assert.match(listing, /BankCreditCalculator/);
+  assert.match(listing, /inspectionScore/);
+  assert.match(listing, /REAL_ESTATE.*VEHICLE/);
+  assert.match(listing, /Comprar con Escrow Seguro/);
+});
+
 test('defines the Guatemala transaction revenue engine', () => {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   const brief = fs.readFileSync(path.join(__dirname, 'docs', 'guatemala-revenue-engine.md'), 'utf8');

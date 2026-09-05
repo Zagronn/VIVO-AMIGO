@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { BankCreditCalculator } from '../../../components/BankCreditCalculator';
+import { InspectionBadge } from '../../../components/InspectionBadge';
 
 interface Listing {
   id: string;
@@ -10,6 +12,11 @@ interface Listing {
   zone?: string;
   images?: string[];
   primaryImageUrl?: string;
+  sellerName?: string;
+  isCorporate?: boolean;
+  inspectionScore?: number;
+  inspectionPdfUrl?: string;
+  qrCodeUrl?: string;
 }
 
 interface ListingProps {
@@ -55,6 +62,9 @@ export default async function ListingPage({ params }: ListingProps) {
 
   const description = listing.description || '';
   const images = listing.images?.length ? listing.images : listing.primaryImageUrl ? [listing.primaryImageUrl] : [];
+  const inspectionScore = listing.inspectionScore ?? 0;
+  const inspectionPdfUrl = listing.inspectionPdfUrl || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://vivoamigo.com'}/reports/${listing.id}.pdf`;
+  const qrCodeUrl = listing.qrCodeUrl || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://vivoamigo.com'}/verify/${listing.id}`;
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': listing.category === 'VEHICLE' ? 'Vehicle' : 'Product',
@@ -80,12 +90,24 @@ export default async function ListingPage({ params }: ListingProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdSafe(jsonLd) }}
       />
-      <main className="mx-auto max-w-7xl bg-[#111111] px-4 py-8 font-sans text-white">
-        <h1 className="text-3xl font-bold text-[#FF6A00]">{listing.title}</h1>
-        <div className="my-2 text-2xl font-semibold">
+      <main className="mx-auto min-h-screen max-w-4xl bg-[#111111] px-4 pb-28 py-8 font-sans text-white">
+        <div className="mb-4 border-b border-gray-800 pb-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#FF6A00]">{listing.category || 'MARKETPLACE'}</span>
+          <h1 className="mt-1 text-3xl font-bold text-[#FF6A00]">{listing.title}</h1>
+        </div>
+        <div className="my-2 text-2xl font-semibold tabular-nums">
           Q{listing.price.toLocaleString('es-GT')} GTQ
         </div>
-        <p className="my-4 leading-relaxed text-[#7A808A]">{description}</p>
+        <div className="mb-4 rounded-2xl border border-gray-800 bg-[#191919] p-4">
+          <h2 className="mb-2 text-sm font-bold text-gray-400">Descripción</h2>
+          <p className="leading-relaxed text-[#7A808A]">{description}</p>
+          {listing.sellerName && <p className="mt-3 text-xs text-gray-400">Vendedor: <strong className="text-white">{listing.sellerName}</strong>{listing.isCorporate ? ' · Empresa verificada' : ''}</p>}
+        </div>
+        {listing.inspectionScore !== undefined && <InspectionBadge inspectionId={`INSP-${listing.id}`} score={inspectionScore} qrCodeUrl={qrCodeUrl} pdfReportUrl={inspectionPdfUrl} />}
+        {(listing.category === 'REAL_ESTATE' || listing.category === 'VEHICLE') && <BankCreditCalculator propertyPriceGTQ={listing.price} />}
+        <div className="fixed bottom-0 left-0 right-0 mx-auto flex max-w-4xl gap-3 border-t border-gray-800 bg-[#111111]/90 p-4 backdrop-blur-md">
+          <button type="button" className="flex-1 rounded-xl bg-[#FF6A00] py-3.5 text-center text-sm font-extrabold text-black shadow-lg transition-all hover:bg-[#e05d00]">Comprar con Escrow Seguro</button>
+        </div>
       </main>
     </>
   );
