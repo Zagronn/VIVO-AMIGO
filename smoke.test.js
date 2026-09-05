@@ -352,6 +352,16 @@ test('defines the bank credit calculator', () => {
   assert.match(calculator, /tabular-nums/);
 });
 
+test('defines corporate anti-scam listing validation', () => {
+  const antiScam = fs.readFileSync(path.join(__dirname, 'services', 'antiScamValidation.ts'), 'utf8');
+  assert.match(antiScam, /SellerDocumentStatus/);
+  assert.match(antiScam, /hasCompanyRegistration/);
+  assert.match(antiScam, /hasNotaryDocument/);
+  assert.match(antiScam, /PENDING_APPROVAL/);
+  assert.match(antiScam, /APPROVED: Verificación completa/);
+  assert.match(antiScam, /isCorporateListing/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
