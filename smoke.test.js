@@ -361,6 +361,29 @@ test('defines bid hold and fraud penalty security controls', () => {
   assert.match(bid, /cardToken/);
 });
 
+test('defines the card verification badge', () => {
+  const badge = fs.readFileSync(path.join(__dirname, 'components', 'CardVerificationBadge.tsx'), 'utf8');
+  assert.match(badge, /CardVerificationBadge/);
+  assert.match(badge, /onVerify/);
+  assert.match(badge, /Vincular Tarjeta \(Q1\.00\)/);
+  assert.match(badge, /Verificado/);
+  assert.match(badge, /disabled=\{isProcessing\}/);
+  assert.match(badge, /role="alert"/);
+});
+
+test('defines PCI card security, penalty engine, checkout, and onboarding integrations', () => {
+  const cardEngine = fs.readFileSync(path.join(__dirname, 'services', 'cardSecurityEngine.ts'), 'utf8');
+  const penalty = fs.readFileSync(path.join(__dirname, 'services', 'penaltyEngine.ts'), 'utf8');
+  const checkout = fs.readFileSync(path.join(__dirname, 'components', 'CheckoutVerificationPanel.tsx'), 'utf8');
+  const onboarding = fs.readFileSync(path.join(__dirname, 'components', 'OnboardingVerificationPanel.tsx'), 'utf8');
+  assert.match(cardEngine, /verifyUserCardAndIdentity/);
+  assert.match(cardEngine, /Raw card numbers are never accepted/);
+  assert.match(penalty, /processBidHoldAndPenalty/);
+  assert.match(penalty, /executeFraudPenalty/);
+  assert.match(checkout, /CardVerificationBadge/);
+  assert.match(onboarding, /CardVerificationBadge/);
+});
+
 test('defines the 15-day corporate job listing engine', () => {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   const policy = fs.readFileSync(path.join(__dirname, 'services', 'jobListingPolicy.ts'), 'utf8');
