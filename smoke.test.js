@@ -292,6 +292,18 @@ test('defines the VIVO AMIGO SEO sitemap routes', () => {
   assert.match(sitemap, /\/buscar\/\$\{item\.slug\}/);
 });
 
+test('defines the Guatemala transaction revenue engine', () => {
+  const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
+  const brief = fs.readFileSync(path.join(__dirname, 'docs', 'guatemala-revenue-engine.md'), 'utf8');
+  for (const table of ['monetization_plans', 'merchant_subscriptions', 'listing_charges', 'marketplace_leads', 'lead_quotes', 'marketplace_transactions', 'escrow_orders', 'ad_leads']) assert.match(schema, new RegExp(`CREATE TABLE IF NOT EXISTS ${table}`));
+  assert.match(schema, /commission_bps INTEGER/);
+  assert.match(schema, /buyer_fee_bps INTEGER/);
+  assert.match(schema, /payout_amount_usd NUMERIC/);
+  assert.match(brief, /First two vehicle\/real-estate listings are free/);
+  assert.match(brief, /200-500 bps buyer service fee/);
+  assert.match(brief, /Do not release escrow on a click/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
