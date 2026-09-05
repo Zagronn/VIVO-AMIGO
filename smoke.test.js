@@ -330,6 +330,17 @@ test('defines the corporate and notarized trust chain', () => {
   assert.match(brief, /Do not issue `delivery_code`/);
 });
 
+test('defines the VIVO AMIGO master launch blueprint', () => {
+  const blueprint = fs.readFileSync(path.join(__dirname, 'docs', 'master-blueprint.md'), 'utf8');
+  assert.match(blueprint, /Guatemala City/);
+  assert.match(blueprint, /Construction and industrial equipment/);
+  assert.match(blueprint, /GuateVerify/);
+  assert.match(blueprint, /AI-Legal/);
+  assert.match(blueprint, /GuateFinance/);
+  assert.match(blueprint, /QR street signage/);
+  assert.match(blueprint, /server-side/);
+});
+
 test('defines the 15-day corporate job listing engine', () => {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   const policy = fs.readFileSync(path.join(__dirname, 'services', 'jobListingPolicy.ts'), 'utf8');
