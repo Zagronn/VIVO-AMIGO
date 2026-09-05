@@ -304,6 +304,20 @@ test('defines the Guatemala transaction revenue engine', () => {
   assert.match(brief, /Do not release escrow on a click/);
 });
 
+test('defines the escrow transaction fee API contract', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
+  assert.match(engine, /TransactionType/);
+  assert.match(engine, /VEHICLE_SALE: 100/);
+  assert.match(engine, /SERVICE_JOB: 750/);
+  assert.match(engine, /ESCROW_PAYMENT: 300/);
+  assert.match(engine, /sellerPayoutGTQ/);
+  assert.equal(fs.existsSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts')), true);
+  assert.match(route, /ESCROW_HELD/);
+  assert.match(route, /status: 201/);
+  assert.match(route, /isGoldSubscriber/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
