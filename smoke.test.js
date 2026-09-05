@@ -328,6 +328,16 @@ test('defines the BYD test drive lead form', () => {
   assert.match(form, /role="alert"/);
 });
 
+test('defines store subscription posting eligibility', () => {
+  const subscription = fs.readFileSync(path.join(__dirname, 'services', 'storeSubscription.ts'), 'utf8');
+  assert.match(subscription, /StoreSubscriptionPlan/);
+  assert.match(subscription, /REAL_ESTATE_AGENT/);
+  assert.match(subscription, /VEHICLE_DEALER/);
+  assert.match(subscription, /MONTHLY_STORE_RENTAL_GTQ = 50\.00/);
+  assert.match(subscription, /canPostListing: false/);
+  assert.match(subscription, /Tienda activa/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
