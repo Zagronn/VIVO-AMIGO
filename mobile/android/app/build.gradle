@@ -9,6 +9,7 @@ android {
         targetSdk 35
         versionCode 1
         versionName '0.1.0'
+        archivesBaseName = 'vivo-amigo'
     }
     buildTypes {
         release {
@@ -17,5 +18,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // Configure signing in ~/.gradle/gradle.properties or CI secrets.
         }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { outputFileName = "vivo-amigo-${variant.name}-${defaultConfig.versionName}.apk" }
     }
 }

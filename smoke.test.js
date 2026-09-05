@@ -155,9 +155,19 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'project.yml'), 'utf8'), /com\.vivoamigo\.app/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'ExportOptions.plist'), 'utf8'), /app-store/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'build.gradle'), 'utf8'), /applicationId 'com\.vivoamigo\.app'/);
-  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'AndroidManifest.xml'), 'utf8'), /USE_BIOMETRIC/);
+  const androidManifest = fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'AndroidManifest.xml'), 'utf8');
+  assert.match(androidManifest, /USE_BIOMETRIC/);
+  assert.match(androidManifest, /INTERNET/);
+  assert.match(androidManifest, /ACCESS_FINE_LOCATION/);
+  assert.match(androidManifest, /vivoamigo/);
+  assert.match(androidManifest, /vivoamigo\.com/);
+  assert.match(androidManifest, /payvivoamigo\.com/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'build.gradle'), 'utf8'), /vivo-amigo-\$\{variant.name\}/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'res', 'drawable', 'va_splash.xml'), 'utf8'), /vivo_black/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'native-placeholder', 'LaunchScreen.storyboard'), 'utf8'), /VivoAmigoMark/);
+  assert.equal(fs.existsSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'assets', 'public', 'index.html')), true);
+  assert.equal(fs.existsSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'assets', 'public', 'sw.js')), true);
+  assert.equal(fs.existsSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'assets', 'public', 'vendor', 'qrcode.min.js')), true);
 });
 
 test('ships production edge routing and HTTPS configuration', () => {
