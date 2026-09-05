@@ -341,6 +341,17 @@ test('defines CARGO delivery escrow release rules', () => {
   assert.match(cargo, /DISPUTED/);
 });
 
+test('defines the bank credit calculator', () => {
+  const calculator = fs.readFileSync(path.join(__dirname, 'components', 'BankCreditCalculator.tsx'), 'utf8');
+  assert.match(calculator, /BankCreditCalculator/);
+  assert.match(calculator, /ANNUAL_INTEREST_RATE = 0\.08/);
+  assert.match(calculator, /downPaymentPercent/);
+  assert.match(calculator, /termYears/);
+  assert.match(calculator, /monthlyInstallment/);
+  assert.match(calculator, /Pre-Calificar Crédito en Línea/);
+  assert.match(calculator, /tabular-nums/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
