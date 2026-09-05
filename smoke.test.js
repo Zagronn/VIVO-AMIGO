@@ -283,6 +283,15 @@ test('defines intent-aware direct and fallback ad placements', () => {
   assert.match(ads, /noopener noreferrer/);
 });
 
+test('defines the VIVO AMIGO SEO sitemap routes', () => {
+  const sitemap = fs.readFileSync(path.join(__dirname, 'app', 'sitemap.ts'), 'utf8');
+  assert.match(sitemap, /https:\/\/vivoamigo\.com/);
+  assert.match(sitemap, /\/b2b/);
+  assert.match(sitemap, /\/remates/);
+  assert.match(sitemap, /GUATEMALA_SEO_KEYWORD_MAP\.map/);
+  assert.match(sitemap, /\/buscar\/\$\{item\.slug\}/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
