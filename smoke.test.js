@@ -371,7 +371,7 @@ test('defines KYC, inspection, and blacklist verification contracts', () => {
 });
 
 test('defines proactive blacklist risk and KYC escrow guards', () => {
-  const security = fs.readFileSync(path.join(__dirname, 'services', 'securityModule.ts'), 'utf8');
+  const security = fs.readFileSync(path.join(__dirname, 'services', 'securityEngine.ts'), 'utf8');
   const exports = fs.readFileSync(path.join(__dirname, 'types', 'securityModule.ts'), 'utf8');
   assert.match(exports, /export type.*BlacklistEvaluation/);
   assert.match(security, /evaluateRiskAndBlacklist/);
@@ -380,6 +380,7 @@ test('defines proactive blacklist risk and KYC escrow guards', () => {
   assert.match(security, /executeEscrowLock/);
   assert.match(security, /KYC doğrulaması zorunludur/);
   assert.match(security, /FUNDS_LOCKED_IN_ESCROW/);
+  assert.match(exports, /interface EscrowLock/);
 });
 
 test('defines the inspection transparency badge', () => {
