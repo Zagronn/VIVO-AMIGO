@@ -294,6 +294,9 @@ test('defines the VIVO AMIGO SEO sitemap routes', () => {
 
 test('integrates trust and financing modules into listing detail pages', () => {
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
+  assert.match(listing, /export default async function ListingPage/);
+  assert.match(listing, /dynamicParams = true/);
+  assert.match(listing, /encodeURIComponent\(id\)/);
   assert.match(listing, /InspectionBadge/);
   assert.match(listing, /BankCreditCalculator/);
   assert.match(listing, /inspectionScore/);

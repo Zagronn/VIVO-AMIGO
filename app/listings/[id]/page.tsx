@@ -23,6 +23,9 @@ interface ListingProps {
   params: { id: string };
 }
 
+export const dynamicParams = true;
+export const revalidate = 60;
+
 async function getListing(id: string): Promise<Listing | null> {
   const baseUrl = process.env.API_BASE_URL;
   if (!baseUrl) throw new Error('API_BASE_URL is required to render listings');
