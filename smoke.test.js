@@ -263,6 +263,16 @@ test('defines serverless edge and DynamoDB migration bindings', () => {
   assert.match(worker, /VOICE_NOTES_BUCKET: R2Bucket/);
 });
 
+test('defines Guatemala high-intent SEO keyword strategy', () => {
+  const keywords = fs.readFileSync(path.join(__dirname, 'config', 'seoKeywords.ts'), 'utf8');
+  assert.match(keywords, /GUATEMALA_SEO_KEYWORD_MAP/);
+  assert.match(keywords, /soldadoras-usadas-guatemala/);
+  assert.match(keywords, /pickup-toyota-hilux-zona-10/);
+  assert.match(keywords, /fletes-baratos-guatemala-zona-1/);
+  assert.equal((keywords.match(/intent: 'HIGH_BUYING_INTENT',/g) || []).length, 3);
+  assert.match(keywords, /cpcValueUSD: 1\.20/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
