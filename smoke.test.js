@@ -211,6 +211,16 @@ test('defines ASP.NET Core listing search and PostgreSQL mappings', () => {
   assert.match(context, /ParentCategory/);
 });
 
+test('wires Guatemala marketplace culture components together', () => {
+  const experience = fs.readFileSync(path.join(__dirname, 'components', 'GuatemalaMarketplaceExperience.tsx'), 'utf8');
+  assert.match(experience, /GuatemalaMercadoHeader/);
+  assert.match(experience, /VoiceListingInput/);
+  assert.match(experience, /WhatsAppDirectButton/);
+  assert.match(experience, /onZoneChange=\{setSelectedZone\}/);
+  assert.match(experience, /onTranscriptionComplete=\{setDescription\}/);
+  assert.match(experience, /isOfficialDealer=\{item\.isOfficialDealer\}/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
