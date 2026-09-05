@@ -43,7 +43,7 @@ function generateQrPayload({ terminalId, amount, currency = 'GTQ', expiresInSeco
   return { ...payload, qrData: `vivo://pay/${encoded}.${signature}` };
 }
 
-function createPosApp({ secret = process.env.VIVO_POS_QR_SECRET || 'local-development-secret', store = createLocalSqliteStore(), issueFel = async () => ({ status: 'queued' }) } = {}) {
+function createPosApp({ secret = process.env.VIVO_POS_QR_SECRET || 'local-development-secret', store = createLocalSqliteStore(), issueFel = async () => ({ status: 'queued' }), deliveryQueue = new Map() } = {}) {
   const app = express();
   app.use(express.json({ limit: '256kb' }));
   app.use('/vendor', express.static(path.join(__dirname, 'node_modules/qrcode/build')));
@@ -58,6 +58,18 @@ function createPosApp({ secret = process.env.VIVO_POS_QR_SECRET || 'local-develo
   app.post('/v1/pos/qr', (request, response, next) => {
     try {
       response.status(201).json(generateQrPayload(request.body || {}, secret));
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post('/v1/pos/delivery', (request, response, next) => {
+    try {
+      const orderId = assertString(request.body?.orderId, 'orderId');
+      const trackingCode = `VIVO-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+      const delivery = { orderId, trackingCode, provider: 'CARGO VIVO', status: 'queued', metadata: request.body?.metadata || {}, queuedAt: new Date().toISOString() };
+      deliveryQueue.set(orderId, delivery);
+      response.status(201).json(delivery);
     } catch (error) {
       next(error);
     }

@@ -112,6 +112,7 @@ test('advertises complete web and native product surfaces', async () => {
   const manifest = await getText(app, '/manifest.webmanifest');
   const brandMark = await getText(app, '/brand-mark.svg');
   const styles = fs.readFileSync(path.join(__dirname, 'public', 'styles.css'), 'utf8');
+  const marketplace = fs.readFileSync(path.join(__dirname, 'public', 'app.js'), 'utf8');
   const tailwind = fs.readFileSync(path.join(__dirname, 'tailwind.config.js'), 'utf8');
   const serviceWorker = await getText(app, '/sw.js');
   const mobileTargets = require('./mobile/src').APPS;
@@ -126,6 +127,12 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(styles, /--bg:#111111/);
   assert.match(styles, /--silver:#7A808A/);
   assert.match(styles, /--accent:#FF6A00/);
+  assert.match(marketplace, /VIVO AMIGO MARKETPLACE/);
+  assert.match(marketplace, /Generate Checkout QR/);
+  assert.match(marketplace, /Sync Offline Sales/);
+  assert.match(marketplace, /indexedDB\.open/);
+  assert.match(marketplace, /paymentGateway: PAYMENT_GATEWAY/);
+  assert.match(marketplace, /data-cart-action/);
   assert.match(tailwind, /background: '#111111'/);
   assert.match(tailwind, /silver: '#7A808A'/);
   assert.match(tailwind, /accent: '#FF6A00'/);
@@ -228,4 +235,15 @@ test('sync is idempotent for offline sales', async () => {
   assert.equal((await request(createPosApp({ store: reopenedStore }), '/v1/pos/sync', body)).json.sales.length, 1);
   reopenedStore.close();
   fs.rmSync(directory, { recursive: true, force: true });
+});
+
+test('generates VIVOAMIGOPAY checkout QR and queues CARGO VIVO metadata', async () => {
+  const app = createPosApp({ store: new Map() });
+  const qr = await request(app, '/v1/pos/qr', { terminalId: 'MARKETPLACE-01', amount: 36, currency: 'GTQ' });
+  assert.equal(qr.status, 201);
+  assert.match(qr.json.qrData, /^vivo:\/\/pay\/.+\..+$/);
+  const delivery = await request(app, '/v1/pos/delivery', { orderId: 'order-01', metadata: { vendor: 'La Esquina', total: 36, paymentGateway: 'https://payvivoamigo.com' } });
+  assert.equal(delivery.status, 201);
+  assert.equal(delivery.json.provider, 'CARGO VIVO');
+  assert.deepEqual(delivery.json.metadata, { vendor: 'La Esquina', total: 36, paymentGateway: 'https://payvivoamigo.com' });
 });
