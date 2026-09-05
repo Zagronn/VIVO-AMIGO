@@ -436,6 +436,10 @@ test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
   assert.match(home, /export default function HomePage/);
+  assert.match(home, /Ofertas de Hoy en Tu Zona/);
+  assert.match(home, /Remates de Hoy \(Ofertas con Escrow\)/);
+  assert.match(home, /VEHICLES/);
+  assert.match(home, /REAL_ESTATE/);
   assert.match(listing, /export default async function ListingPage/);
   assert.match(listing, /dynamicParams = true/);
 });
