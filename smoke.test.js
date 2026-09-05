@@ -241,6 +241,15 @@ test('defines the production DynamoDB listings table contract', () => {
   assert.equal(table.BillingMode, 'PAY_PER_REQUEST');
 });
 
+test('defines the Cloudflare R2 voice note storage contract', () => {
+  const storage = fs.readFileSync(path.join(__dirname, 'services', 'storageService.ts'), 'utf8');
+  assert.match(storage, /@aws-sdk\/client-s3/);
+  assert.match(storage, /vivo-amigo-voice-notes/);
+  assert.match(storage, /audio\/webm/);
+  assert.match(storage, /cdn\.vivoamigo\.com\/voice-notes/);
+  assert.match(storage, /safeObjectKey/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
