@@ -396,6 +396,17 @@ test('defines privacy-aware intent campaign triggers', () => {
   assert.match(campaign, /toLowerCase/);
 });
 
+test('defines consent-gated privacy shield and sensitive data masking', () => {
+  const privacy = fs.readFileSync(path.join(__dirname, 'services', 'privacyShield.ts'), 'utf8');
+  assert.match(privacy, /DataPrivacyConsent/);
+  assert.match(privacy, /acceptedPrivacyTerms/);
+  assert.match(privacy, /acceptedDataMonetizationConsent/);
+  assert.match(privacy, /validatePrivacyShield/);
+  assert.match(privacy, /maskSensitiveUserData/);
+  assert.match(privacy, /maskedPhone/);
+  assert.match(privacy, /maskedEmail/);
+});
+
 test('defines the 15-day corporate job listing engine', () => {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   const policy = fs.readFileSync(path.join(__dirname, 'services', 'jobListingPolicy.ts'), 'utf8');
