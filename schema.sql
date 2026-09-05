@@ -10,11 +10,29 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS categories (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    parent_category_id UUID REFERENCES categories(id) ON DELETE RESTRICT
+);
+
+CREATE TABLE IF NOT EXISTS category_attributes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    category_id UUID NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
+    key_name TEXT NOT NULL,
+    data_type TEXT NOT NULL DEFAULT 'STRING' CHECK (data_type IN ('STRING', 'NUMBER', 'BOOLEAN')),
+    is_filterable BOOLEAN NOT NULL DEFAULT true,
+    UNIQUE (category_id, key_name)
+);
+
 CREATE TABLE IF NOT EXISTS listings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     vendor_id UUID REFERENCES users(id) ON DELETE SET NULL,
     title TEXT NOT NULL,
     price NUMERIC(18, 2) NOT NULL CHECK (price >= 0),
+    currency CHAR(3) NOT NULL DEFAULT 'GTQ',
+    category_id UUID NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
     zone TEXT,
     description TEXT NOT NULL DEFAULT '',
     category TEXT NOT NULL DEFAULT 'GENERAL',

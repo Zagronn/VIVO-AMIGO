@@ -196,6 +196,21 @@ test('defines pgvector semantic listing search contracts', () => {
   assert.match(schema, /idx_listings_embedding_hnsw/);
 });
 
+test('defines ASP.NET Core listing search and PostgreSQL mappings', () => {
+  const project = fs.readFileSync(path.join(__dirname, 'dotnet', 'VivoAmigo.Api.csproj'), 'utf8');
+  const controller = fs.readFileSync(path.join(__dirname, 'dotnet', 'Controllers', 'ListingsController.cs'), 'utf8');
+  const context = fs.readFileSync(path.join(__dirname, 'dotnet', 'Data', 'VivoAmigoDbContext.cs'), 'utf8');
+  assert.match(project, /net8\.0/);
+  assert.match(project, /Npgsql\.EntityFrameworkCore\.PostgreSQL/);
+  assert.match(controller, /api\/v1\/listings/);
+  assert.match(controller, /Search\(/);
+  assert.match(controller, /minPrice/);
+  assert.match(controller, /semanticIds/);
+  assert.match(context, /HasPostgresExtension\("vector"\)/);
+  assert.match(context, /HasColumnType\("jsonb"\)/);
+  assert.match(context, /ParentCategory/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),

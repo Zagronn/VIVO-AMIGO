@@ -29,6 +29,9 @@ public sealed class Listing
     public string Title { get; set; } = null!;
     public decimal Price { get; set; }
     public string Currency { get; set; } = "GTQ";
+    public string? Zone { get; set; }
+    public string Description { get; set; } = string.Empty;
+    public string Status { get; set; } = "ACTIVE";
     public Guid CategoryId { get; set; }
     public Category Category { get; set; } = null!;
 
