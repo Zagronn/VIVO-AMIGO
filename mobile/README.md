@@ -1,6 +1,6 @@
 # VIVO AMIGO Mobile
 
-Shared React Native architecture for the PAY VIVO wallet, CARGO VIVO courier, and VIVO POS scanner apps.
+Shared React Native architecture for the VIVOAMIGOPAY wallet, CARGO VIVO courier, and VIVO POS scanner apps.
 
 ## App targets
 

@@ -26,7 +26,7 @@ function applyBrandLabels() {
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const nodes = [];
   while (walker.nextNode()) nodes.push(walker.currentNode);
-  nodes.forEach((node) => { node.nodeValue = node.nodeValue.replaceAll('PAY VIVO', 'VIVO AMIGO WALLET'); });
+  nodes.forEach((node) => { node.nodeValue = node.nodeValue.replaceAll('PAY VIVO', 'VIVOAMIGOPAY'); });
 }
 
 $('#app').innerHTML = route() === 'home' ? home() : route() === 'pay' ? pay() : route() === 'cargo' ? cargo() : pos(); applyBrandLabels(); bind();

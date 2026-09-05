@@ -6,20 +6,20 @@
 
 ## Completed
 
-- `schema.sql`: PostgreSQL schema for users, PAY VIVO wallets and escrow ledger, CARGO VIVO shipments, VIVO POS terminals and sales, POS line items, and SAT FEL invoices.
+- `schema.sql`: PostgreSQL schema for users, VIVOAMIGOPAY wallets and escrow ledger, CARGO VIVO shipments, VIVO POS terminals and sales, POS line items, and SAT FEL invoices.
 - `compliance.api.js`: Express VERI-SHIELD API with health check, RENAP verification, SAT tax verification, validation, injectable provider adapters, and normalized errors.
-- PAY VIVO mock workflow: wallet creation plus idempotent hold and release endpoints with balance and insufficient-funds guards.
+- VIVOAMIGOPAY mock workflow: wallet creation plus idempotent hold and release endpoints with balance and insufficient-funds guards.
 - CARGO VIVO mock workflow: shipment creation, tracking lookup, and guarded status transitions through delivery or cancellation.
 - `vivopos.service.js`: Express VIVO POS API with signed expiring payment QR payloads, idempotent offline sale synchronization, and injectable SAT micro-FEL issuance.
-- `smoke.test.js`: Focused HTTP tests for QR generation, RENAP/SAT routing, PAY VIVO escrow accounting, CARGO VIVO tracking, and offline sync idempotency.
-- End-to-end scenario: verified RENAP identity, linked the returned reference to PAY VIVO wallet escrow, advanced the linked CARGO VIVO shipment, synchronized the POS sale, and issued its mock SAT FEL invoice.
+- `smoke.test.js`: Focused HTTP tests for QR generation, RENAP/SAT routing, VIVOAMIGOPAY escrow accounting, CARGO VIVO tracking, and offline sync idempotency.
+- End-to-end scenario: verified RENAP identity, linked the returned reference to VIVOAMIGOPAY wallet escrow, advanced the linked CARGO VIVO shipment, synchronized the POS sale, and issued its mock SAT FEL invoice.
 - `Dockerfile`: non-root Node 22 production image shared by the Express services.
 - `docker-compose.yml`: compliance API, POS API, PostgreSQL 16, and Redis 7 services with health checks, dependency gating, and persistent volumes.
 - `.dockerignore`: excludes Git metadata, dependencies, local SQLite files, and tests from the image context.
 - `public/`: minimalist installable VIVO POS PWA with responsive vendor terminal UI, local scannable QR rendering, device-persisted offline sales queue, automatic online replay, and mock FEL issuance controls.
 - `public/sw.js` and `public/manifest.webmanifest`: cached offline shell and standalone PWA metadata.
 - `public/vendor/qrcode.min.js`: bundled local QR renderer; no QR image network dependency.
-- Production domains: `vivoamigo.com` (ecosystem), `payvivoamigo.com` (PAY VIVO), and `cargovivo.com` (CARGO VIVO) are recorded in `PROJECT_CONTEXT.md`.
+- Production domains: `vivoamigo.com` (ecosystem), `payvivoamigo.com` (VIVOAMIGOPAY), and `cargovivo.com` (CARGO VIVO) are recorded in `PROJECT_CONTEXT.md`.
 - `compliance.api.js`: strict `VIVO_ALLOWED_ORIGINS` CORS whitelist with local development defaults, credentials support, preflight handling, and `403` rejection for unknown origins.
 - `.env.example`: production origin, database, Redis, and POS secret configuration template.
 - `agents.service.js`: CommonJS swarm orchestrator loading the YAML definition, spawning the 35 configured sub-agents plus master, and dispatching tasks to matching groups.
@@ -33,17 +33,17 @@
 ## Verification
 
 - `npm install --no-audit --no-fund`: passed.
-- `npm test`: passed, 6 tests, 0 failures; includes the complete VERI-SHIELD -> PAY VIVO -> CARGO VIVO -> VIVO POS FEL scenario.
+- `npm test`: passed, 6 tests, 0 failures; includes the complete VERI-SHIELD -> VIVOAMIGOPAY -> CARGO VIVO -> VIVO POS FEL scenario.
 - Container configuration: YAML, package JSON, Dockerfile references, and Compose service references passed static validation.
 - PWA asset serving: POS Express returned `200` for both `/` and `/vendor/qrcode.min.js`.
 - `npm test`: passed, 7 tests, 0 failures; includes PWA shell/bundle availability alongside all core workflows.
 - `npm test`: passed, 8 tests, 0 failures; includes allowed and denied production-origin CORS behavior.
 - `npm test`: passed, 9 tests, 0 failures; includes 35 sub-agent spawning, master registration, and CARGO task dispatch.
-- `agents.config.yml` validation: YAML parsed successfully with 35 sub-agents across VERI-SHIELD, PAY VIVO, CARGO VIVO, and VIVO POS; all registrations and statuses are covered by smoke tests.
+- `agents.config.yml` validation: YAML parsed successfully with 35 sub-agents across VERI-SHIELD, VIVOAMIGOPAY, CARGO VIVO, and VIVO POS; all registrations and statuses are covered by smoke tests.
 - `npm test`: passed, 9 tests, 0 failures after adding canonical swarm configuration coverage.
 - `agent-swarm` validation: Compose YAML contains the Redis health-gated service, and the exact initialization command loaded 36 agents locally.
 - `npm test`: passed, 9 tests, 0 failures after adding `agent-swarm` orchestration.
-- Swarm stress simulation: 1,000 concurrent VERI-SHIELD, PAY VIVO, CARGO VIVO, and VIVO POS task dispatches completed with 0 drops, 0 unhandled rejections, 1,000 consensus-log entries, 0 master-route violations, and all 35 sub-agents exercised.
+- Swarm stress simulation: 1,000 concurrent VERI-SHIELD, VIVOAMIGOPAY, CARGO VIVO, and VIVO POS task dispatches completed with 0 drops, 0 unhandled rejections, 1,000 consensus-log entries, 0 master-route violations, and all 35 sub-agents exercised.
 - Stress metrics: 2.723 ms aggregate dispatch time, 367,197.11 TPS, and 2.163 ms p95 dispatch latency. These are the latest in-process orchestration measurements and exclude external provider/database/network latency.
 - `npm test`: passed, 10 tests, 0 failures after swarm stress coverage.
 - Autonomous stress execution: latest 1,000-task run completed with 0 drops, 0 unhandled rejections, 1,000 consensus entries, 0 master-route violations, and 35 unique sub-agents.

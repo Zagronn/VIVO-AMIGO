@@ -3,10 +3,10 @@
   "short_name": "VIVO AMIGO",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f6f3ed",
+  "background_color": "#111111",
   "theme_color": "#111111",
   "icons": [{ "src": "/brand-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }],
-  "description": "Offline-ready payments, logistics, and neighborhood commerce for VIVO AMIGO",
+  "description": "Offline-ready VIVO AMIGO commerce with VIVOAMIGOPAY wallet services",
   "scope": "/",
   "categories": ["finance", "shopping", "business"]
 }

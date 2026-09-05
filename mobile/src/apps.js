@@ -1,7 +1,7 @@
 const APPS = {
   pay: {
-    id: 'pay-vivo',
-    name: 'PAY VIVO',
+    id: 'vivoamigopay',
+    name: 'VIVOAMIGOPAY',
     apiOrigin: 'https://payvivoamigo.com',
     flows: ['wallet', 'escrow', 'biometric-unlock']
   },

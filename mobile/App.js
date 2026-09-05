@@ -29,17 +29,17 @@ export default function App({ initialTarget = 'pay' }) {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#071114' },
+  safe: { flex: 1, backgroundColor: '#111111' },
   content: { flexGrow: 1, padding: 24, gap: 18 },
-  kicker: { color: '#c6ef69', fontSize: 11, fontWeight: '800', letterSpacing: 2 },
-  title: { color: '#edf5ef', fontSize: 42, fontWeight: '700', marginTop: 18 },
-  copy: { color: '#91a4a1', fontSize: 17, lineHeight: 26, maxWidth: 520 },
+  kicker: { color: '#FF6A00', fontSize: 11, fontWeight: '800', letterSpacing: 2 },
+  title: { color: '#f5f5f5', fontSize: 42, fontWeight: '700', marginTop: 18 },
+  copy: { color: '#a7a7a7', fontSize: 17, lineHeight: 26, maxWidth: 520 },
   switcher: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 16 },
   tab: { borderColor: '#284044', borderWidth: 1, paddingHorizontal: 12, paddingVertical: 10 },
-  activeTab: { backgroundColor: '#c6ef69', borderColor: '#c6ef69' },
-  tabText: { color: '#91a4a1', fontSize: 12, fontWeight: '800' },
-  activeTabText: { color: '#071114' },
-  panel: { backgroundColor: '#0e1d20', borderColor: '#284044', borderWidth: 1, marginTop: 24, padding: 20 },
-  panelTitle: { color: '#edf5ef', fontSize: 20, fontWeight: '700', marginBottom: 14 },
-  flow: { color: '#63d7d1', fontSize: 16, marginTop: 10, textTransform: 'capitalize' }
+  activeTab: { backgroundColor: '#FF6A00', borderColor: '#FF6A00' },
+  tabText: { color: '#a7a7a7', fontSize: 12, fontWeight: '800' },
+  activeTabText: { color: '#111111' },
+  panel: { backgroundColor: '#191919', borderColor: '#3c3c3c', borderWidth: 1, marginTop: 24, padding: 20 },
+  panelTitle: { color: '#f5f5f5', fontSize: 20, fontWeight: '700', marginBottom: 14 },
+  flow: { color: '#7A808A', fontSize: 16, marginTop: 10, textTransform: 'capitalize' }
 });

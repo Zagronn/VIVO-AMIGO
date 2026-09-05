@@ -2,18 +2,18 @@
 
 ## System Overview
 - Ecosystem: VIVO AMIGO Super-App Ecosystem ($100B Sovereign Vision)
-- Modules: PAY VIVO (Escrow & Payments), CARGO VIVO (Logistics), VIVO POS (Micro-vendor POS)
+- Modules: VIVOAMIGOPAY (Escrow & Payments), CARGO VIVO (Logistics), VIVO POS (Micro-vendor POS)
 - Compliance: VERI-SHIELD (RENAP/SAT Integration)
 - Core Infrastructure: Apple Silicon macOS, Node.js v26.8.1, PostgreSQL/SQLite local vault
 
 ## Production Domain Routing
 - Main Ecosystem: `https://vivoamigo.com`
-- PAY VIVO Module: `https://payvivoamigo.com`
+- VIVOAMIGOPAY Module: `https://payvivoamigo.com`
 - CARGO VIVO Module: `https://cargovivo.com`
 - CORS is controlled by `VIVO_ALLOWED_ORIGINS`; deployment origin values are documented in `.env.example` and injected by Compose.
 
 ## Core Execution Deliverables
-1. `schema.sql`: Core PostgreSQL relational schema covering users, escrow wallets (PAY VIVO), shipments (CARGO VIVO), and terminals/sales (VIVO POS).
+1. `schema.sql`: Core PostgreSQL relational schema covering users, escrow wallets (VIVOAMIGOPAY), shipments (CARGO VIVO), and terminals/sales (VIVO POS).
 2. `compliance.api.js`: Node.js/Express API handling RENAP identification and SAT tax verification via VERI-SHIELD.
 3. `vivopos.service.js`: Node.js/Express service providing dynamic QR code generation, offline transaction syncing, and SAT micro-FEL invoice issuance for street vendors.
 4. `handoff.md`: Cross-device state persistence log documenting completed tasks, active agents, and test results.

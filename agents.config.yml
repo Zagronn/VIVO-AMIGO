@@ -20,7 +20,7 @@ orchestration:
       model: "meta-llama/llama-3.1-8b-instruct"
       roles: ["renap_verifier", "sat_fel_auditor", "fraud_detector", "kyc_checker"]
 
-    # 2. PAY VIVO Grubu (10 Ajan)
+    # 2. VIVOAMIGOPAY Grubu (10 Ajan)
     - group: "PAY_VIVO_FINANCE"
       count: 10
       model: "meta-llama/llama-3.1-70b-instruct"

@@ -2,7 +2,7 @@
   "name": "vivo-amigo-mobile",
   "version": "0.1.0",
   "private": true,
-  "description": "Shared React Native architecture for PAY VIVO, CARGO VIVO, and VIVO POS",
+  "description": "Shared React Native architecture for VIVOAMIGOPAY, CARGO VIVO, and VIVO POS",
   "scripts": {
     "check": "node --check src/index.js && node --check src/api.js && node --check src/offlineQueue.js && node --check src/apps.js && node --check src/qr.js && node --check src/biometrics.js",
     "check:host": "test -f App.js && test -f app.json"

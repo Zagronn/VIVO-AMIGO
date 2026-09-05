@@ -115,7 +115,7 @@ test('advertises complete web and native product surfaces', async () => {
   const tailwind = fs.readFileSync(path.join(__dirname, 'tailwind.config.js'), 'utf8');
   const serviceWorker = await getText(app, '/sw.js');
   const mobileTargets = require('./mobile/src').APPS;
-  assert.match(shell.text, /VIVO AMIGO WALLET/);
+  assert.match(shell.text, /VIVOAMIGOPAY/);
   assert.match(shell.text, /CARGO VIVO/);
   assert.match(shell.text, /MARKETPLACE/);
   assert.match(manifest.text, /VIVO AMIGO Commerce/);
@@ -131,6 +131,8 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(tailwind, /accent: '#FF6A00'/);
   assert.match(serviceWorker.text, /vendor\/qrcode\.min\.js/);
   assert.deepEqual(Object.keys(mobileTargets).sort(), ['cargo', 'pay', 'pos']);
+  assert.equal(mobileTargets.pay.name, 'VIVOAMIGOPAY');
+  assert.equal(mobileTargets.pay.apiOrigin, 'https://payvivoamigo.com');
   assert.deepEqual(mobileTargets.pay.flows, ['wallet', 'escrow', 'biometric-unlock']);
   assert.deepEqual(mobileTargets.cargo.flows, ['shipment-create', 'live-tracking', 'proof-of-delivery']);
   assert.deepEqual(mobileTargets.pos.flows, ['catalog', 'qr-checkout', 'offline-sync', 'fel-invoice']);
@@ -156,7 +158,7 @@ test('restricts compliance API CORS to registered VIVO origins', async () => {
   assert.deepEqual(denied, { status: 403, json: { error: 'origin is not allowed' } });
 });
 
-test('holds and releases PAY VIVO escrow funds', async () => {
+test('holds and releases VIVOAMIGOPAY escrow funds', async () => {
   const wallets = new Map();
   const app = createComplianceApp({ wallets });
   const created = await request(app, '/v1/pay/wallets', { userId: 'user-1' });
