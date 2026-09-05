@@ -386,6 +386,16 @@ test('defines Guatemala Next.js production configuration', () => {
   assert.match(nextConfig, /NEXT_PUBLIC_LAUNCH_CITY: 'Guatemala City'/);
 });
 
+test('defines guarded production deployment gates', () => {
+  const deploy = fs.readFileSync(path.join(__dirname, 'scripts', 'deploy-production.sh'), 'utf8');
+  assert.match(deploy, /npm ci/);
+  assert.match(deploy, /npm test/);
+  assert.match(deploy, /check:mobile/);
+  assert.match(deploy, /check:native/);
+  assert.match(deploy, /VIVO_SKIP_BUILD/);
+  assert.match(deploy, /pm2 restart vivoamigo-production/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
