@@ -106,6 +106,25 @@ test('serves the offline VIVO POS shell and local QR bundle', async () => {
   assert.match(qrBundle.text, /QRCode/);
 });
 
+test('advertises complete web and native product surfaces', async () => {
+  const app = createPosApp({ store: new Map() });
+  const shell = await getText(app, '/');
+  const manifest = await getText(app, '/manifest.webmanifest');
+  const serviceWorker = await getText(app, '/sw.js');
+  const mobileTargets = require('./mobile/src').APPS;
+  assert.match(shell.text, /PAY VIVO/);
+  assert.match(shell.text, /CARGO VIVO/);
+  assert.match(shell.text, /MARKETPLACE/);
+  assert.match(manifest.text, /VIVO AMIGO Commerce/);
+  assert.match(serviceWorker.text, /vendor\/qrcode\.min\.js/);
+  assert.deepEqual(Object.keys(mobileTargets).sort(), ['cargo', 'pay', 'pos']);
+  assert.deepEqual(mobileTargets.pay.flows, ['wallet', 'escrow', 'biometric-unlock']);
+  assert.deepEqual(mobileTargets.cargo.flows, ['shipment-create', 'live-tracking', 'proof-of-delivery']);
+  assert.deepEqual(mobileTargets.pos.flows, ['catalog', 'qr-checkout', 'offline-sync', 'fel-invoice']);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'README.md'), 'utf8'), /NSCameraUsageDescription/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'README.md'), 'utf8'), /USE_BIOMETRIC/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),

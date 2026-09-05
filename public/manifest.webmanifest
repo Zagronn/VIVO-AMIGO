@@ -1,9 +1,11 @@
 {
-  "name": "VIVO POS",
-  "short_name": "VIVO POS",
+  "name": "VIVO AMIGO Commerce",
+  "short_name": "VIVO AMIGO",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f6f3ed",
   "theme_color": "#102a2a",
-  "description": "Offline-ready point of sale for VIVO AMIGO street vendors"
+  "description": "Offline-ready payments, logistics, and neighborhood commerce for VIVO AMIGO",
+  "scope": "/",
+  "categories": ["finance", "shopping", "business"]
 }

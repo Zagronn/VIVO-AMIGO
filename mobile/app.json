@@ -1,0 +1,17 @@
+{
+  "name": "VivoAmigo",
+  "displayName": "VIVO AMIGO",
+  "version": "0.1.0",
+  "orientation": "portrait",
+  "userInterfaceStyle": "dark",
+  "ios": {
+    "supportsTablet": true,
+    "infoPlist": {
+      "NSCameraUsageDescription": "Scan VIVO payment and delivery QR codes.",
+      "NSFaceIDUsageDescription": "Unlock protected VIVO account actions."
+    }
+  },
+  "android": {
+    "permissions": ["CAMERA", "USE_BIOMETRIC"]
+  }
+}

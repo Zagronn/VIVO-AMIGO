@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "node --test smoke.test.js",
+    "check:mobile": "npm run check --prefix mobile",
     "start:compliance": "node compliance.api.js",
     "start:pos": "node vivopos.service.js"
   },
