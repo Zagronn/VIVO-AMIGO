@@ -362,6 +362,18 @@ test('defines corporate anti-scam listing validation', () => {
   assert.match(antiScam, /isCorporateListing/);
 });
 
+test('exposes requested logistics escrow, credit, and anti-scam modules', () => {
+  const logistics = fs.readFileSync(path.join(__dirname, 'services', 'logisticsEscrow.ts'), 'utf8');
+  const antiScamGuard = fs.readFileSync(path.join(__dirname, 'services', 'antiScamGuard.ts'), 'utf8');
+  const credit = fs.readFileSync(path.join(__dirname, 'components', 'BankCreditCalculator.tsx'), 'utf8');
+  assert.match(logistics, /syncCargoAndReleaseEscrow/);
+  assert.match(logistics, /cargoEscrow/);
+  assert.match(antiScamGuard, /autoDeactivateUnverifiedCorporateListing/);
+  assert.match(antiScamGuard, /validateListingForAntiScam/);
+  assert.match(credit, /BankCreditCalculator/);
+  assert.match(credit, /propertyPriceGTQ/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
