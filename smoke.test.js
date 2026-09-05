@@ -316,6 +316,20 @@ test('defines the corporate and notarized trust chain', () => {
   assert.match(brief, /Do not issue `delivery_code`/);
 });
 
+test('defines the 15-day corporate job listing engine', () => {
+  const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
+  const policy = fs.readFileSync(path.join(__dirname, 'services', 'jobListingPolicy.ts'), 'utf8');
+  const brief = fs.readFileSync(path.join(__dirname, 'docs', 'job-listing-engine.md'), 'utf8');
+  for (const table of ['job_listings', 'job_listing_renewals', 'hiring_commitments', 'job_matches', 'job_escrow_closures']) assert.match(schema, new RegExp(`CREATE TABLE IF NOT EXISTS ${table}`));
+  assert.match(schema, /INTERVAL '15 days'/);
+  assert.match(schema, /expires_at TIMESTAMPTZ/);
+  assert.match(policy, /JOB_LISTING_DURATION_DAYS = 15/);
+  assert.match(policy, /corporateApproved/);
+  assert.match(policy, /hiringCommitmentSigned/);
+  assert.match(brief, /15-day freshness cycle/);
+  assert.match(brief, /job_escrow_closures/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');

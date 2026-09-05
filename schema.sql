@@ -92,6 +92,58 @@ CREATE TABLE IF NOT EXISTS listings (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS job_listings (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    employer_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    corporate_verification_id UUID NOT NULL REFERENCES corporate_verifications(id) ON DELETE RESTRICT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    job_type TEXT NOT NULL CHECK (job_type IN ('EMPLOYMENT', 'SERVICE_CONTRACT', 'SUBCONTRACTOR')),
+    zone TEXT,
+    salary_min NUMERIC(18, 2) CHECK (salary_min >= 0),
+    salary_max NUMERIC(18, 2) CHECK (salary_max >= salary_min),
+    currency CHAR(3) NOT NULL DEFAULT 'GTQ',
+    status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'EXPIRED', 'ARCHIVED', 'FILLED', 'CANCELLED')),
+    published_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    expires_at TIMESTAMPTZ NOT NULL DEFAULT (now() + INTERVAL '15 days'),
+    renewal_count INTEGER NOT NULL DEFAULT 0 CHECK (renewal_count >= 0),
+    early_closed_at TIMESTAMPTZ,
+    early_close_reason TEXT,
+    hiring_commitment_signed_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS job_listing_renewals (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    job_listing_id UUID NOT NULL REFERENCES job_listings(id) ON DELETE CASCADE,
+    requested_by UUID NOT NULL REFERENCES users(id),
+    previous_expires_at TIMESTAMPTZ NOT NULL,
+    next_expires_at TIMESTAMPTZ NOT NULL,
+    renewal_fee NUMERIC(18, 2) NOT NULL DEFAULT 0 CHECK (renewal_fee >= 0),
+    status TEXT NOT NULL DEFAULT 'requested' CHECK (status IN ('requested', 'paid', 'approved', 'rejected')),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS hiring_commitments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    job_listing_id UUID UNIQUE NOT NULL REFERENCES job_listings(id) ON DELETE CASCADE,
+    employer_id UUID NOT NULL REFERENCES users(id),
+    contract_url TEXT NOT NULL,
+    signed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    status TEXT NOT NULL DEFAULT 'signed' CHECK (status IN ('signed', 'fulfilled', 'breached', 'voided'))
+);
+
+CREATE TABLE IF NOT EXISTS job_matches (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    job_listing_id UUID NOT NULL REFERENCES job_listings(id) ON DELETE CASCADE,
+    candidate_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    match_score NUMERIC(5, 2) NOT NULL CHECK (match_score BETWEEN 0 AND 100),
+    status TEXT NOT NULL DEFAULT 'suggested' CHECK (status IN ('suggested', 'contacted', 'accepted', 'rejected', 'hired')),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (job_listing_id, candidate_id)
+);
+
 CREATE TABLE IF NOT EXISTS listing_charges (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     listing_id UUID NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
@@ -160,6 +212,18 @@ CREATE TABLE IF NOT EXISTS ad_leads (
     attribution_source TEXT NOT NULL DEFAULT 'direct',
     payout_amount_usd NUMERIC(12, 2) NOT NULL DEFAULT 0 CHECK (payout_amount_usd >= 0),
     status TEXT NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'qualified', 'converted', 'rejected')),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS job_escrow_closures (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    job_listing_id UUID NOT NULL REFERENCES job_listings(id) ON DELETE CASCADE,
+    transaction_id UUID NOT NULL REFERENCES marketplace_transactions(id),
+    employer_confirmed_at TIMESTAMPTZ,
+    work_completed_at TIMESTAMPTZ,
+    provider_paid_at TIMESTAMPTZ,
+    platform_fee NUMERIC(18, 2) NOT NULL DEFAULT 0 CHECK (platform_fee >= 0),
+    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'funds_held', 'work_completed', 'released', 'disputed')),
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
@@ -264,6 +328,8 @@ CREATE INDEX IF NOT EXISTS idx_shipments_status ON shipments(status);
 CREATE INDEX IF NOT EXISTS idx_sales_terminal_created ON pos_sales(terminal_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_listings_active ON listings(status);
 CREATE INDEX IF NOT EXISTS idx_listings_embedding_hnsw ON listings USING hnsw (embedding vector_cosine_ops) WHERE status = 'ACTIVE';
+CREATE INDEX IF NOT EXISTS idx_job_listings_active_expiry ON job_listings(status, expires_at);
+CREATE INDEX IF NOT EXISTS idx_job_matches_candidate ON job_matches(candidate_id, status);
 CREATE INDEX IF NOT EXISTS idx_leads_provider_status ON marketplace_leads(provider_id, status);
 CREATE INDEX IF NOT EXISTS idx_transactions_status_created ON marketplace_transactions(status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_ad_leads_campaign_status ON ad_leads(campaign_id, status);
