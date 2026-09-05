@@ -250,6 +250,19 @@ test('defines the Cloudflare R2 voice note storage contract', () => {
   assert.match(storage, /safeObjectKey/);
 });
 
+test('defines serverless edge and DynamoDB migration bindings', () => {
+  const wrangler = fs.readFileSync(path.join(__dirname, 'deploy', 'wrangler.toml'), 'utf8');
+  const dynamo = fs.readFileSync(path.join(__dirname, 'services', 'dynamoListings.ts'), 'utf8');
+  const worker = fs.readFileSync(path.join(__dirname, 'src', 'worker.ts'), 'utf8');
+  assert.match(wrangler, /binding = "DB"/);
+  assert.match(wrangler, /binding = "VOICE_NOTES_BUCKET"/);
+  assert.match(wrangler, /binding = "VECTOR_INDEX"/);
+  assert.match(dynamo, /DynamoDBDocumentClient/);
+  assert.match(dynamo, /VivoAmigo_Production_Listings/);
+  assert.match(dynamo, /QueryCommand/);
+  assert.match(worker, /VOICE_NOTES_BUCKET: R2Bucket/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),

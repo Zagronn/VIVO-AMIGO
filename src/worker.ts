@@ -1,6 +1,7 @@
 export interface Env {
   LISTINGS_KV: KVNamespace;
   DB: D1Database;
+  VOICE_NOTES_BUCKET: R2Bucket;
   VECTOR_INDEX: VectorizeIndex;
 }
 
