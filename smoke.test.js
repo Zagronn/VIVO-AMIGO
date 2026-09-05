@@ -129,6 +129,9 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(styles, /--bg:#111111/);
   assert.match(styles, /--silver:#7A808A/);
   assert.match(styles, /--accent:#FF6A00/);
+  assert.match(styles, /"Amazon Ember"/);
+  assert.match(styles, /line-height:1\.4/);
+  assert.match(styles, /font-variant-numeric:tabular-nums/);
   assert.match(marketplace, /VIVO AMIGO MARKETPLACE/);
   assert.match(marketplace, /Generate Checkout QR/);
   assert.match(marketplace, /Sync Offline Sales/);
@@ -165,6 +168,7 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'build.gradle'), 'utf8'), /vivo-amigo-\$\{variant.name\}/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'res', 'drawable', 'va_splash.xml'), 'utf8'), /vivo_black/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'native-placeholder', 'LaunchScreen.storyboard'), 'utf8'), /VivoAmigoMark/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'App.js'), 'utf8'), /fontFamily: 'Amazon Ember'/);
   assert.equal(fs.existsSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'assets', 'public', 'index.html')), true);
   assert.equal(fs.existsSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'assets', 'public', 'sw.js')), true);
   assert.equal(fs.existsSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'assets', 'public', 'vendor', 'qrcode.min.js')), true);
