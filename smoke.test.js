@@ -396,6 +396,18 @@ test('defines guarded production deployment gates', () => {
   assert.match(deploy, /pm2 restart vivoamigo-production/);
 });
 
+test('defines the production VIVO AMIGO health endpoint', () => {
+  const health = fs.readFileSync(path.join(__dirname, 'app', 'api', 'health', 'route.ts'), 'utf8');
+  assert.match(health, /status: 'ONLINE'/);
+  assert.match(health, /environment: 'production'/);
+  assert.match(health, /Guatemala City \(Zona 10, 14, 15\)/);
+  assert.match(health, /transactionEngine: true/);
+  assert.match(health, /storeRentalsQ50: true/);
+  assert.match(health, /smartEscrow: true/);
+  assert.match(health, /antiScamGuard: true/);
+  assert.match(health, /new Date\(\)\.toISOString/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
