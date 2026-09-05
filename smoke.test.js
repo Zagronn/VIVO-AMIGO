@@ -421,6 +421,14 @@ test('defines the production VIVO AMIGO health endpoint', () => {
   assert.equal(fs.existsSync(path.join(__dirname, 'app', 'api', 'v1', 'health', 'route.ts')), true);
 });
 
+test('defines Next.js root and dynamic listing page exports', () => {
+  const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
+  const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
+  assert.match(home, /export default function HomePage/);
+  assert.match(listing, /export default async function ListingPage/);
+  assert.match(listing, /dynamicParams = true/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
