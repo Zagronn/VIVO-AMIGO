@@ -273,6 +273,16 @@ test('defines Guatemala high-intent SEO keyword strategy', () => {
   assert.match(keywords, /cpcValueUSD: 1\.20/);
 });
 
+test('defines intent-aware direct and fallback ad placements', () => {
+  const ads = fs.readFileSync(path.join(__dirname, 'components', 'AdManager.tsx'), 'utf8');
+  assert.match(ads, /useMemo/);
+  assert.match(ads, /includes\('toyota'\)/);
+  assert.match(ads, /BYD Guatemala/);
+  assert.match(ads, /adsbygoogle/);
+  assert.match(ads, /data-zone=\{zone\}/);
+  assert.match(ads, /noopener noreferrer/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
