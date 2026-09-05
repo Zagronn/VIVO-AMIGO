@@ -1,4 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE EXTENSION IF NOT EXISTS vector;
 
 CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -7,6 +8,20 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT UNIQUE,
     role TEXT NOT NULL DEFAULT 'vendor' CHECK (role IN ('customer', 'vendor', 'admin')),
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS listings (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    vendor_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    title TEXT NOT NULL,
+    price NUMERIC(18, 2) NOT NULL CHECK (price >= 0),
+    zone TEXT,
+    description TEXT NOT NULL DEFAULT '',
+    category TEXT NOT NULL DEFAULT 'GENERAL',
+    status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE', 'SOLD', 'DRAFT')),
+    embedding vector(1536),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS escrow_wallets (
@@ -83,3 +98,5 @@ CREATE TABLE IF NOT EXISTS fel_invoices (
 
 CREATE INDEX IF NOT EXISTS idx_shipments_status ON shipments(status);
 CREATE INDEX IF NOT EXISTS idx_sales_terminal_created ON pos_sales(terminal_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_listings_active ON listings(status);
+CREATE INDEX IF NOT EXISTS idx_listings_embedding_hnsw ON listings USING hnsw (embedding vector_cosine_ops) WHERE status = 'ACTIVE';

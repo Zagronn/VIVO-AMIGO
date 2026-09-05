@@ -185,6 +185,17 @@ test('ships production edge routing and HTTPS configuration', () => {
   assert.match(tls, /Strict-Transport-Security/);
 });
 
+test('defines pgvector semantic listing search contracts', () => {
+  const semanticSearch = fs.readFileSync(path.join(__dirname, 'services', 'semanticSearch.ts'), 'utf8');
+  const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
+  assert.match(semanticSearch, /text-embedding-3-small/);
+  assert.match(semanticSearch, /embedding <=> \$1::vector/);
+  assert.match(semanticSearch, /LIMIT \$2/);
+  assert.match(schema, /CREATE EXTENSION IF NOT EXISTS vector/);
+  assert.match(schema, /embedding vector\(1536\)/);
+  assert.match(schema, /idx_listings_embedding_hnsw/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
