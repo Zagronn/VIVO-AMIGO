@@ -358,6 +358,18 @@ test('blocks unpaid real estate and vehicle listing posts', () => {
   assert.match(experience, /StoreRentBadge/);
 });
 
+test('defines KYC, inspection, and blacklist verification contracts', () => {
+  const verification = fs.readFileSync(path.join(__dirname, 'types', 'verification.ts'), 'utf8');
+  assert.match(verification, /BASIC_PHONE/);
+  assert.match(verification, /KYC_VERIFIED/);
+  assert.match(verification, /GOVERNMENT_ESCROW_APPROVED/);
+  assert.match(verification, /nationalIdNumber/);
+  assert.match(verification, /qrVerificationUrl/);
+  assert.match(verification, /reportPdfUrl/);
+  assert.match(verification, /suspiciousActivityScore/);
+  assert.match(verification, /shouldBan/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),
