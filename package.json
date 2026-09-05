@@ -10,6 +10,7 @@
     "start": "node vivopos.service.js",
     "test": "node --test smoke.test.js",
     "check:mobile": "npm run check --prefix mobile",
+    "check:native": "test -f mobile/ios/project.yml && test -f mobile/ios/ExportOptions.plist && test -f mobile/android/settings.gradle && test -f mobile/android/app/build.gradle && test -f mobile/android/app/src/main/AndroidManifest.xml",
     "start:compliance": "node compliance.api.js",
     "start:pos": "node vivopos.service.js"
   },

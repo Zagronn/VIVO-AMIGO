@@ -116,6 +116,7 @@ test('advertises complete web and native product surfaces', async () => {
   const tailwind = fs.readFileSync(path.join(__dirname, 'tailwind.config.js'), 'utf8');
   const serviceWorker = await getText(app, '/sw.js');
   const mobileTargets = require('./mobile/src').APPS;
+  const { PRODUCTION_ENDPOINTS } = require('./mobile/src/config');
   assert.match(shell.text, /VIVOAMIGOPAY/);
   assert.match(shell.text, /CARGO VIVO/);
   assert.match(shell.text, /MARKETPLACE/);
@@ -138,6 +139,7 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(tailwind, /accent: '#FF6A00'/);
   assert.match(serviceWorker.text, /vendor\/qrcode\.min\.js/);
   assert.deepEqual(Object.keys(mobileTargets).sort(), ['cargo', 'pay', 'pos']);
+  assert.deepEqual(PRODUCTION_ENDPOINTS, { ecosystem: 'https://vivoamigo.com', payment: 'https://payvivoamigo.com', cargo: 'https://cargovivo.com', pos: 'https://pos.vivoamigo.com' });
   assert.equal(mobileTargets.pay.name, 'VIVOAMIGOPAY');
   assert.equal(mobileTargets.pay.apiOrigin, 'https://payvivoamigo.com');
   assert.deepEqual(mobileTargets.pay.flows, ['wallet', 'escrow', 'biometric-unlock']);
@@ -145,6 +147,12 @@ test('advertises complete web and native product surfaces', async () => {
   assert.deepEqual(mobileTargets.pos.flows, ['catalog', 'qr-checkout', 'offline-sync', 'fel-invoice']);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'README.md'), 'utf8'), /NSCameraUsageDescription/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'README.md'), 'utf8'), /USE_BIOMETRIC/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'project.yml'), 'utf8'), /com\.vivoamigo\.app/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'ExportOptions.plist'), 'utf8'), /app-store/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'build.gradle'), 'utf8'), /applicationId 'com\.vivoamigo\.app'/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'AndroidManifest.xml'), 'utf8'), /USE_BIOMETRIC/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'res', 'drawable', 'va_splash.xml'), 'utf8'), /vivo_black/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'native-placeholder', 'LaunchScreen.storyboard'), 'utf8'), /VivoAmigoMark/);
 });
 
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {

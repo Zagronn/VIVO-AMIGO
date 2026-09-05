@@ -1,10 +1,10 @@
 # iOS shell activation
 
-Create the React Native iOS host with the standard Community CLI, then link `react-native-vision-camera` and `react-native-biometrics`.
+Generate the Xcode shell with `xcodegen generate --spec project.yml`, then link the React Native host plus `react-native-vision-camera` and `react-native-biometrics`.
 
 Required Info.plist permissions:
 
 - `NSCameraUsageDescription`: Scan VIVO payment and delivery QR codes.
 - `NSFaceIDUsageDescription`: Unlock protected VIVO account actions.
 
-Run `pod install` in `ios/`, then build the `VivoAmigo` scheme in Xcode with Release signing configured.
+Run `pod install` in the generated project, archive the `VivoAmigo` scheme in Xcode, and export an App Store IPA with `ExportOptions.plist` after configuring the `com.vivoamigo.app` Team/signing profile.

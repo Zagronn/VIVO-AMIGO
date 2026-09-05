@@ -1,0 +1,33 @@
+name: VivoAmigo
+options:
+  bundleIdPrefix: com.vivoamigo
+  deploymentTarget:
+    iOS: "15.0"
+targets:
+  VivoAmigo:
+    type: application
+    platform: iOS
+    sources:
+      - path: ../native-placeholder
+    resources:
+      - path: ../native-placeholder/Assets.xcassets
+      - path: ../native-placeholder/LaunchScreen.storyboard
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.vivoamigo.app
+      MARKETING_VERSION: 0.1.0
+      CURRENT_PROJECT_VERSION: 1
+      SWIFT_VERSION: 5.0
+      INFOPLIST_FILE: Info.plist
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: VIVO AMIGO
+        NSCameraUsageDescription: Scan VIVOAMIGOPAY and CARGO VIVO QR codes.
+        NSFaceIDUsageDescription: Unlock protected VIVO AMIGO account actions.
+    scheme:
+      VivoAmigo:
+        shared: true
+        build:
+          targets:
+            VivoAmigo: all

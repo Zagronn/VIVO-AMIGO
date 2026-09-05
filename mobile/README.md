@@ -12,7 +12,10 @@ The `src` modules are platform-neutral boundaries. The production React Native h
 
 ## Platform shells
 
-- `ios/README.md`: required Info.plist permissions and native build activation
-- `android/README.md`: required Manifest permissions and native build activation
+- `ios/project.yml`: XcodeGen shell for the `com.vivoamigo.app` App Store target
+- `ios/ExportOptions.plist`: App Store export profile
+- `android/`: Gradle release shell for the `com.vivoamigo.app` APK/AAB target
+- `ios/README.md`: required signing, Info.plist permissions, and native build activation
+- `android/README.md`: required signing, Manifest permissions, and native build activation
 
-Run `npm run check` from this directory for the dependency-free architecture check. A full native build requires Xcode/ CocoaPods or Android Studio/Gradle and is intentionally not claimed by the root smoke suite when those SDKs are unavailable.
+Run `npm run check`, `npm run check:host`, and `npm run check:native` from this directory for dependency-free architecture and shell checks. Generate the iOS project with `xcodegen generate --spec ios/project.yml`, then archive/export with Xcode and `ios/ExportOptions.plist`. Build Android with `./gradlew :app:bundleRelease` or `./gradlew :app:assembleRelease` after adding a signing keystore. A signed IPA/AAB requires Apple and Android signing credentials and is intentionally not claimed when those tools or credentials are unavailable.

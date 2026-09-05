@@ -4,8 +4,9 @@
   "private": true,
   "description": "Shared React Native architecture for VIVOAMIGOPAY, CARGO VIVO, and VIVO POS",
   "scripts": {
-    "check": "node --check src/index.js && node --check src/api.js && node --check src/offlineQueue.js && node --check src/apps.js && node --check src/qr.js && node --check src/biometrics.js",
-    "check:host": "test -f App.js && test -f app.json"
+    "check": "node --check src/index.js && node --check src/api.js && node --check src/offlineQueue.js && node --check src/apps.js && node --check src/config.js && node --check src/qr.js && node --check src/biometrics.js",
+    "check:host": "test -f App.js && test -f app.json",
+    "check:native": "test -f ios/project.yml && test -f ios/ExportOptions.plist && test -f android/settings.gradle && test -f android/app/build.gradle"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",

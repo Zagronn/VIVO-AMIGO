@@ -1,10 +1,10 @@
 # Android shell activation
 
-Create the React Native Android host with the standard Community CLI, then link `react-native-vision-camera` and `react-native-biometrics`.
+The Gradle shell in this directory targets `com.vivoamigo.app`; link the React Native host plus `react-native-vision-camera` and `react-native-biometrics` before release.
 
 Required Android permissions:
 
 - `android.permission.CAMERA`
 - `android.permission.USE_BIOMETRIC`
 
-Configure a release keystore, enable Gradle release builds, and verify QR scanning on physical hardware before publishing.
+Configure `signingConfigs.release` from CI secrets, then run `./gradlew :app:bundleRelease` for an AAB or `./gradlew :app:assembleRelease` for an APK. Verify QR scanning and biometrics on physical hardware before publishing.

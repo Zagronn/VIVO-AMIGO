@@ -1,20 +1,22 @@
+const { endpoint } = require('./config');
+
 const APPS = {
   pay: {
     id: 'vivoamigopay',
     name: 'VIVOAMIGOPAY',
-    apiOrigin: 'https://payvivoamigo.com',
+    apiOrigin: endpoint('payment'),
     flows: ['wallet', 'escrow', 'biometric-unlock']
   },
   cargo: {
     id: 'cargo-vivo',
     name: 'CARGO VIVO',
-    apiOrigin: 'https://cargovivo.com',
+    apiOrigin: endpoint('cargo'),
     flows: ['shipment-create', 'live-tracking', 'proof-of-delivery']
   },
   pos: {
     id: 'vivo-pos',
     name: 'VIVO POS',
-    apiOrigin: 'https://pos.vivoamigo.com',
+    apiOrigin: endpoint('pos'),
     flows: ['catalog', 'qr-checkout', 'offline-sync', 'fel-invoice']
   }
 };
