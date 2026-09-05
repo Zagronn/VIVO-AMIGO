@@ -347,6 +347,17 @@ test('defines the store rent payment badge', () => {
   assert.match(badge, /Pagar Q50/);
 });
 
+test('blocks unpaid real estate and vehicle listing posts', () => {
+  const subscription = fs.readFileSync(path.join(__dirname, 'services', 'storeSubscription.ts'), 'utf8');
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'listings', 'route.ts'), 'utf8');
+  const experience = fs.readFileSync(path.join(__dirname, 'components', 'GuatemalaMarketplaceExperience.tsx'), 'utf8');
+  assert.match(subscription, /canPostNewListing/);
+  assert.match(subscription, /category !== 'REAL_ESTATE' && category !== 'VEHICLE'/);
+  assert.match(route, /status: 402/);
+  assert.match(route, /canPostNewListing/);
+  assert.match(experience, /StoreRentBadge/);
+});
+
 test('runs mock RENAP and SAT VERI-SHIELD integrations', async () => {
   const app = createComplianceApp({
     verifyRenap: async ({ nationalId }) => ({ verified: nationalId === '123', reference: 'RENAP-1' }),

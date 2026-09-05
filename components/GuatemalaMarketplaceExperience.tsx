@@ -4,6 +4,7 @@ import React, { FormEvent, useMemo, useState } from 'react';
 import { GuatemalaMercadoHeader } from './GuatemalaMercadoHeader';
 import { VoiceListingInput } from './VoiceListingInput';
 import { WhatsAppDirectButton } from './WhatsAppDirectButton';
+import { StoreRentBadge } from './StoreRentBadge';
 
 interface MarketplaceItem {
   id: string;
@@ -68,6 +69,7 @@ export const GuatemalaMarketplaceExperience = () => {
         </div>
 
         <aside className="rounded-xl border border-[#7A808A]/30 bg-[#191919] p-5">
+          <StoreRentBadge storeName="VIVO AMIGO Marketplace" nextDueDate="2026-10-01" isPaid={false} />
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FF6A00]">Publicar anuncio</p>
           <h2 className="mt-2 text-2xl font-bold">Describe lo que vendes</h2>
           <form className="mt-5 space-y-4" onSubmit={handleSubmit}>

@@ -13,6 +13,8 @@ export interface SubscriptionStatus {
   statusMessage: string;
 }
 
+export type ListingCategory = 'REAL_ESTATE' | 'VEHICLE' | 'GENERAL';
+
 export const MONTHLY_STORE_RENTAL_GTQ = 50.00;
 
 export function checkStorePostingEligibility(subscription: StoreSubscriptionPlan): SubscriptionStatus {
@@ -27,4 +29,11 @@ export function checkStorePostingEligibility(subscription: StoreSubscriptionPlan
     canPostListing: true,
     statusMessage: `Tienda activa. Próximo cobro de Q${MONTHLY_STORE_RENTAL_GTQ.toFixed(2)} el ${subscription.nextBillingDate}.`
   };
+}
+
+export function canPostNewListing(category: ListingCategory, subscription: StoreSubscriptionPlan): SubscriptionStatus {
+  if (category !== 'REAL_ESTATE' && category !== 'VEHICLE') {
+    return { canPostListing: true, statusMessage: 'Este tipo de anuncio no requiere renta mensual de tienda.' };
+  }
+  return checkStorePostingEligibility(subscription);
 }
