@@ -4,7 +4,8 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f6f3ed",
-  "theme_color": "#102a2a",
+  "theme_color": "#111111",
+  "icons": [{ "src": "/brand-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }],
   "description": "Offline-ready payments, logistics, and neighborhood commerce for VIVO AMIGO",
   "scope": "/",
   "categories": ["finance", "shopping", "business"]
