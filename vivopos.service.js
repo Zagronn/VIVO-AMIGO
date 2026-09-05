@@ -50,6 +50,10 @@ function createPosApp({ secret = process.env.VIVO_POS_QR_SECRET || 'local-develo
   app.use(express.static(path.join(__dirname, 'public')));
 
   app.get('/health', (_request, response) => response.json({ service: 'vivo-pos', status: 'ok' }));
+  app.use((request, response, next) => {
+    if (request.method === 'GET' && !request.path.startsWith('/v1/')) return response.sendFile(path.join(__dirname, 'public', 'index.html'));
+    return next();
+  });
 
   app.post('/v1/pos/qr', (request, response, next) => {
     try {

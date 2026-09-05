@@ -1,87 +1,26 @@
-const QUEUE_KEY = 'vivo-pos-offline-sales';
-const TERMINAL_ID = 'POS-01';
-const state = { queue: loadQueue(), selectedSale: null };
+const QUEUE_KEY = 'vivo-pos-marketplace-queue';
+const products = [
+  { id: 'cafe', name: 'Café de altura', shop: 'La Esquina', price: 18, mark: 'CA' },
+  { id: 'canasta', name: 'Canasta tejida', shop: 'Manos Vivas', price: 145, mark: 'MV' },
+  { id: 'miel', name: 'Miel de abeja', shop: 'Colmena', price: 42, mark: 'CO' },
+  { id: 'pan', name: 'Pan dulce', shop: 'Horno 7', price: 12, mark: 'H7' }
+];
+const state = { queue: loadQueue(), cart: [], walletId: null, trackingCode: null };
 const $ = (selector) => document.querySelector(selector);
 
-function loadQueue() {
-  try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); } catch { return []; }
-}
-
-function saveQueue() { localStorage.setItem(QUEUE_KEY, JSON.stringify(state.queue)); renderQueue(); }
-
-function renderQueue() {
-  $('#queueCount').textContent = state.queue.length;
-  $('#syncButton').disabled = !state.queue.length || !navigator.onLine;
-  $('#queueList').innerHTML = state.queue.length ? state.queue.map((sale) => `<div class="sale-row ${state.selectedSale?.clientTransactionId === sale.clientTransactionId ? 'selected' : ''}"><button data-sale="${sale.clientTransactionId}"><strong>Q${Number(sale.totalAmount).toFixed(2)}</strong><small>${sale.clientTransactionId} · ${sale.status || 'queued'}</small></button></div>`).join('') : '<div class="empty-state">No pending sales.<br>Completed sales appear here when offline.</div>';
-  document.querySelectorAll('[data-sale]').forEach((button) => button.addEventListener('click', () => { state.selectedSale = state.queue.find((sale) => sale.clientTransactionId === button.dataset.sale); $('#invoiceButton').disabled = !state.selectedSale; renderQueue(); }));
-}
-
-function updateConnection() {
-  const online = navigator.onLine;
-  $('#connectionStatus').classList.toggle('offline', !online);
-  $('#connectionStatus').innerHTML = `<span></span> ${online ? 'Online' : 'Offline'}`;
-  $('#syncButton').disabled = !state.queue.length || !online;
-}
-
-async function post(url, body) {
-  const response = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
-  const payload = await response.json();
-  if (!response.ok) throw new Error(payload.error || 'Request failed');
-  return payload;
-}
-
-async function renderQr(payload) {
-  const encoded = payload.qrData.split('/').pop().split('.')[0];
-  $('#qrStage').innerHTML = '<div class="qr-code"><canvas aria-label="Payment QR code"></canvas></div>';
-  await QRCode.toCanvas($('#qrStage canvas'), payload.qrData, { width: 204, margin: 1, color: { dark: '#102a2a', light: '#ffffff' } });
-  $('#qrMeta').hidden = false;
-  $('#qrAmount').textContent = `Q${payload.amount.toFixed(2)} ${payload.currency}`;
-  $('#qrExpiry').textContent = `Valid until ${new Date(payload.expiresAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-  $('#qrStage').dataset.payload = encoded;
-}
-
-async function generateQr(event) {
-  event.preventDefault();
-  const amount = Number($('#amount').value);
-  if (!amount) return;
-  try { await renderQr(await post('/v1/pos/qr', { terminalId: TERMINAL_ID, amount })); }
-  catch (error) { $('#syncNote').textContent = `QR unavailable: ${error.message}`; }
-}
-
-function queueSale() {
-  const amount = Number($('#amount').value);
-  if (!amount) return;
-  state.queue.push({ clientTransactionId: crypto.randomUUID(), totalAmount: Number(amount.toFixed(2)), soldAt: new Date().toISOString(), status: 'queued' });
-  state.selectedSale = state.queue[state.queue.length - 1];
-  saveQueue();
-  $('#syncNote').textContent = navigator.onLine ? 'Sale saved. Syncing now.' : 'Sale saved locally. It will sync when online.';
-  syncQueue();
-}
-
-async function syncQueue() {
-  if (!state.queue.length || !navigator.onLine) return;
-  try {
-    const result = await post('/v1/pos/sync', { terminalId: TERMINAL_ID, sales: state.queue });
-    state.queue = result.sales.map((sale) => ({ ...sale, status: 'synced' }));
-    saveQueue();
-    $('#syncNote').textContent = `${result.accepted} sale${result.accepted === 1 ? '' : 's'} synced. Select one to issue FEL.`;
-  } catch (error) { $('#syncNote').textContent = `Sync paused: ${error.message}`; }
-}
-
-async function issueInvoice() {
-  if (!state.selectedSale) return;
-  try {
-    const invoice = await post('/v1/pos/fel/issue', { saleId: state.selectedSale.clientTransactionId, sale: state.selectedSale });
-    $('#felStatus').textContent = `${invoice.invoiceNumber} issued · ${invoice.satUuid}`;
-  } catch (error) { $('#felStatus').textContent = `FEL unavailable: ${error.message}`; }
-}
-
-$('#paymentForm').addEventListener('submit', generateQr);
-$('#queueSaleButton').addEventListener('click', queueSale);
-$('#syncButton').addEventListener('click', syncQueue);
-$('#invoiceButton').addEventListener('click', issueInvoice);
-window.addEventListener('online', () => { updateConnection(); syncQueue(); });
-window.addEventListener('offline', updateConnection);
-renderQueue();
-updateConnection();
+function loadQueue() { try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); } catch { return []; } }
+function saveQueue() { localStorage.setItem(QUEUE_KEY, JSON.stringify(state.queue)); }
+function money(value) { return `Q${Number(value).toFixed(2)}`; }
+function post(url, body) { return fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(async (response) => { const data = await response.json(); if (!response.ok) throw new Error(data.error || 'Request failed'); return data; }); }
+function route() { const host = location.hostname; if (location.pathname.startsWith('/pay') || host === 'payvivoamigo.com') return 'pay'; if (location.pathname.startsWith('/cargo') || host === 'cargovivo.com') return 'cargo'; if (location.pathname.startsWith('/marketplace') || host === 'pos.vivoamigo.com') return 'pos'; return 'home'; }
+function frame(title, eyebrow, copy, content) { return `<section class="dashboard"><div class="dash-top"><div><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="muted">${copy}</p></div><span class="status-chip">● Local network ready</span></div>${content}</section>`; }
+function home() { return `<section class="hero"><div class="hero-copy"><p class="eyebrow">SOVEREIGN COMMERCE / 2026</p><h1>Commerce that moves at the speed of trust.</h1><p class="muted">One network for the people who make, move, and trade across Guatemala. Payments, logistics, and neighborhood retail in a single living system.</p><div class="hero-actions"><a class="button" href="/marketplace">Enter marketplace <span>↗</span></a><a class="button secondary" href="/pay">Open PAY VIVO <span>→</span></a></div></div><div class="signal-board"><p class="eyebrow">VIVO NETWORK / LIVE SIGNAL</p><div class="signal-line"><span>Trusted identities</span><strong>VERI-SHIELD / ONLINE</strong></div><div class="signal-line"><span>Escrow protected</span><strong>PAY VIVO / READY</strong></div><div class="signal-line"><span>Routes moving</span><strong>CARGO VIVO / 24</strong></div><div class="signal-line"><span>Local vendors</span><strong>VIVO POS / 128</strong></div></div></section><section class="stats"><div class="stat"><b>04</b><span>connected modules</span></div><div class="stat"><b>35</b><span>orchestrator agents</span></div><div class="stat"><b>24/7</b><span>offline-ready commerce</span></div></section><section class="section"><div class="section-head"><div><p class="eyebrow">THE ECOSYSTEM</p><h2>Small businesses, sovereign tools.</h2></div><p class="muted">Built for real streets, real routes, and the everyday decisions that keep communities moving.</p></div><div class="module-grid"><a class="module-card" href="/pay"><span class="tag">01 / PAY VIVO</span><h3>Money held with intention.</h3><p>Digital wallets and escrow that protect the handoff.</p><span class="arrow">↗</span></a><a class="module-card" href="/cargo"><span class="tag">02 / CARGO VIVO</span><h3>Every route has a pulse.</h3><p>Dispatch, track, and deliver with a shared view.</p><span class="arrow">↗</span></a><a class="module-card" href="/marketplace"><span class="tag">03 / VIVO POS</span><h3>Your market, in your pocket.</h3><p>Local storefronts with offline-first checkout.</p><span class="arrow">↗</span></a></div></section>`; }
+function pay() { return frame('The wallet for the handoff.', 'PAY VIVO / ESCROW', 'Hold funds until the work is done. A clear balance and a calmer transaction.', `<div class="dash-grid"><div class="panel tall"><div class="panel-label"><span>Available balance</span><span>GTQ / 001</span></div><div class="balance">Q8,420<small>.00</small></div><div class="bar"><i></i></div><p class="muted">Q3,180 currently protected in escrow</p><div class="hero-actions"><button class="button" id="createWallet">Create wallet <span>＋</span></button><button class="button secondary" id="holdFunds">Lock escrow <span>→</span></button></div><p class="sync-note" id="payStatus">Wallet actions connect to the PAY VIVO API.</p></div><div class="panel"><div class="panel-label"><span>Recent movement</span><span>Today</span></div><div class="activity-row"><span>Market settlement</span><strong class="positive">+ Q420</strong><small>09:42</small></div><div class="activity-row"><span>Escrow protection</span><strong>- Q850</strong><small>08:16</small></div><div class="activity-row"><span>Vendor payout</span><strong class="positive">+ Q210</strong><small>Yesterday</small></div></div></div>`); }
+function cargo() { return frame('Know where it is going.', 'CARGO VIVO / DISPATCH', 'A live view of the route from first scan to the doorstep.', `<div class="dash-grid"><div class="panel tall"><div class="panel-label"><span>Active shipment</span><span class="positive">● In transit</span></div><div class="route"><div class="route-box"><span class="muted">Origin</span><strong>Guatemala</strong><small>Zone 01 / scanned 08:12</small></div><div class="route-box"><span class="muted">Destination</span><strong>Antigua</strong><small>ETA today / 14:30</small></div></div><div class="route-map" style="margin-top:24px"></div><button class="button" id="trackShipment" style="margin-top:20px">Create tracked shipment <span>↗</span></button><p class="sync-note" id="cargoStatus">CARGO VIVO status stream ready.</p></div><div class="panel"><div class="panel-label"><span>Route board</span><span>24 live</span></div><div class="activity-row"><span>VIVO-8F4A / Zone 01</span><strong class="positive">Moving</strong></div><div class="activity-row"><span>VIVO-2D11 / Mixco</span><strong>Sorting</strong></div><div class="activity-row"><span>VIVO-71C2 / Antigua</span><strong class="positive">Delivered</strong></div></div></div>`); }
+function productCards(items) { return items.map((product) => `<article class="product-card"><div class="product-art">${product.mark}</div><span class="muted">${product.shop}</span><h3>${product.name}</h3><div class="product-meta"><b>${money(product.price)}</b><button data-product="${product.id}" aria-label="Add ${product.name}">Add +</button></div></article>`).join(''); }
+function pos() { return frame('A market in your pocket.', 'VIVO POS / MARKETPLACE', 'Discover neighborhood goods, pay by QR, and keep selling when the signal disappears.', `<div class="market-toolbar"><span class="muted">${products.length} independent makers</span><input class="search" id="productSearch" placeholder="Find something local" aria-label="Search products"></div><div class="pos-layout"><div class="product-grid" id="productGrid">${productCards(products)}</div><aside class="panel"><div class="panel-label"><span>Your basket</span><span id="cartCount">0 items</span></div><div id="cartItems"><p class="muted">Your basket is waiting.</p></div><div class="cart-total" id="cartTotal">Q0.00</div><button class="button" id="checkoutButton" disabled>Generate checkout QR <span>↗</span></button><button class="button secondary" id="syncButton" type="button">Sync offline sales <span>↻</span></button><div class="qr-box" id="checkoutQr"><span class="muted">QR appears here</span></div><p class="sync-note" id="marketStatus">Offline queue is ready on this device.</p></aside></div>`); }
+function updateCart() { $('#cartCount').textContent = `${state.cart.length} item${state.cart.length === 1 ? '' : 's'}`; $('#cartTotal').textContent = money(state.cart.reduce((total, item) => total + item.price, 0)); $('#checkoutButton').disabled = !state.cart.length; $('#cartItems').innerHTML = state.cart.length ? state.cart.map((item) => `<div class="activity-row"><span>${item.name}</span><strong>${money(item.price)}</strong></div>`).join('') : '<p class="muted">Your basket is waiting.</p>'; }
+async function syncMarketQueue() { if (!state.queue.length || !navigator.onLine) return; try { const result = await post('/v1/pos/sync', { terminalId: 'POS-01', sales: state.queue }); state.queue = result.sales; saveQueue(); $('#marketStatus').textContent = `${result.accepted} offline sale${result.accepted === 1 ? '' : 's'} synced.`; } catch (error) { $('#marketStatus').textContent = `Sync paused: ${error.message}`; } }
+function bind() { $('#themeToggle').addEventListener('click', () => document.documentElement.classList.toggle('light')); $('#footerDate').textContent = new Date().getFullYear(); if (route() === 'pay') { $('#createWallet').addEventListener('click', async () => { try { const wallet = await post('/v1/pay/wallets', { userId: 'market-user-01' }); state.walletId = wallet.id; $('#payStatus').textContent = `Wallet ${wallet.id.slice(0, 8)} created and ready.`; } catch (error) { $('#payStatus').textContent = error.message; } }); $('#holdFunds').addEventListener('click', async () => { if (!state.walletId) { $('#payStatus').textContent = 'Create a wallet first.'; return; } try { await post(`/v1/pay/wallets/${state.walletId}/hold`, { amount: 100, idempotencyKey: `ui-${Date.now()}` }); $('#payStatus').textContent = 'Q100.00 locked in escrow.'; } catch (error) { $('#payStatus').textContent = error.message; } }); } if (route() === 'cargo') $('#trackShipment').addEventListener('click', async () => { try { const shipment = await post('/v1/cargo/shipments', { senderId: 'market-user-01', origin: { city: 'Guatemala' }, destination: { city: 'Antigua' } }); state.trackingCode = shipment.trackingCode; await post(`/v1/cargo/shipments/${state.trackingCode}/status`, { status: 'in_transit' }); $('#cargoStatus').textContent = `${state.trackingCode} is now in transit.`; } catch (error) { $('#cargoStatus').textContent = error.message; } }); if (route() === 'pos') { document.querySelectorAll('[data-product]').forEach((button) => button.addEventListener('click', () => { state.cart.push(products.find((product) => product.id === button.dataset.product)); updateCart(); })); $('#productSearch').addEventListener('input', (event) => { $('#productGrid').innerHTML = productCards(products.filter((product) => product.name.toLowerCase().includes(event.target.value.toLowerCase()) || product.shop.toLowerCase().includes(event.target.value.toLowerCase()))); document.querySelectorAll('[data-product]').forEach((button) => button.addEventListener('click', () => { state.cart.push(products.find((product) => product.id === button.dataset.product)); updateCart(); })); }); $('#checkoutButton').addEventListener('click', async () => { const totalAmount = state.cart.reduce((total, item) => total + item.price, 0); const sale = { clientTransactionId: crypto.randomUUID(), totalAmount, soldAt: new Date().toISOString() }; state.queue.push(sale); saveQueue(); try { const qr = await post('/v1/pos/qr', { terminalId: 'POS-01', amount: totalAmount }); $('#checkoutQr').innerHTML = '<canvas aria-label="Checkout QR"></canvas>'; await QRCode.toCanvas($('#checkoutQr canvas'), qr.qrData, { width: 150, margin: 1 }); $('#marketStatus').textContent = 'Checkout QR ready. Sale saved locally for sync.'; } catch { $('#marketStatus').textContent = 'Offline checkout saved locally. QR will refresh when online.'; } }); $('#syncButton').addEventListener('click', syncMarketQueue); window.addEventListener('online', syncMarketQueue); updateCart(); } }
+$('#app').innerHTML = route() === 'home' ? home() : route() === 'pay' ? pay() : route() === 'cargo' ? cargo() : pos(); bind();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
