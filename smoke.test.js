@@ -421,6 +421,15 @@ test('defines the production VIVO AMIGO health endpoint', () => {
   assert.equal(fs.existsSync(path.join(__dirname, 'app', 'api', 'v1', 'health', 'route.ts')), true);
 });
 
+test('defines the VIVO AMIGO sticky Guatemala navbar', () => {
+  const navbar = fs.readFileSync(path.join(__dirname, 'components', 'Navbar.tsx'), 'utf8');
+  assert.match(navbar, /next\/image/);
+  assert.match(navbar, /next\/link/);
+  assert.match(navbar, /brand-mark\.svg/);
+  assert.match(navbar, /sticky top-0/);
+  assert.match(navbar, /Guatemala City/);
+});
+
 test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
