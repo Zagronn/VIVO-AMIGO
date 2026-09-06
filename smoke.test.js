@@ -789,6 +789,16 @@ test('defines the VIVO POS Amazon-style hero theme', () => {
   assert.match(fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8'), /PosHeroTheme/);
 });
 
+test('defines the premium Vivo showcase', () => {
+  const showcase = fs.readFileSync(path.join(__dirname, 'components', 'VivoPremiumShowcase.tsx'), 'utf8');
+  assert.match(showcase, /VivoPremiumShowcase/);
+  assert.match(showcase, /VIVO-CHECK/);
+  assert.match(showcase, /VIVO-ASSIST 24\/7/);
+  assert.match(showcase, /bg-gradient-to-b/);
+  assert.match(showcase, /backdrop-blur-xl/);
+  assert.match(showcase, /Ecosistema Digital de Guatemala/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
