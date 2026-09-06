@@ -55,6 +55,15 @@ test('defines the VIVO-ASSIST SOS assistance modal', () => {
   assert.match(modal, /Pago retenido en Escrow Seguro/);
 });
 
+test('integrates VIVO-ASSIST into the main showcase', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'vivoAssistEngine.ts'), 'utf8');
+  const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
+  assert.match(engine, /calculateFixedAssistPrice/);
+  assert.match(engine, /dispatchEmergencyAssist/);
+  assert.match(engine, /Fixed distance pricing/);
+  assert.match(home, /VivoAssistSosModal/);
+});
+
 test('initializes and dispatches the configured 35-agent swarm', async () => {
   const orchestrator = new SwarmOrchestrator();
   assert.deepEqual(orchestrator.initializeSwarm(), { totalAgents: 36, subAgents: 35, masterAgent: 'agent_master_01' });

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CategoryBar } from '../components/CategoryBar';
+import { VivoAssistSosModal } from '../components/VivoAssistSosModal';
 
 const categories = [
   { title: 'Vehículos Destacados', items: ['BYD Eléctrico', 'Toyota Hilux'], href: '/listings?category=VEHICLES', cta: 'Ver más vehículos', badges: ['-15%', 'Remate'] },
@@ -21,6 +22,9 @@ export default function HomePage() {
         </div>
       </section>
       <CategoryBar />
+      <div className="mx-auto max-w-7xl px-4">
+        <VivoAssistSosModal />
+      </div>
 
       <section className="mx-auto -mt-10 grid max-w-7xl grid-cols-1 gap-4 px-4 md:grid-cols-2 lg:grid-cols-4">
         {categories.map((category) => (
