@@ -133,6 +133,44 @@ test('defines executive pitch data and board-ready scenario metrics', () => {
   assert.match(card, /\$12M/);
   assert.match(card, /8x-10x/);
 });
+
+test('defines fail-closed social share verification and promotion API', () => {
+  const verifier = fs.readFileSync(path.join(__dirname, 'services', 'socialShareVerification.ts'), 'utf8');
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'promotions', 'social-share', 'route.ts'), 'utf8');
+  const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
+  assert.match(verifier, /processSocialShareVerification/);
+  assert.match(verifier, /containsRequiredHashtag/);
+  assert.match(verifier, /containsOfficialPromoVideo/);
+  assert.match(verifier, /recordClaim/);
+  assert.match(verifier, /UPDATE users SET commission_rate = 0\.0/);
+  assert.match(verifier, /LISTING_DOPING_CREDIT/);
+  assert.match(verifier, /FOR UPDATE/);
+  assert.match(verifier, /BEGIN/);
+  assert.match(verifier, /commissionRate: 0/);
+  assert.match(verifier, /social platform verification adapter is not configured/);
+  assert.match(route, /processSocialShareVerification/);
+  assert.match(schema, /commission_rate NUMERIC/);
+  assert.match(schema, /doping_credits INTEGER/);
+});
+
+test('defines the API-backed VIVO-VIRAL share modal', () => {
+  const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoViralShareModal.tsx'), 'utf8');
+  assert.match(modal, /VivoViralShareModal/);
+  assert.match(modal, /v1\/promotions\/social-share/);
+  assert.match(modal, /INSTAGRAM_STORY/);
+  assert.match(modal, /freeDopingCreditsGranted/);
+  assert.match(modal, /Llevamos Vidas/);
+  assert.doesNotMatch(modal, /setTimeout/);
+});
+
+test('keeps the Spanish Llevamos Vidas campaign branding consistent', () => {
+  const script = fs.readFileSync(path.join(__dirname, 'docs', 'VIVO_PROMO_VIDEO_SCRIPT.md'), 'utf8');
+  const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoViralShareModal.tsx'), 'utf8');
+  assert.match(script, /Slogan:\*\* Llevamos Vidas/);
+  assert.match(script, /¡Llevamos Vidas!/);
+  assert.match(modal, /Llevamos Vidas/);
+  assert.doesNotMatch(script, /Can Taşıyoruz|Llevamos Confianza/);
+});
 test('defines CARGO VIVO SOS fixed-price emergency assistance', () => {
   const sos = fs.readFileSync(path.join(__dirname, 'services', 'sosEmergency.ts'), 'utf8');
   assert.match(sos, /TOW_TRUCK/);
