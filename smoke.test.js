@@ -805,6 +805,17 @@ test('defines the VIVO-CRITIQUE self-healing feedback modal', () => {
   assert.match(modal, /role="alert"/);
 });
 
+test('defines the daily strategic AI report', () => {
+  const report = fs.readFileSync(path.join(__dirname, 'docs', 'daily-strategic-ai-report.md'), 'utf8');
+  assert.match(report, /System Health Score:\*\*:? 98\.4%/);
+  assert.match(report, /HOTFIX-209/);
+  assert.match(report, /HOTFIX-210/);
+  assert.match(report, /HOTFIX-211/);
+  assert.match(report, /Critique #88/);
+  assert.match(report, /Critique #114/);
+  assert.match(report, /NEEDS_CARLOS_APPROVAL/);
+});
+
 test('defines the premium Vivo showcase', () => {
   const showcase = fs.readFileSync(path.join(__dirname, 'components', 'VivoPremiumShowcase.tsx'), 'utf8');
   assert.match(showcase, /VivoPremiumShowcase/);
