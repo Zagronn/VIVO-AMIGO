@@ -841,6 +841,16 @@ test('defines community hero rewards for critiques and VIVO-VOZ features', () =>
   assert.match(rewards, /awardHeroUser/);
 });
 
+test('defines the VIVO-HERO reward modal', () => {
+  const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoHeroRewardModal.tsx'), 'utf8');
+  assert.match(modal, /VivoHeroRewardModal/);
+  assert.match(modal, /VIVO-HERO/);
+  assert.match(modal, /1 Doping Gratis/);
+  assert.match(modal, /50% Descuento en Comisión/);
+  assert.match(modal, /onClose/);
+  assert.match(modal, /role="dialog"/);
+});
+
 test('defines the premium Vivo showcase', () => {
   const showcase = fs.readFileSync(path.join(__dirname, 'components', 'VivoPremiumShowcase.tsx'), 'utf8');
   assert.match(showcase, /VivoPremiumShowcase/);
