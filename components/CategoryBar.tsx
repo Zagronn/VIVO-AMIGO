@@ -1,7 +1,7 @@
 import React from 'react';
 
 const categories = [
-  { href: '/listings?category=VEHICLES_PARTS', icon: '🚗', label: 'Vehículos y Repuestos (Toyota/Hilux)', featured: true },
+  { href: '/listings?category=VEHICLES_PARTS', icon: '🚗', label: 'Vehículos y Repuestos (Toyota/Hilux)', badge: 'Escrow Seguro', featured: true },
   { href: '/listings?category=CONSTRUCTION', icon: '🏗️', label: 'Construcción y Láminas', featured: false },
   { href: '/listings?category=TECHNOLOGY', icon: '📱', label: 'Tecnología y Celulares', featured: false },
   { href: '/listings?category=REAL_ESTATE', icon: '🏢', label: 'Inmuebles y Lanzamientos', featured: false }
@@ -20,6 +20,7 @@ export const CategoryBar = () => (
         >
           <span aria-hidden="true">{category.icon}</span>
           <span>{category.label}</span>
+          {category.badge && <span className="rounded bg-black/10 px-1.5 py-0.5 text-[9px] font-black uppercase">{category.badge}</span>}
         </a>
       ))}
     </div>

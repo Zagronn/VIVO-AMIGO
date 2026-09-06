@@ -554,6 +554,8 @@ test('defines the marketplace category bar', () => {
   assert.match(categories, /REAL_ESTATE/);
   assert.match(categories, /overflow-x-auto/);
   assert.match(categories, /Categorías del marketplace/);
+  assert.match(categories, /Escrow Seguro/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8'), /CategoryBar/);
 });
 
 test('defines Next.js root and dynamic listing page exports', () => {
