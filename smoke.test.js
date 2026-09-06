@@ -33,6 +33,16 @@ test('generates a signed, expiring QR payload', () => {
   assert.match(qr.qrData, /^vivo:\/\/pay\/.+\..+$/);
   assert.ok(qr.expiresAt > Date.now());
 });
+test('defines CARGO VIVO SOS fixed-price emergency assistance', () => {
+  const sos = fs.readFileSync(path.join(__dirname, 'services', 'sosEmergency.ts'), 'utf8');
+  assert.match(sos, /TOW_TRUCK/);
+  assert.match(sos, /INTERAMERICANA/);
+  assert.match(sos, /calculateFixedAssistPrice/);
+  assert.match(sos, /baseRates/);
+  assert.match(sos, /perKmRate/);
+  assert.match(sos, /dispatchEmergencyAssist/);
+  assert.match(sos, /DISPATCHING/);
+});
 
 test('initializes and dispatches the configured 35-agent swarm', async () => {
   const orchestrator = new SwarmOrchestrator();
