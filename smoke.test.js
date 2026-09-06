@@ -546,6 +546,16 @@ test('defines the VIVO AMIGO sticky Guatemala navbar', () => {
   assert.match(navbar, /Guatemala City/);
 });
 
+test('defines the marketplace category bar', () => {
+  const categories = fs.readFileSync(path.join(__dirname, 'components', 'CategoryBar.tsx'), 'utf8');
+  assert.match(categories, /VEHICLES_PARTS/);
+  assert.match(categories, /CONSTRUCTION/);
+  assert.match(categories, /TECHNOLOGY/);
+  assert.match(categories, /REAL_ESTATE/);
+  assert.match(categories, /overflow-x-auto/);
+  assert.match(categories, /Categorías del marketplace/);
+});
+
 test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
