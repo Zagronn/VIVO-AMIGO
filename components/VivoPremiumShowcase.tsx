@@ -1,5 +1,6 @@
 import React from 'react';
 import { VivoSecurityShieldDashboard } from './VivoSecurityShieldDashboard';
+import { VivoVerifyForm } from './VivoVerifyForm';
 
 export const VivoPremiumShowcase = () => (
   <div className="relative min-h-screen overflow-hidden bg-[#070312] font-sans text-white selection:bg-purple-500 selection:text-white">
@@ -15,6 +16,7 @@ export const VivoPremiumShowcase = () => (
         <article className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.02] p-8 backdrop-blur-xl transition-all duration-500 hover:border-purple-500/40"><span className="font-mono text-xs font-semibold uppercase tracking-wider text-purple-400">Auxilio Vial</span><h2 className="mb-3 mt-2 text-xl font-bold text-white">VIVO-ASSIST 24/7</h2><p className="mb-6 text-xs leading-relaxed text-gray-400">Asistencia inmediata en carretera con precio fijo transparente y rastreo GPS en tiempo real.</p><button type="button" className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3 text-xs font-bold text-white shadow-lg shadow-purple-600/30 transition-all hover:from-purple-500 hover:to-indigo-500">Solicitar Grúa / Auxilio</button></article>
       </div>
       <VivoSecurityShieldDashboard />
+      <VivoVerifyForm />
     </main>
   </div>
 );

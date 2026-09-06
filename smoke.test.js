@@ -75,6 +75,42 @@ test('defines the typed executive Iron Shield engine and protocol', () => {
   assert.match(dashboard, /v1\/security\/emergency-lock/);
   assert.match(dashboard, /VivoSecurityShieldDashboard/);
 });
+
+test('defines fail-closed invisible vehicle verification', () => {
+  const filter = fs.readFileSync(path.join(__dirname, 'services', 'invisibleVehicleFilter.ts'), 'utf8');
+  assert.match(filter, /VehicleVerificationInput/);
+  assert.match(filter, /processInvisibleVehicleFilter/);
+  assert.match(filter, /readRegistrationDocument/);
+  assert.match(filter, /querySatPnc/);
+  assert.match(filter, /STOLEN_ALERT/);
+  assert.match(filter, /LEGAL_LIEN/);
+  assert.match(filter, /vivoVerifySealEligible: true/);
+  assert.match(filter, /not configured/);
+});
+
+test('gates protected listings before public acceptance and dispatches VIVO-VERIFY', () => {
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'listings', 'route.ts'), 'utf8');
+  const dispatch = fs.readFileSync(path.join(__dirname, 'services', 'vivoVerifyDispatch.ts'), 'utf8');
+  assert.match(route, /processInvisibleVehicleFilter/);
+  assert.match(route, /DOCUMENT_REVIEW_REQUIRED/);
+  assert.match(route, /requiresInvisibleBarrier/);
+  assert.match(route, /dispatchVivoVerifyMobileInspector/);
+  assert.match(dispatch, /DISPATCH_REQUESTED/);
+});
+
+test('defines VIVO-VERIFY invisible OCR, quarantine, and VIP booking surfaces', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'vivoVerifyEngine.ts'), 'utf8');
+  const form = fs.readFileSync(path.join(__dirname, 'components', 'VivoVerifyForm.tsx'), 'utf8');
+  const policy = fs.readFileSync(path.join(__dirname, 'DEVIN_INVISIBLE_FILTER.md'), 'utf8');
+  assert.match(engine, /processInvisibleVehicleFilter/);
+  assert.match(engine, /bookVipInspection/);
+  assert.match(engine, /VIP_MOBILE_INSPECTION/);
+  assert.match(form, /v1\/verify\/vehicle/);
+  assert.match(form, /v1\/verify\/inspection/);
+  assert.match(form, /Reservar inspección VIP/);
+  assert.match(policy, /Never insert, update, index, cache, or publish/);
+  assert.match(policy, /SAT and PNC/);
+});
 test('defines CARGO VIVO SOS fixed-price emergency assistance', () => {
   const sos = fs.readFileSync(path.join(__dirname, 'services', 'sosEmergency.ts'), 'utf8');
   assert.match(sos, /TOW_TRUCK/);
