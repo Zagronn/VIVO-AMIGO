@@ -179,8 +179,38 @@ test('defines the VIVO AMIGO marketplace showcase landing', () => {
   assert.match(landing, /Llevamos Vidas/);
   assert.match(landing, /VIVO-CHECK/);
   assert.match(landing, /VIVO-ASSIST/);
+  assert.match(landing, /Llevamos Vidas, Transportamos Confianza/);
+  assert.match(landing, /VIVO-CHECK · Escrow Live/);
+  assert.match(landing, /VIVO-VERIFY · SAT\/PNC Filter/);
+  assert.match(landing, /VIVO-ASSIST · 24\/7/);
   assert.match(landing, /SAT\/PNC/);
   assert.match(page, /VivoShowcaseLanding/);
+});
+
+test('defines the 250-agent dynamic NVIDIA NIM swarm', () => {
+  const swarm = fs.readFileSync(path.join(__dirname, 'services', 'dynamicSwarmOrchestrator.ts'), 'utf8');
+  assert.match(swarm, /interface SpecificAgent/);
+  assert.match(swarm, /for \(let id = 1; id <= 250; id\+\+\)/);
+  assert.match(swarm, /meta\/llama-3\.3-70b-instruct/);
+  assert.match(swarm, /SAT\/PNC License Plate OCR Specialist/);
+  assert.match(swarm, /GPS Geofencing Proximity Verifier/);
+  assert.match(swarm, /Zero-Trust Penetration Tester/);
+  assert.match(swarm, /dispatchDynamicTask/);
+});
+
+test('defines the complete specific agent registry and manifest', () => {
+  const registry = fs.readFileSync(path.join(__dirname, 'services', 'dynamicAgentRegistry.ts'), 'utf8');
+  const manifest = fs.readFileSync(path.join(__dirname, 'docs', '250_SPECIFIC_AGENTS_MANIFEST.md'), 'utf8');
+  assert.match(registry, /class DynamicAgentRegistry/);
+  assert.match(registry, /for \(let id = 1; id <= 250; id\+\+\)/);
+  assert.match(registry, /responsibility/);
+  assert.match(registry, /INJECTED_EXECUTOR/);
+  assert.equal((manifest.match(/^\| \d{3} \|/gm) || []).length, 250);
+  assert.match(manifest, /## VERIFY Fleet/);
+  assert.match(manifest, /## CHECK Fleet/);
+  assert.match(manifest, /## VIRAL Fleet/);
+  assert.match(manifest, /## CYBER Fleet/);
+  assert.match(manifest, /## ANALYTICS Fleet/);
 });
 test('defines CARGO VIVO SOS fixed-price emergency assistance', () => {
   const sos = fs.readFileSync(path.join(__dirname, 'services', 'sosEmergency.ts'), 'utf8');
