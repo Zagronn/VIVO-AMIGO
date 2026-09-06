@@ -855,6 +855,20 @@ test('defines community hero rewards for critiques and VIVO-VOZ features', () =>
   assert.match(rewards, /awardHeroUser/);
 });
 
+test('defines the VIVO-HERO engine and Devin reward prompt', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'vivoHeroEngine.ts'), 'utf8');
+  const prompt = fs.readFileSync(path.join(__dirname, 'DEVIN_HERO_PROMPT.md'), 'utf8');
+  const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoHeroRewardModal.tsx'), 'utf8');
+  assert.match(engine, /awardHeroUser/);
+  assert.match(engine, /freeDopingCredits: 1/);
+  assert.match(engine, /commissionDiscountPercentage: 50/);
+  assert.match(prompt, /BUG_HUNTER/);
+  assert.match(prompt, /VIVO_HERO_GOLD/);
+  assert.match(prompt, /idempotent source event ID/);
+  assert.match(prompt, /public changelog/);
+  assert.match(modal, /VivoHeroRewardModal/);
+});
+
 test('defines the VIVO-HERO reward modal', () => {
   const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoHeroRewardModal.tsx'), 'utf8');
   assert.match(modal, /VivoHeroRewardModal/);
