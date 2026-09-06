@@ -905,6 +905,20 @@ test('defines the VIVO valuation dashboard', () => {
   assert.match(dashboard, /Security gates and evidence policy/);
 });
 
+test('defines the executive finance engine and Devin finance audit model', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'vivoFinancialProjectionEngine.ts'), 'utf8');
+  const finance = fs.readFileSync(path.join(__dirname, 'DEVIN_FINANCE_MODEL.md'), 'utf8');
+  const dashboard = fs.readFileSync(path.join(__dirname, 'components', 'VivoValuationDashboard.tsx'), 'utf8');
+  assert.match(engine, /calculate24MonthValuation/);
+  assert.match(engine, /revenueMultipleMin: 8/);
+  assert.match(engine, /revenueMultipleMax: 10/);
+  assert.match(finance, /Zero-vulnerability audit rules/);
+  assert.match(finance, /raw PAN\/card data/);
+  assert.match(finance, /npm run security:audit/);
+  assert.match(finance, /human-approved/);
+  assert.match(dashboard, /VivoValuationDashboard/);
+});
+
 test('defines the VIVO-HERO reward modal', () => {
   const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoHeroRewardModal.tsx'), 'utf8');
   assert.match(modal, /VivoHeroRewardModal/);
