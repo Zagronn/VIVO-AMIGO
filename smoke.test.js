@@ -784,6 +784,17 @@ test('defines the VIVO POS Amazon-style hero theme', () => {
   assert.match(hero, /VIVO APP STORE/);
 });
 
+test('defines user critique routing for Devin and Carlos approval', () => {
+  const critique = fs.readFileSync(path.join(__dirname, 'services', 'critiqueEngine.ts'), 'utf8');
+  assert.match(critique, /CritiqueSubmission/);
+  assert.match(critique, /TECHNICAL_BUG/);
+  assert.match(critique, /URGENT_ANGRY/);
+  assert.match(critique, /AUTO_FIXING_HOTFIX/);
+  assert.match(critique, /NEEDS_CARLOS_APPROVAL/);
+  assert.match(critique, /rating must be an integer between 1 and 5/);
+  assert.match(critique, /processUserCritique/);
+});
+
 test('defines the premium Vivo showcase', () => {
   const showcase = fs.readFileSync(path.join(__dirname, 'components', 'VivoPremiumShowcase.tsx'), 'utf8');
   assert.match(showcase, /VivoPremiumShowcase/);
