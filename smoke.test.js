@@ -709,6 +709,21 @@ test('defines the VIVO AMIGO infrastructure status contract', () => {
   assert.match(infrastructure, /RENAP Guatemala API/);
 });
 
+test('defines security audit and finance reporting gates', () => {
+  const audit = fs.readFileSync(path.join(__dirname, 'services', 'securityAudit.ts'), 'utf8');
+  const script = fs.readFileSync(path.join(__dirname, 'scripts', 'security-audit.sh'), 'utf8');
+  const docs = fs.readFileSync(path.join(__dirname, 'docs', 'security-finance-gates.md'), 'utf8');
+  const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
+  assert.match(audit, /rawCardDataForbidden: true/);
+  assert.match(audit, /VISANET_NEONET/);
+  assert.match(script, /NEXT_PUBLIC_OPENAI_API_KEY/);
+  assert.match(script, /jsonLdSafe/);
+  assert.match(docs, /Zero-knowledge financial boundary/);
+  assert.match(schema, /gmv_reporting_daily/);
+  assert.match(schema, /escrow_reporting_snapshots/);
+  assert.match(schema, /vivo_assist_subscription_metrics/);
+});
+
 test('defines GuateVerify field inspection sealing gates', () => {
   const inspection = fs.readFileSync(path.join(__dirname, 'services', 'fieldInspection.ts'), 'utf8');
   assert.match(inspection, /FieldInspectionReport/);

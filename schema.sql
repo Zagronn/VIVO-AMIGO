@@ -215,6 +215,30 @@ CREATE TABLE IF NOT EXISTS ad_leads (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS gmv_reporting_daily (
+    report_date DATE PRIMARY KEY,
+    gross_merchandise_value_usd NUMERIC(18, 2) NOT NULL DEFAULT 0 CHECK (gross_merchandise_value_usd >= 0),
+    transaction_count INTEGER NOT NULL DEFAULT 0 CHECK (transaction_count >= 0),
+    platform_revenue_usd NUMERIC(18, 2) NOT NULL DEFAULT 0 CHECK (platform_revenue_usd >= 0),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS escrow_reporting_snapshots (
+    snapshot_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    captured_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    held_amount_gtq NUMERIC(18, 2) NOT NULL DEFAULT 0 CHECK (held_amount_gtq >= 0),
+    active_transaction_count INTEGER NOT NULL DEFAULT 0 CHECK (active_transaction_count >= 0),
+    released_amount_gtq NUMERIC(18, 2) NOT NULL DEFAULT 0 CHECK (released_amount_gtq >= 0)
+);
+
+CREATE TABLE IF NOT EXISTS vivo_assist_subscription_metrics (
+    metric_date DATE PRIMARY KEY,
+    active_subscriptions INTEGER NOT NULL DEFAULT 0 CHECK (active_subscriptions >= 0),
+    completed_requests INTEGER NOT NULL DEFAULT 0 CHECK (completed_requests >= 0),
+    gross_revenue_gtq NUMERIC(18, 2) NOT NULL DEFAULT 0 CHECK (gross_revenue_gtq >= 0),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS user_profile_badges (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
