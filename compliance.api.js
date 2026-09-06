@@ -1,5 +1,6 @@
 const crypto = require('node:crypto');
 const express = require('express');
+const { createIronShieldProtocol, createThreatGuard } = require('./services/ironShieldProtocol');
 
 const PRODUCTION_ORIGINS = {
   ecosystem: 'https://vivoamigo.com',
@@ -66,13 +67,28 @@ function createComplianceApp({
   verifySat = unavailableAdapter('SAT'),
   wallets = new Map(),
   walletTransactions = new Map(),
-  shipments = new Map()
+  shipments = new Map(),
+  ironShield = createIronShieldProtocol({ encryptionKey: process.env.VIVO_VAULT_KEY || 'local-development-vault-key-32-bytes!!' }),
+  onThreat = () => {}
 } = {}) {
   const app = express();
   app.use(corsWhitelist);
   app.use(express.json({ limit: '32kb' }));
+  app.use(createThreatGuard({ onThreat: (threat) => { ironShield.alerts.push(threat); onThreat(threat); } }));
 
   app.get('/health', (_request, response) => response.json({ service: 'veri-shield', status: 'ok' }));
+
+  app.get('/v1/security/management/alerts', (_request, response) => response.json({ alerts: ironShield.getManagementAlerts() }));
+  app.get('/v1/security/status', (_request, response) => response.json(ironShield.getSystemSecurityStatus()));
+
+  app.post('/v1/security/emergency-lock', (request, response, next) => {
+    try {
+      response.json(ironShield.triggerEmergencyLock(request.body?.triggeredBy));
+    } catch (error) {
+      error.statusCode = 400;
+      next(error);
+    }
+  });
 
   app.post('/v1/compliance/renap/verify', async (request, response, next) => {
     try {
@@ -80,6 +96,33 @@ function createComplianceApp({
       const result = await verifyRenap({ nationalId, fullName: request.body?.fullName });
       response.json({ provider: 'RENAP', verified: Boolean(result.verified), reference: result.reference ?? null });
     } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post('/v1/compliance/identity/register', (request, response, next) => {
+    try {
+      response.status(201).json(ironShield.registerIdentity(request.body || {}));
+    } catch (error) {
+      error.statusCode = error.statusCode || 409;
+      next(error);
+    }
+  });
+
+  app.post('/v1/check/otp/issue', (request, response, next) => {
+    try {
+      response.status(201).json(ironShield.issueOtp(request.body || {}));
+    } catch (error) {
+      error.statusCode = 400;
+      next(error);
+    }
+  });
+
+  app.post('/v1/check/otp/verify', (request, response, next) => {
+    try {
+      response.json(ironShield.verifyOtp(request.body || {}));
+    } catch (error) {
+      error.statusCode = 403;
       next(error);
     }
   });
@@ -113,6 +156,8 @@ function createComplianceApp({
       const existing = walletTransactions.get(transactionKey);
       if (existing) return response.json(existing);
       const holdAmount = amount(request.body?.amount);
+      const risk = ironShield.evaluateTransaction({ accountId: wallet.userId, amount: holdAmount });
+      if (!risk.allowed) throw Object.assign(new Error(risk.reason), { statusCode: 423, risk });
       if (wallet.availableBalance < holdAmount) throw Object.assign(new Error('insufficient available balance'), { statusCode: 409 });
       wallet.availableBalance -= holdAmount;
       wallet.heldBalance += holdAmount;

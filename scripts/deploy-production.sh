@@ -13,6 +13,7 @@ npm ci --no-audit --no-fund
 log 'Running application and security validation.'
 npm test
 npm run security:audit
+npm run security:pentest
 npm run check:mobile
 npm run check:native
 

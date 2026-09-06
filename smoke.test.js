@@ -6,6 +6,7 @@ const test = require('node:test');
 const { createComplianceApp } = require('./compliance.api');
 const { SwarmOrchestrator } = require('./agents.service');
 const { createLocalSqliteStore, createPosApp, generateQrPayload } = require('./vivopos.service');
+const { IsolatedVault, IronShieldProtocol, OTP_TTL_MS, evaluateTransactionRisk } = require('./services/ironShieldProtocol');
 
 async function request(app, path, body, method = 'POST', extraHeaders = {}) {
   const server = app.listen(0);
@@ -32,6 +33,47 @@ test('generates a signed, expiring QR payload', () => {
   const qr = generateQrPayload({ terminalId: 'T-1', amount: 12.5 }, 'test-secret');
   assert.match(qr.qrData, /^vivo:\/\/pay\/.+\..+$/);
   assert.ok(qr.expiresAt > Date.now());
+});
+
+test('enforces Iron Shield vault, identity, geofenced OTP, and anomaly freeze', () => {
+  let now = 1_700_000_000_000;
+  const protocol = new IronShieldProtocol({ vault: new IsolatedVault({ encryptionKey: 'test-vault-key-with-at-least-32-bytes' }), now: () => now });
+  const coordinates = { latitude: 14.6349, longitude: -90.5069 };
+  protocol.registerIdentity({ userId: 'user-1', nationalId: 'DPI-1', renapVerified: true, livenessVerified: true, biometricTemplate: 'biometric-template' });
+  assert.equal(protocol.vault.has('user-1', 'renap-biometric'), true);
+  assert.throws(() => protocol.registerIdentity({ userId: 'user-2', nationalId: 'DPI-1', renapVerified: true, livenessVerified: true, biometricTemplate: 'other-template' }), /duplicate identity/);
+  const challenge = protocol.issueOtp({ buyer: coordinates, seller: coordinates, code: '1234' });
+  assert.equal(challenge.expiresAt, now + OTP_TTL_MS);
+  assert.throws(() => protocol.verifyOtp({ challengeId: challenge.challengeId, code: '1234', buyer: coordinates, seller: { latitude: 14.7, longitude: -90.5 } }), /GPS/);
+  protocol.evaluateTransaction({ accountId: 'user-1', amount: 100 });
+  const anomaly = protocol.evaluateTransaction({ accountId: 'user-1', amount: 1001 });
+  assert.equal(anomaly.frozen, true);
+  assert.equal(protocol.getManagementAlerts()[0].type, 'TRANSACTION_ANOMALY');
+});
+
+test('locks escrow and OTP checks during a critical attack', () => {
+  const protocol = new IronShieldProtocol({ vault: new IsolatedVault({ encryptionKey: 'lock-test-vault-key-with-at-least-32-bytes' }) });
+  const status = protocol.triggerEmergencyLock('management-panel');
+  assert.equal(status.isEmergencyLockActive, true);
+  assert.equal(status.activeThreatLevel, 'CRITICAL_ATTACK');
+  assert.equal(status.vaultStatus, 'ISOLATED');
+  assert.equal(evaluateTransactionRisk(500_001, 50_000), true);
+  assert.throws(() => protocol.issueOtp({ buyer: { latitude: 14, longitude: -90 }, seller: { latitude: 14, longitude: -90 }, code: '1234' }), /emergency lock/);
+});
+
+test('defines the typed executive Iron Shield engine and protocol', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'vivoSecurityShieldEngine.ts'), 'utf8');
+  const protocol = fs.readFileSync(path.join(__dirname, 'docs', 'VIVO_IRON_SHIELD_PROTOCOL.md'), 'utf8');
+  const dashboard = fs.readFileSync(path.join(__dirname, 'components', 'VivoSecurityShieldDashboard.tsx'), 'utf8');
+  assert.match(engine, /export interface SystemSecurityStatus/);
+  assert.match(engine, /triggerEmergencyLock/);
+  assert.match(engine, /evaluateTransactionRisk/);
+  assert.match(engine, /CRITICAL_ATTACK/);
+  assert.match(protocol, /Zero-Trust Rules/);
+  assert.match(protocol, /Vault Isolation/);
+  assert.match(protocol, /120 seconds/);
+  assert.match(dashboard, /v1\/security\/emergency-lock/);
+  assert.match(dashboard, /VivoSecurityShieldDashboard/);
 });
 test('defines CARGO VIVO SOS fixed-price emergency assistance', () => {
   const sos = fs.readFileSync(path.join(__dirname, 'services', 'sosEmergency.ts'), 'utf8');

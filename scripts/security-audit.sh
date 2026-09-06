@@ -15,6 +15,10 @@ node --check public/app.js
 node --check compliance.api.js
 node --check vivopos.service.js
 node --check agents.service.js
+node --check services/ironShieldProtocol.js
+
+printf '[security] Running Iron Shield protocol penetration checks...\n'
+npm run security:pentest
 
 printf '[security] SQLi/XSS gate: parameterized server queries and escaped JSON-LD are required by source contracts.\n'
 grep -q 'encodeURIComponent(id)' 'app/listings/[id]/page.tsx'

@@ -1,4 +1,5 @@
 import React from 'react';
+import { VivoSecurityShieldDashboard } from './VivoSecurityShieldDashboard';
 
 export const VivoPremiumShowcase = () => (
   <div className="relative min-h-screen overflow-hidden bg-[#070312] font-sans text-white selection:bg-purple-500 selection:text-white">
@@ -13,6 +14,7 @@ export const VivoPremiumShowcase = () => (
         <article className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.02] p-8 backdrop-blur-xl transition-all duration-500 hover:border-purple-500/40 md:col-span-2"><div className="pointer-events-none absolute right-0 top-0 h-64 w-64 rounded-full bg-purple-500/10 blur-3xl transition-all duration-500 group-hover:bg-purple-500/20" /><span className="font-mono text-xs font-semibold uppercase tracking-wider text-purple-400">Garantía Escrow</span><h2 className="mb-3 mt-2 text-2xl font-bold text-white">VIVO-CHECK &amp; Depósito de Seguridad</h2><p className="mb-6 max-w-md text-sm leading-relaxed text-gray-400">El dinero permanece retenido en una cuenta escrow segura hasta que el comprador verifica y aprueba la entrega con código biométrico OTP.</p><div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0D061F] p-4 shadow-2xl"><div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-500/20 text-purple-300">Shield</span><div><p className="text-xs font-bold text-white">Estado de Fondos</p><p className="text-[10px] text-gray-400">Protegido por Escrow Automático</p></div></div><span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 font-mono text-xs font-bold text-emerald-400">Q2,500.00 Retenido</span></div></article>
         <article className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.02] p-8 backdrop-blur-xl transition-all duration-500 hover:border-purple-500/40"><span className="font-mono text-xs font-semibold uppercase tracking-wider text-purple-400">Auxilio Vial</span><h2 className="mb-3 mt-2 text-xl font-bold text-white">VIVO-ASSIST 24/7</h2><p className="mb-6 text-xs leading-relaxed text-gray-400">Asistencia inmediata en carretera con precio fijo transparente y rastreo GPS en tiempo real.</p><button type="button" className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3 text-xs font-bold text-white shadow-lg shadow-purple-600/30 transition-all hover:from-purple-500 hover:to-indigo-500">Solicitar Grúa / Auxilio</button></article>
       </div>
+      <VivoSecurityShieldDashboard />
     </main>
   </div>
 );
