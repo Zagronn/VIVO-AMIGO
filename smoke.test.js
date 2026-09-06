@@ -430,6 +430,19 @@ test('defines moderated VIVO-VOZ sandbox automation', () => {
   assert.match(automation, /authorBadge/);
 });
 
+test('defines the VIVO-VOZ self-evolving public engine and Devin prompt', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'vivoVozEngine.ts'), 'utf8');
+  const prompt = fs.readFileSync(path.join(__dirname, 'DEVIN_VOZ_PROMPT.md'), 'utf8');
+  const card = fs.readFileSync(path.join(__dirname, 'components', 'VivoVozFeedbackCard.tsx'), 'utf8');
+  assert.match(engine, /VIVO_VOZ_UPVOTE_THRESHOLD = 1000/);
+  assert.match(engine, /createSandboxAutomationPlan/);
+  assert.match(prompt, /1,000 upvotes/);
+  assert.match(prompt, /feature\/vivo-voz-\[requestId\]/);
+  assert.match(prompt, /VIVOAMIGOPAY/);
+  assert.match(prompt, /VIVO-CHECK/);
+  assert.match(card, /VivoVozFeedbackCard/);
+});
+
 test('defines tokenized card and DPI identity verification', () => {
   const card = fs.readFileSync(path.join(__dirname, 'services', 'cardVerification.ts'), 'utf8');
   assert.match(card, /CardVerificationRequest/);
