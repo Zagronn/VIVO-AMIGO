@@ -212,6 +212,29 @@ test('defines the complete specific agent registry and manifest', () => {
   assert.match(manifest, /## CYBER Fleet/);
   assert.match(manifest, /## ANALYTICS Fleet/);
 });
+
+test('defines fail-closed Cloudflare domain and FULL_STRICT TLS verification', () => {
+  const cloudflare = fs.readFileSync(path.join(__dirname, 'services', 'cloudflareDomainVerification.ts'), 'utf8');
+  assert.match(cloudflare, /interface DomainConfig/);
+  assert.match(cloudflare, /AWS_CLOUDFRONT/);
+  assert.match(cloudflare, /FULL_STRICT/);
+  assert.match(cloudflare, /76\.76\.21\.21/);
+  assert.match(cloudflare, /vivoamigo\.cloudfront\.net/);
+  assert.match(cloudflare, /Cloudflare API adapter is not configured/);
+  assert.match(cloudflare, /verifyCloudflareDomain/);
+});
+
+test('defines Agent 105 Cloudflare sync and setup guide', () => {
+  const sync = fs.readFileSync(path.join(__dirname, 'services', 'cloudflareDomainSync.ts'), 'utf8');
+  const guide = fs.readFileSync(path.join(__dirname, 'docs', 'CLOUDFLARE_DOMAIN_SETUP.md'), 'utf8');
+  assert.match(sync, /CLOUDFLARE_DOMAIN_AGENT_ID = 105/);
+  assert.match(sync, /syncCloudflareDomain/);
+  assert.match(sync, /verifyCloudflareDomain/);
+  assert.match(guide, /DNS Records/);
+  assert.match(guide, /Full \(strict\)/);
+  assert.match(guide, /Vercel Integration/);
+  assert.match(guide, /Agent #105/);
+});
 test('defines CARGO VIVO SOS fixed-price emergency assistance', () => {
   const sos = fs.readFileSync(path.join(__dirname, 'services', 'sosEmergency.ts'), 'utf8');
   assert.match(sos, /TOW_TRUCK/);
