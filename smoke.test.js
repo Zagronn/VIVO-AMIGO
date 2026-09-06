@@ -880,6 +880,16 @@ test('defines the 24-month ecosystem valuation projection', () => {
   assert.match(projection, /calculate24MonthValuation/);
 });
 
+test('defines the VIVO valuation dashboard', () => {
+  const dashboard = fs.readFileSync(path.join(__dirname, 'components', 'VivoValuationDashboard.tsx'), 'utf8');
+  assert.match(dashboard, /VivoValuationDashboard/);
+  assert.match(dashboard, /calculate24MonthValuation/);
+  assert.match(dashboard, /projectedGMV/);
+  assert.match(dashboard, /companyValuationMin/);
+  assert.match(dashboard, /VIVO-CHECK Safe Escrow Ready/);
+  assert.match(dashboard, /Security gates and evidence policy/);
+});
+
 test('defines the VIVO-HERO reward modal', () => {
   const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoHeroRewardModal.tsx'), 'utf8');
   assert.match(modal, /VivoHeroRewardModal/);
