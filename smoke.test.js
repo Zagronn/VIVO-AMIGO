@@ -274,6 +274,29 @@ test('defines the interactive VERI-SHIELD fair price engine', () => {
   assert.match(engine, /kampanya koşullarına tabidir/);
 });
 
+test('defines the tabbed bank and telecom partnership proposal', () => {
+  const proposal = fs.readFileSync(path.join(__dirname, 'components', 'BankPartnershipProposal.tsx'), 'utf8');
+  assert.match(proposal, /BankPartnershipProposal/);
+  assert.match(proposal, /Banco Industrial/);
+  assert.match(proposal, /Tigo Money/);
+  assert.match(proposal, /payvivoamigo\.com/);
+  assert.match(proposal, /aria-pressed/);
+  assert.match(proposal, /sujeta a aprobación/);
+});
+
+test('routes and documents institutional partnership pitch decks', () => {
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'partnerships', 'page.tsx'), 'utf8');
+  const banco = fs.readFileSync(path.join(__dirname, 'docs', 'INSTITUTIONAL_PITCH_BANCO_INDUSTRIAL.md'), 'utf8');
+  const tigo = fs.readFileSync(path.join(__dirname, 'docs', 'INSTITUTIONAL_PITCH_TIGO.md'), 'utf8');
+  assert.match(route, /BankPartnershipProposal/);
+  assert.match(banco, /API Specification/);
+  assert.match(banco, /Zero-Budget Barter Terms/);
+  assert.match(banco, /Banco Industrial/);
+  assert.match(tigo, /API Specification/);
+  assert.match(tigo, /Zero-Budget Barter Terms/);
+  assert.match(tigo, /Tigo Money/);
+});
+
 test('routes and documents the VERI-SHIELD fair-price engine', () => {
   const route = fs.readFileSync(path.join(__dirname, 'app', 'fair-price', 'page.tsx'), 'utf8');
   const spec = fs.readFileSync(path.join(__dirname, 'docs', 'VERI_SHIELD_SPEC.md'), 'utf8');
