@@ -590,6 +590,17 @@ test('defines the VIVO AMIGO infrastructure status contract', () => {
   assert.match(infrastructure, /RENAP Guatemala API/);
 });
 
+test('defines GuateVerify field inspection sealing gates', () => {
+  const inspection = fs.readFileSync(path.join(__dirname, 'services', 'fieldInspection.ts'), 'utf8');
+  assert.match(inspection, /FieldInspectionReport/);
+  assert.match(inspection, /vehiclePaintThicknessOk/);
+  assert.match(inspection, /obdDiagnosticsPassed/);
+  assert.match(inspection, /tamperProofQrIssued/);
+  assert.match(inspection, /APPROVED_SEALED/);
+  assert.match(inspection, /REJECTED/);
+  assert.match(inspection, /issueVivoVerifySeal/);
+});
+
 test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
