@@ -614,6 +614,17 @@ test('defines system architecture, VIVO-VERIFY engine, and admin status badge', 
   assert.match(badge, /GuateVerify sealed/);
 });
 
+test('defines CARGO VIVO fleet telematics safety controls', () => {
+  const fleet = fs.readFileSync(path.join(__dirname, 'services', 'fleetTelematics.ts'), 'utf8');
+  assert.match(fleet, /TRUCK_HEAVY/);
+  assert.match(fleet, /REFLECTIVE_VINYL_APPLIED/);
+  assert.match(fleet, /processVehicleTelematics/);
+  assert.match(fleet, /currentSpeedKmh > maxSpeedLimitKmh/);
+  assert.match(fleet, /safetyScore - 5/);
+  assert.match(fleet, /Transportamos Vidas/);
+  assert.match(fleet, /CARGO VIVO/);
+});
+
 test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
