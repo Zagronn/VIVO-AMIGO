@@ -371,6 +371,17 @@ test('defines the VIVO AMIGO master launch blueprint', () => {
   assert.match(blueprint, /server-side/);
 });
 
+test('defines the official VIVO AMIGO master plan', () => {
+  const plan = fs.readFileSync(path.join(__dirname, 'docs', 'MASTER_PLAN.md'), 'utf8');
+  assert.match(plan, /VIVO-CHECK/);
+  assert.match(plan, /CARGO VIVO/);
+  assert.match(plan, /VIVO-ASSIST/);
+  assert.match(plan, /GuateVerify/);
+  assert.match(plan, /VIVOAMIGOPAY/);
+  assert.match(plan, /12-week roadmap/);
+  assert.match(plan, /Release gates/);
+});
+
 test('defines tokenized card and DPI identity verification', () => {
   const card = fs.readFileSync(path.join(__dirname, 'services', 'cardVerification.ts'), 'utf8');
   assert.match(card, /CardVerificationRequest/);
