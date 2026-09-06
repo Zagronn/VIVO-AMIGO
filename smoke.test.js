@@ -171,6 +171,17 @@ test('keeps the Spanish Llevamos Vidas campaign branding consistent', () => {
   assert.match(modal, /Llevamos Vidas/);
   assert.doesNotMatch(script, /Can Taşıyoruz|Llevamos Confianza/);
 });
+
+test('defines the VIVO AMIGO marketplace showcase landing', () => {
+  const landing = fs.readFileSync(path.join(__dirname, 'components', 'VivoShowcaseLanding.tsx'), 'utf8');
+  const page = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
+  assert.match(landing, /VivoShowcaseLanding/);
+  assert.match(landing, /Llevamos Vidas/);
+  assert.match(landing, /VIVO-CHECK/);
+  assert.match(landing, /VIVO-ASSIST/);
+  assert.match(landing, /SAT\/PNC/);
+  assert.match(page, /VivoShowcaseLanding/);
+});
 test('defines CARGO VIVO SOS fixed-price emergency assistance', () => {
   const sos = fs.readFileSync(path.join(__dirname, 'services', 'sosEmergency.ts'), 'utf8');
   assert.match(sos, /TOW_TRUCK/);
@@ -922,7 +933,7 @@ test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
   assert.match(home, /export default function HomePage/);
-  assert.match(home, /VivoPremiumShowcase/);
+  assert.match(home, /VivoShowcaseLanding/);
   assert.match(listing, /export default async function ListingPage/);
   assert.match(listing, /dynamicParams = true/);
 });
@@ -1080,7 +1091,7 @@ test('defines the premium Vivo showcase', () => {
 test('uses the premium showcase as the root landing page', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const design = fs.readFileSync(path.join(__dirname, 'docs', 'DESIGN_AGENT.md'), 'utf8');
-  assert.match(home, /VivoPremiumShowcase/);
+  assert.match(home, /VivoShowcaseLanding/);
   assert.match(design, /bento grids/i);
   assert.match(design, /Glass/);
   assert.match(design, /VIVO-CHECK/);

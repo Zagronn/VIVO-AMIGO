@@ -1,5 +1,5 @@
-import { VivoPremiumShowcase } from '../components/VivoPremiumShowcase';
+import { VivoShowcaseLanding } from '../components/VivoShowcaseLanding';
 
 export default function HomePage() {
-  return <VivoPremiumShowcase />;
+  return <VivoShowcaseLanding />;
 }

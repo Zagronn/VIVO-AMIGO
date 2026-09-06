@@ -7,8 +7,13 @@ CREATE TABLE IF NOT EXISTS users (
     full_name TEXT NOT NULL,
     email TEXT UNIQUE,
     role TEXT NOT NULL DEFAULT 'vendor' CHECK (role IN ('customer', 'vendor', 'admin')),
+    commission_rate NUMERIC(6, 5) NOT NULL DEFAULT 0.035 CHECK (commission_rate BETWEEN 0 AND 1),
+    doping_credits INTEGER NOT NULL DEFAULT 0 CHECK (doping_credits >= 0),
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS commission_rate NUMERIC(6, 5) NOT NULL DEFAULT 0.035;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS doping_credits INTEGER NOT NULL DEFAULT 0;
 
 CREATE TABLE IF NOT EXISTS categories (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
