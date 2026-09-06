@@ -601,6 +601,19 @@ test('defines GuateVerify field inspection sealing gates', () => {
   assert.match(inspection, /issueVivoVerifySeal/);
 });
 
+test('defines system architecture, VIVO-VERIFY engine, and admin status badge', () => {
+  const architecture = fs.readFileSync(path.join(__dirname, 'services', 'systemArchitecture.ts'), 'utf8');
+  const verify = fs.readFileSync(path.join(__dirname, 'services', 'vivoVerifyEngine.ts'), 'utf8');
+  const badge = fs.readFileSync(path.join(__dirname, 'components', 'AdminInspectionStatusBadge.tsx'), 'utf8');
+  assert.match(architecture, /roadmapWeeks: 12/);
+  assert.match(architecture, /Cloudflare Workers \/ D1 \/ KV \/ R2 \/ Vectorize/);
+  assert.match(verify, /issueMotorizedVivoVerifySeal/);
+  assert.match(verify, /qrVerificationUrl/);
+  assert.match(verify, /APPROVED_SEALED/);
+  assert.match(badge, /AdminInspectionStatusBadge/);
+  assert.match(badge, /GuateVerify sealed/);
+});
+
 test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
