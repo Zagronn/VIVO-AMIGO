@@ -417,6 +417,19 @@ test('defines the VIVO-VOZ community feedback card', () => {
   assert.match(voz, /role="alert"/);
 });
 
+test('defines moderated VIVO-VOZ sandbox automation', () => {
+  const automation = fs.readFileSync(path.join(__dirname, 'services', 'communityAutomation.ts'), 'utf8');
+  assert.match(automation, /moderateCommunityRequest/);
+  assert.match(automation, /BLOCKED_TERMS/);
+  assert.match(automation, /SPAM_PATTERN/);
+  assert.match(automation, /upvotesCount < 1000/);
+  assert.match(automation, /feature\/vivo-voz/);
+  assert.match(automation, /run_unit_tests/);
+  assert.match(automation, /run_security_scan/);
+  assert.match(automation, /VIVO_CHECK_ESCROW/);
+  assert.match(automation, /authorBadge/);
+});
+
 test('defines tokenized card and DPI identity verification', () => {
   const card = fs.readFileSync(path.join(__dirname, 'services', 'cardVerification.ts'), 'utf8');
   assert.match(card, /CardVerificationRequest/);
