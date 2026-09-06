@@ -57,11 +57,11 @@ test('defines the VIVO-ASSIST SOS assistance modal', () => {
 
 test('integrates VIVO-ASSIST into the main showcase', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'vivoAssistEngine.ts'), 'utf8');
-  const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
+  const showcase = fs.readFileSync(path.join(__dirname, 'components', 'VivoPremiumShowcase.tsx'), 'utf8');
   assert.match(engine, /calculateFixedAssistPrice/);
   assert.match(engine, /dispatchEmergencyAssist/);
   assert.match(engine, /Fixed distance pricing/);
-  assert.match(home, /VivoAssistSosModal/);
+  assert.match(showcase, /VIVO-ASSIST 24\/7/);
 });
 
 test('initializes and dispatches the configured 35-agent swarm', async () => {
@@ -661,7 +661,6 @@ test('defines the marketplace category bar', () => {
   assert.match(categories, /overflow-x-auto/);
   assert.match(categories, /Categorías del marketplace/);
   assert.match(categories, /Escrow Seguro/);
-  assert.match(fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8'), /CategoryBar/);
 });
 
 test('defines the VIVO-CHECK secure on-site verification flow', () => {
@@ -756,10 +755,7 @@ test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
   assert.match(home, /export default function HomePage/);
-  assert.match(home, /Ofertas de Hoy en Tu Zona/);
-  assert.match(home, /Remates de Hoy \(Ofertas con Escrow\)/);
-  assert.match(home, /VEHICLES/);
-  assert.match(home, /REAL_ESTATE/);
+  assert.match(home, /VivoPremiumShowcase/);
   assert.match(listing, /export default async function ListingPage/);
   assert.match(listing, /dynamicParams = true/);
 });
@@ -786,7 +782,6 @@ test('defines the VIVO POS Amazon-style hero theme', () => {
   assert.match(hero, /VIVO-CHECK Escrow/);
   assert.match(hero, /Visanet\/NeoNet/);
   assert.match(hero, /VIVO APP STORE/);
-  assert.match(fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8'), /PosHeroTheme/);
 });
 
 test('defines the premium Vivo showcase', () => {
@@ -797,6 +792,16 @@ test('defines the premium Vivo showcase', () => {
   assert.match(showcase, /bg-gradient-to-b/);
   assert.match(showcase, /backdrop-blur-xl/);
   assert.match(showcase, /Ecosistema Digital de Guatemala/);
+});
+
+test('uses the premium showcase as the root landing page', () => {
+  const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
+  const design = fs.readFileSync(path.join(__dirname, 'docs', 'DESIGN_AGENT.md'), 'utf8');
+  assert.match(home, /VivoPremiumShowcase/);
+  assert.match(design, /bento grids/i);
+  assert.match(design, /Glass/);
+  assert.match(design, /VIVO-CHECK/);
+  assert.match(design, /raw card data/);
 });
 
 test('defines the escrow transaction fee API contract', () => {
