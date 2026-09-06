@@ -625,6 +625,16 @@ test('defines CARGO VIVO fleet telematics safety controls', () => {
   assert.match(fleet, /CARGO VIVO/);
 });
 
+test('defines the CARGO VIVO driver verification card', () => {
+  const card = fs.readFileSync(path.join(__dirname, 'components', 'DriverQrVerificationCard.tsx'), 'utf8');
+  assert.match(card, /DriverQrVerificationCard/);
+  assert.match(card, /Transportamos Vidas/);
+  assert.match(card, /Conductor Verificado por DPI/);
+  assert.match(card, /rastreo GPS en tiempo real/);
+  assert.match(card, /safeSafetyScore/);
+  assert.match(card, /safeDeliveryCount/);
+});
+
 test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
