@@ -10,7 +10,7 @@ Build and maintain:
 - **VIVOAMIGOPAY:** tokenized payments, bid holds, Smart Escrow, settlement, refunds, and disputes.
 - **CARGO VIVO:** carrier delivery, GPS/fleet telematics, driver safety, VIVO-ASSIST roadside help, and delivery evidence.
 - **VERI-SHIELD:** RENAP/DPI, NIT, corporate verification, blacklist risk, document review, and audit controls.
-- **GuateVerify:** motorized field inspection, diagnostic checks, tamper-proof QR sealing, and admin review.
+- **VIVO-VERIFY:** motorized field inspection, diagnostic checks, tamper-proof QR sealing, and admin review.
 
 ## Technical architecture
 

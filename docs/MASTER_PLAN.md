@@ -47,7 +47,7 @@ This plan defines technical controls and measurable workflows. It does not claim
 
 Prices are calculated server-side and rounded to whole GTQ. Distance, coordinates, user ID, and issue type are validated before dispatch.
 
-## GuateVerify and inspection
+## VIVO-VERIFY and inspection
 
 High-value vehicle, machinery, and industrial equipment listings can receive a motorized field inspection. Required gates are paint thickness, OBD diagnostics, and tamper-proof QR issuance. Approved reports receive an `APPROVED_SEALED` status and canonical verification URL; failed reports are `REJECTED`.
 
@@ -88,10 +88,10 @@ Canonical high-intent pages include rentals in Zone 10, affordable used vehicles
 ## 12-week roadmap
 
 1. **Weeks 1-2:** Corporate verification, KYC, admin roles, consent, audit events.
-2. **Weeks 3-4:** Construction equipment pilot, GuateVerify field operations, inspection QR/PDF.
+2. **Weeks 3-4:** Construction equipment pilot, VIVO-VERIFY field operations, inspection QR/PDF.
 3. **Weeks 5-6:** VIVOAMIGOPAY escrow, signed contracts, CARGO delivery and release gates.
 4. **Weeks 7-8:** Fleet telematics, VIVO-ASSIST, driver QR verification, carrier integrations.
-5. **Weeks 9-10:** B2B supplier matching, GuateFinance referral packets, analytics with privacy controls.
+5. **Weeks 9-10:** B2B supplier matching, payvivoamigo.com referral packets, analytics with privacy controls.
 6. **Weeks 11-12:** Vehicle/real-estate expansion, SEO scale-up, regional rollout readiness.
 
 ## Release gates

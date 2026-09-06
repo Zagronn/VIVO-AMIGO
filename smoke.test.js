@@ -247,6 +247,22 @@ test('routes the executive dashboard through the admin App Router page', () => {
   assert.match(dashboardPage, /<VivoAdminDashboard \/>/);
 });
 
+test('defines the API-backed VivoWallet system', () => {
+  const wallet = fs.readFileSync(path.join(__dirname, 'components', 'VivoWalletSystem.tsx'), 'utf8');
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'wallet', 'page.tsx'), 'utf8');
+  const prompt = fs.readFileSync(path.join(__dirname, 'docs', 'DEVI_TASKS_PROMPT.md'), 'utf8');
+  assert.match(wallet, /VivoWalletSystem/);
+  assert.match(wallet, /payvivoamigo\.com/);
+  assert.match(wallet, /VIVO-CHECK/);
+  assert.match(wallet, /v1\/promotions\/social-share/);
+  assert.match(wallet, /freeDopingCreditsGranted/);
+  assert.doesNotMatch(wallet, /setTimeout/);
+  assert.match(route, /VivoWalletSystem/);
+  assert.match(prompt, /vivoamigo\.com/);
+  assert.match(prompt, /payvivoamigo\.com/);
+  assert.match(prompt, /cargovivo\.com/);
+});
+
 test('defines Agent 105 Cloudflare sync and setup guide', () => {
   const sync = fs.readFileSync(path.join(__dirname, 'services', 'cloudflareDomainSync.ts'), 'utf8');
   const guide = fs.readFileSync(path.join(__dirname, 'docs', 'CLOUDFLARE_DOMAIN_SETUP.md'), 'utf8');
@@ -593,9 +609,9 @@ test('defines the VIVO AMIGO master launch blueprint', () => {
   const blueprint = fs.readFileSync(path.join(__dirname, 'docs', 'master-blueprint.md'), 'utf8');
   assert.match(blueprint, /Guatemala City/);
   assert.match(blueprint, /Construction and industrial equipment/);
-  assert.match(blueprint, /GuateVerify/);
+  assert.match(blueprint, /VIVO-VERIFY/);
   assert.match(blueprint, /AI-Legal/);
-  assert.match(blueprint, /GuateFinance/);
+  assert.match(blueprint, /payvivoamigo\.com finance referrals/);
   assert.match(blueprint, /QR street signage/);
   assert.match(blueprint, /server-side/);
 });
@@ -605,7 +621,7 @@ test('defines the official VIVO AMIGO master plan', () => {
   assert.match(plan, /VIVO-CHECK/);
   assert.match(plan, /CARGO VIVO/);
   assert.match(plan, /VIVO-ASSIST/);
-  assert.match(plan, /GuateVerify/);
+  assert.match(plan, /VIVO-VERIFY/);
   assert.match(plan, /VIVOAMIGOPAY/);
   assert.match(plan, /12-week roadmap/);
   assert.match(plan, /Release gates/);
@@ -949,7 +965,7 @@ test('defines security audit and finance reporting gates', () => {
   assert.match(schema, /vivo_assist_subscription_metrics/);
 });
 
-test('defines GuateVerify field inspection sealing gates', () => {
+test('defines VIVO-VERIFY field inspection sealing gates', () => {
   const inspection = fs.readFileSync(path.join(__dirname, 'services', 'fieldInspection.ts'), 'utf8');
   assert.match(inspection, /FieldInspectionReport/);
   assert.match(inspection, /vehiclePaintThicknessOk/);
@@ -970,7 +986,7 @@ test('defines system architecture, VIVO-VERIFY engine, and admin status badge', 
   assert.match(verify, /qrVerificationUrl/);
   assert.match(verify, /APPROVED_SEALED/);
   assert.match(badge, /AdminInspectionStatusBadge/);
-  assert.match(badge, /GuateVerify sealed/);
+  assert.match(badge, /VIVO-VERIFY sealed/);
 });
 
 test('defines CARGO VIVO fleet telematics safety controls', () => {

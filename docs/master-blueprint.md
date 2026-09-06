@@ -8,7 +8,7 @@
 
 ## Product pillars
 
-### GuateVerify field operations
+### VIVO-VERIFY field operations
 
 Create inspection jobs for high-value machinery, vehicles, and equipment. A verified field operator records identity, GPS/time evidence, photos, inspection score, seal serial, and chain-of-custody events. The UI may show “physically inspected” only after an approved report exists. Never imply that a sticker or inspection replaces a government title, notarial act, or professional appraisal.
 
@@ -16,7 +16,7 @@ Create inspection jobs for high-value machinery, vehicles, and equipment. A veri
 
 Generate draft contracts from approved transaction facts, version every document, capture buyer/seller signatures, and preserve immutable hashes plus timestamps. Legal providers and notaries remain the source of legal validity. Blockchain anchoring is an optional evidence layer, not a claim that a platform record is automatically a court judgment.
 
-### GuateFinance referrals
+### payvivoamigo.com finance referrals
 
 Build an opt-in business reputation packet from consented platform history: verified age, successful completed transactions, dispute rate, escrow settlements, and corporate verification state. Share only with the company and an authorized bank/financing partner. VIVO AMIGO must not make an unlicensed lending decision or expose private financial data.
 
@@ -31,7 +31,7 @@ Create signed listing QR codes that resolve to the canonical listing URL, show v
 ## Delivery phases
 
 1. **Trust foundation:** corporate verification, property documents, inspection reports, KYC, blacklist guard, escrow state machine, admin audit.
-2. **Guatemala City construction pilot:** verified equipment listings, GuateVerify field jobs, CARGO delivery, Q50 seller subscriptions, and VIVOAMIGOPAY settlement.
+2. **Guatemala City construction pilot:** verified equipment listings, VIVO-VERIFY field jobs, CARGO delivery, Q50 seller subscriptions, and payvivoamigo.com settlement.
 3. **B2B network:** supplier profiles, purchase requests, approved lead matching, bank referral packets, and inventory/demand analytics.
 4. **Vehicle and real estate expansion:** notarized evidence, title/gravamen review, financing referrals, and higher-value escrow controls.
 5. **Regional logistics:** CARGO VIVO delivery coverage, carrier integrations, scan events, dispute workflows, and payout release evidence.
