@@ -795,6 +795,16 @@ test('defines user critique routing for Devin and Carlos approval', () => {
   assert.match(critique, /processUserCritique/);
 });
 
+test('defines the VIVO-CRITIQUE self-healing feedback modal', () => {
+  const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoCritiqueModal.tsx'), 'utf8');
+  assert.match(modal, /VivoCritiqueModal/);
+  assert.match(modal, /onSubmitCritique/);
+  assert.match(modal, /ANALYZING_BY_DEVIN/);
+  assert.match(modal, /HOTFIX_DEPLOYED/);
+  assert.match(modal, /Sistema Self-Healing/);
+  assert.match(modal, /role="alert"/);
+});
+
 test('defines the premium Vivo showcase', () => {
   const showcase = fs.readFileSync(path.join(__dirname, 'components', 'VivoPremiumShowcase.tsx'), 'utf8');
   assert.match(showcase, /VivoPremiumShowcase/);
