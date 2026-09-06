@@ -816,6 +816,20 @@ test('defines the daily strategic AI report', () => {
   assert.match(report, /NEEDS_CARLOS_APPROVAL/);
 });
 
+test('defines the VIVO-CRITIQUE self-healing engine and report template', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'vivoCritiqueEngine.ts'), 'utf8');
+  const template = fs.readFileSync(path.join(__dirname, 'docs', 'DAILY_STRATEGIC_REPORT_TEMPLATE.md'), 'utf8');
+  assert.match(engine, /routeCritiqueToDevin/);
+  assert.match(engine, /inferSentiment/);
+  assert.match(engine, /DEVIN_HOTFIX/);
+  assert.match(engine, /CARLOS_APPROVAL/);
+  assert.match(engine, /production release remains gated/);
+  assert.match(template, /System Health Score/);
+  assert.match(template, /Auto-Patched Code/);
+  assert.match(template, /NEEDS_CARLOS_APPROVAL/);
+  assert.match(template, /Privacy and Security/);
+});
+
 test('defines the premium Vivo showcase', () => {
   const showcase = fs.readFileSync(path.join(__dirname, 'components', 'VivoPremiumShowcase.tsx'), 'utf8');
   assert.match(showcase, /VivoPremiumShowcase/);
