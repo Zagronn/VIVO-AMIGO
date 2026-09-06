@@ -869,6 +869,17 @@ test('defines the VIVO-HERO engine and Devin reward prompt', () => {
   assert.match(modal, /VivoHeroRewardModal/);
 });
 
+test('defines the 24-month ecosystem valuation projection', () => {
+  const projection = fs.readFileSync(path.join(__dirname, 'services', 'ecosystemProjection.ts'), 'utf8');
+  assert.match(projection, /EcosystemProjection24M/);
+  assert.match(projection, /ANNUAL_GMV_USD = 200_000_000/);
+  assert.match(projection, /AVERAGE_COMMISSION_RATE = 0\.035/);
+  assert.match(projection, /companyValuationMin/);
+  assert.match(projection, /companyValuationMax/);
+  assert.match(projection, /PROJECTED_FLEET_SIZE = 750/);
+  assert.match(projection, /calculate24MonthValuation/);
+});
+
 test('defines the VIVO-HERO reward modal', () => {
   const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoHeroRewardModal.tsx'), 'utf8');
   assert.match(modal, /VivoHeroRewardModal/);
