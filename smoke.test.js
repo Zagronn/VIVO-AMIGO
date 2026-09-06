@@ -568,6 +568,16 @@ test('defines the VIVO-CHECK secure on-site verification flow', () => {
   assert.match(vivoCheck, /Math\.floor\(1000/);
 });
 
+test('defines the VIVO-CHECK modal UI', () => {
+  const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoCheckModal.tsx'), 'utf8');
+  assert.match(modal, /VivoCheckModal/);
+  assert.match(modal, /onGenerateCode/);
+  assert.match(modal, /VIVO-\\d\{4\}-GT/);
+  assert.match(modal, /VIVO-CHECK/);
+  assert.match(modal, /Garantía Notarial y Bancaria/);
+  assert.match(modal, /role="alert"/);
+});
+
 test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
