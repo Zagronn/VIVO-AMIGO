@@ -447,6 +447,20 @@ test('defines the VIVO-VOZ self-evolving public engine and Devin prompt', () => 
   assert.match(card, /VivoVozFeedbackCard/);
 });
 
+test('defines deployed community reward automation', () => {
+  const automation = fs.readFileSync(path.join(__dirname, 'services', 'communityRewardAutomation.ts'), 'utf8');
+  const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
+  assert.match(automation, /DEPLOYED_LIVE/);
+  assert.match(automation, /user_profile_badges/);
+  assert.match(automation, /wallet_rewards/);
+  assert.match(automation, /public_changelog/);
+  assert.match(automation, /notifications\.push/);
+  assert.match(automation, /notifications\.email/);
+  assert.match(automation, /community_reward_events/);
+  assert.match(schema, /CREATE TABLE IF NOT EXISTS user_profile_badges/);
+  assert.match(schema, /CREATE TABLE IF NOT EXISTS public_changelog/);
+});
+
 test('defines tokenized card and DPI identity verification', () => {
   const card = fs.readFileSync(path.join(__dirname, 'services', 'cardVerification.ts'), 'utf8');
   assert.match(card, /CardVerificationRequest/);

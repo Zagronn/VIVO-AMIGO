@@ -215,6 +215,42 @@ CREATE TABLE IF NOT EXISTS ad_leads (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS user_profile_badges (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    badge_code TEXT NOT NULL,
+    source_event_id TEXT NOT NULL,
+    awarded_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (user_id, badge_code)
+);
+
+CREATE TABLE IF NOT EXISTS wallet_rewards (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    reward_type TEXT NOT NULL CHECK (reward_type IN ('LISTING_DOPING_CREDIT', 'ESCROW_COMMISSION_DISCOUNT_50')),
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    source_event_id TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    ,UNIQUE (user_id, reward_type, source_event_id)
+);
+
+CREATE TABLE IF NOT EXISTS community_reward_events (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    event_id TEXT UNIQUE NOT NULL,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    source TEXT NOT NULL CHECK (source IN ('VIVO_CRITIQUE', 'VIVO_VOZ')),
+    status TEXT NOT NULL CHECK (status = 'DEPLOYED_LIVE'),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS public_changelog (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    source_event_id TEXT UNIQUE NOT NULL,
+    message TEXT NOT NULL,
+    author_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    published_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS job_escrow_closures (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     job_listing_id UUID NOT NULL REFERENCES job_listings(id) ON DELETE CASCADE,
