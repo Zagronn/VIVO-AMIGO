@@ -830,6 +830,17 @@ test('defines the VIVO-CRITIQUE self-healing engine and report template', () => 
   assert.match(template, /Privacy and Security/);
 });
 
+test('defines community hero rewards for critiques and VIVO-VOZ features', () => {
+  const rewards = fs.readFileSync(path.join(__dirname, 'services', 'heroRewards.ts'), 'utf8');
+  assert.match(rewards, /HeroReward/);
+  assert.match(rewards, /BUG_HUNTER/);
+  assert.match(rewards, /VIVO_HERO_GOLD/);
+  assert.match(rewards, /freeDopingCredits: 1/);
+  assert.match(rewards, /commissionDiscountPercentage: 50/);
+  assert.match(rewards, /priorityVerifyAccess: true/);
+  assert.match(rewards, /awardHeroUser/);
+});
+
 test('defines the premium Vivo showcase', () => {
   const showcase = fs.readFileSync(path.join(__dirname, 'components', 'VivoPremiumShowcase.tsx'), 'utf8');
   assert.match(showcase, /VivoPremiumShowcase/);
