@@ -777,6 +777,17 @@ test('defines VIVO AMIGO Guatemala metadata and root layout', () => {
   assert.equal(fs.existsSync(path.join(__dirname, 'app', 'globals.css')), true);
 });
 
+test('defines the VIVO POS Amazon-style hero theme', () => {
+  const hero = fs.readFileSync(path.join(__dirname, 'components', 'PosHeroTheme.tsx'), 'utf8');
+  assert.match(hero, /PosHeroTheme/);
+  assert.match(hero, /bg-vivo-gradient/);
+  assert.match(hero, /bg-vivo-neon-glow/);
+  assert.match(hero, /5,800\+ Merchants in Guatemala/);
+  assert.match(hero, /VIVO-CHECK Escrow/);
+  assert.match(hero, /Visanet\/NeoNet/);
+  assert.match(hero, /VIVO APP STORE/);
+});
+
 test('defines the escrow transaction fee API contract', () => {
   const engine = fs.readFileSync(path.join(__dirname, 'services', 'commissionEngine.ts'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'transactions', 'route.ts'), 'utf8');
