@@ -224,6 +224,29 @@ test('defines fail-closed Cloudflare domain and FULL_STRICT TLS verification', (
   assert.match(cloudflare, /verifyCloudflareDomain/);
 });
 
+test('defines the executive admin dashboard with live emergency lock controls', () => {
+  const dashboard = fs.readFileSync(path.join(__dirname, 'components', 'VivoAdminDashboard.tsx'), 'utf8');
+  assert.match(dashboard, /VivoAdminDashboard/);
+  assert.match(dashboard, /v1\/security\/status/);
+  assert.match(dashboard, /v1\/security\/emergency-lock/);
+  assert.match(dashboard, /Llevamos Vidas, Transportamos Confianza/);
+  assert.match(dashboard, /250 agentes registrados/);
+  assert.match(dashboard, /VIVO-CHECK/);
+  assert.match(dashboard, /VIVO-VERIFY/);
+  assert.match(dashboard, /VIVO-VIRAL/);
+});
+
+test('routes the executive dashboard through the admin App Router page', () => {
+  const page = fs.readFileSync(path.join(__dirname, 'app', 'admin', 'page.tsx'), 'utf8');
+  const dashboardPage = fs.readFileSync(path.join(__dirname, 'app', 'admin', 'dashboard', 'page.tsx'), 'utf8');
+  assert.match(page, /import \{ VivoAdminDashboard \} from '@\/components\/VivoAdminDashboard'/);
+  assert.match(page, /export default function AdminDashboardPage/);
+  assert.match(page, /<VivoAdminDashboard \/>/);
+  assert.match(dashboardPage, /import \{ VivoAdminDashboard \} from '@\/components\/VivoAdminDashboard'/);
+  assert.match(dashboardPage, /export default function AdminDashboardPage/);
+  assert.match(dashboardPage, /<VivoAdminDashboard \/>/);
+});
+
 test('defines Agent 105 Cloudflare sync and setup guide', () => {
   const sync = fs.readFileSync(path.join(__dirname, 'services', 'cloudflareDomainSync.ts'), 'utf8');
   const guide = fs.readFileSync(path.join(__dirname, 'docs', 'CLOUDFLARE_DOMAIN_SETUP.md'), 'utf8');
