@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const PosHeroTheme = () => (
-  <main className="flex min-h-screen flex-col items-center justify-center bg-vivo-dark bg-vivo-gradient p-8 font-sans text-white">
+  <section className="flex min-h-screen flex-col items-center justify-center bg-vivo-dark bg-vivo-gradient p-8 font-sans text-white" aria-label="VIVO POS showcase">
     <header className="flex w-full max-w-6xl items-center justify-between border-b border-vivo-violet/20 py-4">
       <a href="/" className="flex items-center gap-2" aria-label="vivoamigo POS home">
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-vivo-blue to-vivo-neon text-sm font-black text-white shadow-lg shadow-vivo-violet/50">V</span>
@@ -26,5 +26,5 @@ export const PosHeroTheme = () => (
 
       <div className="relative flex justify-center"><div className="absolute -inset-4 bg-vivo-neon-glow opacity-70 blur-2xl" /><div className="relative w-full max-w-sm rounded-3xl border border-vivo-violet/30 bg-vivo-surface p-6 shadow-2xl backdrop-blur-xl"><div className="mb-4 flex items-center justify-between"><span className="font-mono text-[10px] text-gray-400">Profit And Loss</span><span className="text-xs font-black text-[#25D366]">+18.4%</span></div><p className="text-2xl font-black text-white">Q682.50 GTQ</p><p className="mb-4 text-[10px] text-gray-400">From 1 Day</p><div className="space-y-2 rounded-xl border border-vivo-violet/20 bg-vivo-dark/80 p-4"><div className="flex justify-between text-xs"><span className="text-gray-400">Quick Transfer</span><span className="font-bold text-vivo-neon">VIVO-CHECK</span></div><div className="flex items-center justify-between rounded-lg border border-vivo-violet/30 bg-vivo-surface p-2 text-xs"><span className="text-gray-300">Enter Amount</span><span className="font-mono font-bold text-white">Q1,240.00</span></div></div></div></div>
     </section>
-  </main>
+  </section>
 );

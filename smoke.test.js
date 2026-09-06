@@ -786,6 +786,7 @@ test('defines the VIVO POS Amazon-style hero theme', () => {
   assert.match(hero, /VIVO-CHECK Escrow/);
   assert.match(hero, /Visanet\/NeoNet/);
   assert.match(hero, /VIVO APP STORE/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8'), /PosHeroTheme/);
 });
 
 test('defines the escrow transaction fee API contract', () => {

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { CategoryBar } from '../components/CategoryBar';
 import { VivoAssistSosModal } from '../components/VivoAssistSosModal';
+import { PosHeroTheme } from '../components/PosHeroTheme';
 
 const categories = [
   { title: 'Vehículos Destacados', items: ['BYD Eléctrico', 'Toyota Hilux'], href: '/listings?category=VEHICLES', cta: 'Ver más vehículos', badges: ['-15%', 'Remate'] },
@@ -22,6 +23,7 @@ export default function HomePage() {
         </div>
       </section>
       <CategoryBar />
+      <PosHeroTheme />
       <div className="mx-auto max-w-7xl px-4">
         <VivoAssistSosModal />
       </div>
