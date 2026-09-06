@@ -578,6 +578,18 @@ test('defines the VIVO-CHECK modal UI', () => {
   assert.match(modal, /role="alert"/);
 });
 
+test('defines the VIVO AMIGO infrastructure status contract', () => {
+  const infrastructure = fs.readFileSync(path.join(__dirname, 'services', 'infrastructureStatus.ts'), 'utf8');
+  assert.match(infrastructure, /ASP\.NET Core 9\.0/);
+  assert.match(infrastructure, /PostgreSQL/);
+  assert.match(infrastructure, /Redis/);
+  assert.match(infrastructure, /Elasticsearch/);
+  assert.match(infrastructure, /Cloudflare Enterprise/);
+  assert.match(infrastructure, /AWS us-east-1/);
+  assert.match(infrastructure, /Visanet Guatemala \/ NeoNet API/);
+  assert.match(infrastructure, /RENAP Guatemala API/);
+});
+
 test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
