@@ -382,6 +382,17 @@ test('defines the official VIVO AMIGO master plan', () => {
   assert.match(plan, /Release gates/);
 });
 
+test('defines the root Devin autonomous development prompt', () => {
+  const prompt = fs.readFileSync(path.join(__dirname, 'DEVIN_TASK.md'), 'utf8');
+  assert.match(prompt, /VIVO AMIGO Guatemala Commerce OS/);
+  assert.match(prompt, /VIVO-CHECK/);
+  assert.match(prompt, /CARGO VIVO/);
+  assert.match(prompt, /VIVO-ASSIST/);
+  assert.match(prompt, /VIVOAMIGOPAY/);
+  assert.match(prompt, /Do not issue completion\/delivery codes/);
+  assert.match(prompt, /npm test/);
+});
+
 test('defines tokenized card and DPI identity verification', () => {
   const card = fs.readFileSync(path.join(__dirname, 'services', 'cardVerification.ts'), 'utf8');
   assert.match(card, /CardVerificationRequest/);
