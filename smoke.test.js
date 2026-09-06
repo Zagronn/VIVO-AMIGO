@@ -393,6 +393,19 @@ test('defines the root Devin autonomous development prompt', () => {
   assert.match(prompt, /npm test/);
 });
 
+test('defines the community feature upvote and Devin sandbox engine', () => {
+  const community = fs.readFileSync(path.join(__dirname, 'services', 'communityFeatureEngine.ts'), 'utf8');
+  assert.match(community, /BARTER_SYSTEM/);
+  assert.match(community, /BULK_BUYING/);
+  assert.match(community, /MICRO_JOBS/);
+  assert.match(community, /DEVICE_EXCHANGE/);
+  assert.match(community, /processUpvote/);
+  assert.match(community, /updatedVotes >= 1000/);
+  assert.match(community, /CODING_IN_SANDBOX/);
+  assert.match(community, /progress = 30/);
+  assert.match(community, /Devin AI/);
+});
+
 test('defines tokenized card and DPI identity verification', () => {
   const card = fs.readFileSync(path.join(__dirname, 'services', 'cardVerification.ts'), 'utf8');
   assert.match(card, /CardVerificationRequest/);
