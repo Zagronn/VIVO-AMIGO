@@ -172,6 +172,10 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(tailwind, /background: '#111111'/);
   assert.match(tailwind, /silver: '#7A808A'/);
   assert.match(tailwind, /accent: '#FF6A00'/);
+  assert.match(tailwind, /dark: '#0B021C'/);
+  assert.match(tailwind, /vivo-gradient/);
+  assert.match(tailwind, /vivo-card-gradient/);
+  assert.match(tailwind, /vivo-neon-glow/);
   assert.match(serviceWorker.text, /vendor\/qrcode\.min\.js/);
   assert.match(serviceWorker.text, /images\/logo\.png/);
   assert.match(serviceWorker.text, /request\.mode === 'navigate'/);
