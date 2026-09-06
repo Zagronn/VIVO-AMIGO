@@ -44,6 +44,17 @@ test('defines CARGO VIVO SOS fixed-price emergency assistance', () => {
   assert.match(sos, /DISPATCHING/);
 });
 
+test('defines the VIVO-ASSIST SOS assistance modal', () => {
+  const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoAssistSosModal.tsx'), 'utf8');
+  assert.match(modal, /VivoAssistSosModal/);
+  assert.match(modal, /TOW_TRUCK/);
+  assert.match(modal, /FLAT_TIRE/);
+  assert.match(modal, /BATTERY_JUMP/);
+  assert.match(modal, /onTriggerSos/);
+  assert.match(modal, /Tarifa Fija Garantizada/);
+  assert.match(modal, /Pago retenido en Escrow Seguro/);
+});
+
 test('initializes and dispatches the configured 35-agent swarm', async () => {
   const orchestrator = new SwarmOrchestrator();
   assert.deepEqual(orchestrator.initializeSwarm(), { totalAgents: 36, subAgents: 35, masterAgent: 'agent_master_01' });
