@@ -263,6 +263,28 @@ test('defines the API-backed VivoWallet system', () => {
   assert.match(prompt, /cargovivo\.com/);
 });
 
+test('defines the interactive VERI-SHIELD fair price engine', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'components', 'FairPriceEngine.tsx'), 'utf8');
+  assert.match(engine, /FairPriceEngine/);
+  assert.match(engine, /hardCapPrice/);
+  assert.match(engine, /isFairPrice/);
+  assert.match(engine, /isSlightlyHigh/);
+  assert.match(engine, /isPriceGouging/);
+  assert.match(engine, /Döngüsel Adalet/);
+  assert.match(engine, /kampanya koşullarına tabidir/);
+});
+
+test('routes and documents the VERI-SHIELD fair-price engine', () => {
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'fair-price', 'page.tsx'), 'utf8');
+  const spec = fs.readFileSync(path.join(__dirname, 'docs', 'VERI_SHIELD_SPEC.md'), 'utf8');
+  assert.match(route, /FairPriceEngine/);
+  assert.match(spec, /Price Corridor Algorithm/);
+  assert.match(spec, /hardCapPrice = maxMarketValue \* 1\.20/);
+  assert.match(spec, /PRICE_GOUGING/);
+  assert.match(spec, /Circular Justice Rules/);
+  assert.match(spec, /server-authoritative/);
+});
+
 test('defines Agent 105 Cloudflare sync and setup guide', () => {
   const sync = fs.readFileSync(path.join(__dirname, 'services', 'cloudflareDomainSync.ts'), 'utf8');
   const guide = fs.readFileSync(path.join(__dirname, 'docs', 'CLOUDFLARE_DOMAIN_SETUP.md'), 'utf8');
