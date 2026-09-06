@@ -558,6 +558,16 @@ test('defines the marketplace category bar', () => {
   assert.match(fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8'), /CategoryBar/);
 });
 
+test('defines the VIVO-CHECK secure on-site verification flow', () => {
+  const vivoCheck = fs.readFileSync(path.join(__dirname, 'services', 'vivoCheck.ts'), 'utf8');
+  assert.match(vivoCheck, /VivoCheckSession/);
+  assert.match(vivoCheck, /PENDING_MATCH/);
+  assert.match(vivoCheck, /VERIFIED_ON_SITE/);
+  assert.match(vivoCheck, /listingPriceGTQ \* 0\.01/);
+  assert.match(vivoCheck, /Código VIVO-CHECK inválido/);
+  assert.match(vivoCheck, /Math\.floor\(1000/);
+});
+
 test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
