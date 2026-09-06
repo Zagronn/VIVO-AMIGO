@@ -1,4 +1,5 @@
 import React from 'react';
+import { ExecutivePitchCard } from './ExecutivePitchCard';
 import { VivoSecurityShieldDashboard } from './VivoSecurityShieldDashboard';
 import { VivoVerifyForm } from './VivoVerifyForm';
 
@@ -17,6 +18,7 @@ export const VivoPremiumShowcase = () => (
       </div>
       <VivoSecurityShieldDashboard />
       <VivoVerifyForm />
+      <ExecutivePitchCard />
     </main>
   </div>
 );

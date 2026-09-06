@@ -111,6 +111,28 @@ test('defines VIVO-VERIFY invisible OCR, quarantine, and VIP booking surfaces', 
   assert.match(policy, /Never insert, update, index, cache, or publish/);
   assert.match(policy, /SAT and PNC/);
 });
+
+test('integrates the executive security pitch card', () => {
+  const card = fs.readFileSync(path.join(__dirname, 'components', 'ExecutivePitchCard.tsx'), 'utf8');
+  const showcase = fs.readFileSync(path.join(__dirname, 'components', 'VivoPremiumShowcase.tsx'), 'utf8');
+  assert.match(card, /ExecutivePitchCard/);
+  assert.match(card, /FILTRO INVISIBLE/);
+  assert.match(card, /DEFENSA AI/);
+  assert.match(showcase, /ExecutivePitchCard/);
+});
+
+test('defines executive pitch data and board-ready scenario metrics', () => {
+  const data = fs.readFileSync(path.join(__dirname, 'docs', 'EXECUTIVE_PITCH_DATA.md'), 'utf8');
+  const card = fs.readFileSync(path.join(__dirname, 'components', 'ExecutivePitchCard.tsx'), 'utf8');
+  assert.match(data, /Strategic Comparison/);
+  assert.match(data, /Target GMV/);
+  assert.match(data, /\$200,000,000/);
+  assert.match(data, /\$12,000,000/);
+  assert.match(data, /not .*guaranteed return/i);
+  assert.match(card, /\$200M/);
+  assert.match(card, /\$12M/);
+  assert.match(card, /8x-10x/);
+});
 test('defines CARGO VIVO SOS fixed-price emergency assistance', () => {
   const sos = fs.readFileSync(path.join(__dirname, 'services', 'sosEmergency.ts'), 'utf8');
   assert.match(sos, /TOW_TRUCK/);
