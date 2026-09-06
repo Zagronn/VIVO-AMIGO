@@ -406,6 +406,17 @@ test('defines the community feature upvote and Devin sandbox engine', () => {
   assert.match(community, /Devin AI/);
 });
 
+test('defines the VIVO-VOZ community feedback card', () => {
+  const voz = fs.readFileSync(path.join(__dirname, 'components', 'VivoVozFeedbackCard.tsx'), 'utf8');
+  assert.match(voz, /VivoVozFeedbackCard/);
+  assert.match(voz, /VIVO-VOZ/);
+  assert.match(voz, /Verificación IMEI/);
+  assert.match(voz, /CODING_IN_SANDBOX/);
+  assert.match(voz, /initialUpvotes/);
+  assert.match(voz, /onVote/);
+  assert.match(voz, /role="alert"/);
+});
+
 test('defines tokenized card and DPI identity verification', () => {
   const card = fs.readFileSync(path.join(__dirname, 'services', 'cardVerification.ts'), 'utf8');
   assert.match(card, /CardVerificationRequest/);
