@@ -319,6 +319,42 @@ test('links BI credit actions in fair price and wallet surfaces', () => {
   assert.match(wallet, /Solicitar crédito BI \/ Zigi/);
 });
 
+test('defines the consent-gated partner barter engine', () => {
+  const barter = fs.readFileSync(path.join(__dirname, 'components', 'VivoBarterEngine.tsx'), 'utf8');
+  assert.match(barter, /VivoBarterEngine/);
+  assert.match(barter, /Banco Industrial/);
+  assert.match(barter, /TIGO/);
+  assert.match(barter, /CLARO/);
+  assert.match(barter, /aria-pressed/);
+  assert.match(barter, /consentimiento, API autorizada y acuerdo firmado/);
+});
+
+test('routes the VivoAmigo barter engine and purges legacy product names', () => {
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'barter', 'page.tsx'), 'utf8');
+  assert.match(route, /VivoBarterEngine/);
+  const scan = (directory) => fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    if (entry.name === 'node_modules' || entry.name === '.git') return [];
+    const target = path.join(directory, entry.name);
+    return entry.isDirectory() ? scan(target) : [target];
+  });
+  const legacyMatches = scan(__dirname).filter((filePath) => {
+    try { return filePath !== __filename && /\.(ts|tsx|js|jsx|md|sql|json|toml|conf)$/.test(filePath) && /GuateVerify|GuateFinance/.test(fs.readFileSync(filePath, 'utf8')); } catch { return false; }
+  });
+  assert.deepEqual(legacyMatches, []);
+});
+
+test('defines the zero-budget expansion strategy and partner API rules', () => {
+  const strategy = fs.readFileSync(path.join(__dirname, 'docs', 'MASTER_ZERO_BUDGET_EXPANSION.md'), 'utf8');
+  assert.match(strategy, /vivoamigo\.com/);
+  assert.match(strategy, /payvivoamigo\.com/);
+  assert.match(strategy, /cargovivo\.com/);
+  assert.match(strategy, /GSM Partner Exchange/);
+  assert.match(strategy, /Bank Partner Exchange/);
+  assert.match(strategy, /Approved Message Drafts/);
+  assert.match(strategy, /100% sponsored/);
+  assert.match(strategy, /signed partner agreements/);
+});
+
 test('routes and documents the VERI-SHIELD fair-price engine', () => {
   const route = fs.readFileSync(path.join(__dirname, 'app', 'fair-price', 'page.tsx'), 'utf8');
   const spec = fs.readFileSync(path.join(__dirname, 'docs', 'VERI_SHIELD_SPEC.md'), 'utf8');
