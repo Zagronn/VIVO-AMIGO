@@ -405,6 +405,56 @@ test('documents instant trade-in appraisals and escrow property swaps', () => {
   assert.match(spec, /manual review/);
 });
 
+test('defines consent-gated fail-closed VivoScore bridge', () => {
+  const bridge = fs.readFileSync(path.join(__dirname, 'services', 'vivoScoreBridge.ts'), 'utf8');
+  assert.match(bridge, /interface VivoScoreRequest/);
+  assert.match(bridge, /api\.bi\.com\.gt\/v1\/fintech\/vivoscore/);
+  assert.match(bridge, /consentGiven === true/);
+  assert.match(bridge, /creditScore >= 300/);
+  assert.match(bridge, /creditScore <= 850/);
+  assert.match(bridge, /provider is not configured/);
+  assert.doesNotMatch(bridge, /creditScore: 745/);
+});
+
+test('defines PayVivo migration and safe P2P wallet ledger', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'payVivoEngine.ts'), 'utf8');
+  assert.match(engine, /interface UserMigrationPayload/);
+  assert.match(engine, /BANCO_INDUSTRIAL/);
+  assert.match(engine, /Digital Trade ID has already been migrated/);
+  assert.match(engine, /randomUUID/);
+  assert.match(engine, /executeDirectTransfer/);
+  assert.match(engine, /amountGTQ must be greater than zero/);
+  assert.match(engine, /sender and receiver wallets must differ/);
+  assert.doesNotMatch(engine, /Math\.random/);
+});
+
+test('defines VivoPay migration data architecture and PRO-VIVO security document', () => {
+  const architecture = fs.readFileSync(path.join(__dirname, 'services', 'vivoPayDataArchitecture.ts'), 'utf8');
+  const document = fs.readFileSync(path.join(__dirname, 'docs', 'PRO-VIVO_2026_ULUSAL_GUVENLIK_BELGESI.md'), 'utf8');
+  assert.match(architecture, /MigrationConsent/);
+  assert.match(architecture, /createMigrationEvent/);
+  assert.match(architecture, /aggregateSponsorMetrics/);
+  assert.match(architecture, /OPTED_OUT/);
+  assert.match(document, /Büyük Göç Operasyonu/);
+  assert.match(document, /VivoPay Data Architecture/);
+  assert.match(document, /Identity Vault/);
+  assert.match(document, /zero upfront media budget/);
+  assert.match(document, /signed agreement/);
+});
+
+test('routes PayVivo migration onboarding and provides regulator trust specification', () => {
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'migration', 'page.tsx'), 'utf8');
+  const onboarding = fs.readFileSync(path.join(__dirname, 'components', 'PayVivoMigrationOnboarding.tsx'), 'utf8');
+  const document = fs.readFileSync(path.join(__dirname, 'docs', 'PRO_VIVO_2026_NATIONAL_SECURITY.md'), 'utf8');
+  assert.match(route, /PayVivoMigrationOnboarding/);
+  assert.match(onboarding, /Digital Trade ID/);
+  assert.match(onboarding, /consentGiven/);
+  assert.match(document, /Great Migration Trust Model/);
+  assert.match(document, /Financial and Consumer Controls/);
+  assert.match(document, /government certification/);
+  assert.match(document, /Regulator Export/);
+});
+
 test('defines Agent 105 Cloudflare sync and setup guide', () => {
   const sync = fs.readFileSync(path.join(__dirname, 'services', 'cloudflareDomainSync.ts'), 'utf8');
   const guide = fs.readFileSync(path.join(__dirname, 'docs', 'CLOUDFLARE_DOMAIN_SETUP.md'), 'utf8');
