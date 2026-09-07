@@ -176,14 +176,15 @@ test('defines the VIVO AMIGO marketplace showcase landing', () => {
   const landing = fs.readFileSync(path.join(__dirname, 'components', 'VivoShowcaseLanding.tsx'), 'utf8');
   const page = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   assert.match(landing, /VivoShowcaseLanding/);
-  assert.match(landing, /Llevamos Vidas/);
-  assert.match(landing, /VIVO-CHECK/);
-  assert.match(landing, /VIVO-ASSIST/);
-  assert.match(landing, /Llevamos Vidas, Transportamos Confianza/);
-  assert.match(landing, /VIVO-CHECK · Escrow Live/);
-  assert.match(landing, /VIVO-VERIFY · SAT\/PNC Filter/);
-  assert.match(landing, /VIVO-ASSIST · 24\/7/);
-  assert.match(landing, /SAT\/PNC/);
+  assert.match(landing, /Enviar a Guatemala/);
+  assert.match(landing, /Comenzar ahora/);
+  assert.match(landing, /Vender ahora/);
+  assert.match(landing, /VIVO PAY/);
+  assert.match(landing, /VIVO SHIP/);
+  assert.match(landing, /SUPPORT/);
+  assert.match(landing, /Electrónica/);
+  assert.match(landing, /Automotriz/);
+  assert.match(landing, /Quetzales/);
   assert.match(page, /VivoShowcaseLanding/);
 });
 
@@ -274,6 +275,21 @@ test('defines the interactive VERI-SHIELD fair price engine', () => {
   assert.match(engine, /kampanya koşullarına tabidir/);
 });
 
+test('defines the VIVO trade-in and renewal engine', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'components', 'VivoTradeInEngine.tsx'), 'utf8');
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'trade-in', 'page.tsx'), 'utf8');
+  assert.match(engine, /VivoTradeInEngine/);
+  assert.match(engine, /VEHICLE/);
+  assert.match(engine, /PROPERTY/);
+  assert.match(engine, /DEVICE/);
+  assert.match(engine, /requiredLoan/);
+  assert.match(engine, /monthlyPayment/);
+  assert.match(engine, /VIVO PAY/);
+  assert.match(engine, /CARGO VIVO/);
+  assert.match(engine, /Quetzales/);
+  assert.match(route, /VivoTradeInEngine/);
+});
+
 test('defines the tabbed bank and telecom partnership proposal', () => {
   const proposal = fs.readFileSync(path.join(__dirname, 'components', 'BankPartnershipProposal.tsx'), 'utf8');
   assert.match(proposal, /BankPartnershipProposal/);
@@ -355,6 +371,19 @@ test('defines the zero-budget expansion strategy and partner API rules', () => {
   assert.match(strategy, /signed partner agreements/);
 });
 
+test('defines trade-in upgrade calculation, BI gap, CARGO link, and campaign theme', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'tradeInUpgradeEngine.ts'), 'utf8');
+  const module = fs.readFileSync(path.join(__dirname, 'components', 'TradeInUpgradeModule.tsx'), 'utf8');
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'trade-in', 'page.tsx'), 'utf8');
+  assert.match(engine, /calculateTradeInUpgrade/);
+  assert.match(engine, /financingGapGTQ/);
+  assert.match(engine, /cargovivo\.com\/dispatch\/trade-in/);
+  assert.match(engine, /vivoamigo ile Hayatını Güncelle/);
+  assert.match(module, /Banco Industrial\/Zigi/);
+  assert.match(module, /Farkı Hesapla/);
+  assert.match(route, /VivoTradeInEngine/);
+});
+
 test('routes and documents the VERI-SHIELD fair-price engine', () => {
   const route = fs.readFileSync(path.join(__dirname, 'app', 'fair-price', 'page.tsx'), 'utf8');
   const spec = fs.readFileSync(path.join(__dirname, 'docs', 'VERI_SHIELD_SPEC.md'), 'utf8');
@@ -364,6 +393,16 @@ test('routes and documents the VERI-SHIELD fair-price engine', () => {
   assert.match(spec, /PRICE_GOUGING/);
   assert.match(spec, /Circular Justice Rules/);
   assert.match(spec, /server-authoritative/);
+});
+
+test('documents instant trade-in appraisals and escrow property swaps', () => {
+  const spec = fs.readFileSync(path.join(__dirname, 'docs', 'VERI_SHIELD_SPEC.md'), 'utf8');
+  assert.match(spec, /Instant Trade-In Appraisals/);
+  assert.match(spec, /Escrow Property Swaps/);
+  assert.match(spec, /financing gap/);
+  assert.match(spec, /payvivoamigo\.com/);
+  assert.match(spec, /cargovivo\.com/);
+  assert.match(spec, /manual review/);
 });
 
 test('defines Agent 105 Cloudflare sync and setup guide', () => {
@@ -488,6 +527,8 @@ test('advertises complete web and native product surfaces', async () => {
   const styles = fs.readFileSync(path.join(__dirname, 'public', 'styles.css'), 'utf8');
   const marketplace = fs.readFileSync(path.join(__dirname, 'public', 'app.js'), 'utf8');
   const tailwind = fs.readFileSync(path.join(__dirname, 'tailwind.config.js'), 'utf8');
+  const globalStyles = fs.readFileSync(path.join(__dirname, 'app', 'globals.css'), 'utf8');
+  const showcase = fs.readFileSync(path.join(__dirname, 'components', 'VivoShowcaseLanding.tsx'), 'utf8');
   const serviceWorker = await getText(app, '/sw.js');
   const index = await getText(app, '/');
   const mobileTargets = require('./mobile/src').APPS;
@@ -502,11 +543,15 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(brandMark.text, /VIVO AMIGO VA shield mark/);
   assert.match(brandMark.text, /#FF6A00/);
   assert.match(styles, /--bg:#111111/);
-  assert.match(styles, /--silver:#7A808A/);
   assert.match(styles, /--accent:#FF6A00/);
-  assert.match(styles, /"Amazon Ember"/);
-  assert.match(styles, /line-height:1\.4/);
-  assert.match(styles, /font-variant-numeric:tabular-nums/);
+  assert.match(styles, /font-family:"Avenir Next"/);
+  assert.match(styles, /#FF6A00/);
+  assert.match(globalStyles, /--brand-orange: #FF6A00/);
+  assert.match(globalStyles, /--card-yellow: #FBF7AA/);
+  assert.match(globalStyles, /--ship-blue: #2563EB/);
+  assert.match(showcase, /Enviar a Guatemala/);
+  assert.match(showcase, /Comenzar ahora/);
+  assert.match(showcase, /Vender ahora/);
   assert.match(marketplace, /VIVO AMIGO MARKETPLACE/);
   assert.match(marketplace, /Generate Checkout QR/);
   assert.match(marketplace, /Sync Offline Sales/);
@@ -514,12 +559,14 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(marketplace, /paymentGateway: PAYMENT_GATEWAY/);
   assert.match(marketplace, /data-cart-action/);
   assert.match(tailwind, /background: '#111111'/);
-  assert.match(tailwind, /silver: '#7A808A'/);
-  assert.match(tailwind, /accent: '#FF6A00'/);
-  assert.match(tailwind, /dark: '#0B021C'/);
-  assert.match(tailwind, /vivo-gradient/);
-  assert.match(tailwind, /vivo-card-gradient/);
-  assert.match(tailwind, /vivo-neon-glow/);
+  assert.match(tailwind, /orange: '#FF6A00'/);
+  assert.match(tailwind, /orangeDark: '#EB5C00'/);
+  assert.match(tailwind, /yellow: '#FBF7AA'/);
+  assert.match(tailwind, /gray: '#F8F9FA'/);
+  assert.match(tailwind, /ship: '#2563EB'/);
+  assert.match(tailwind, /ads: '#7C3AED'/);
+  assert.match(tailwind, /support: '#16A34A'/);
+  assert.match(tailwind, /app\/\*\*\/\*\.\{js,ts,jsx,tsx,mdx\}/);
   assert.match(serviceWorker.text, /vendor\/qrcode\.min\.js/);
   assert.match(serviceWorker.text, /images\/logo\.png/);
   assert.match(serviceWorker.text, /request\.mode === 'navigate'/);
@@ -548,10 +595,14 @@ test('advertises complete web and native product surfaces', async () => {
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'build.gradle'), 'utf8'), /vivo-amigo-\$\{variant.name\}/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'res', 'drawable', 'va_splash.xml'), 'utf8'), /vivo_black/);
   assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'ios', 'native-placeholder', 'LaunchScreen.storyboard'), 'utf8'), /VivoAmigoMark/);
-  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'App.js'), 'utf8'), /fontFamily: 'Amazon Ember'/);
+  assert.match(fs.readFileSync(path.join(__dirname, 'mobile', 'App.js'), 'utf8'), /fontFamily: 'Montserrat'/);
   assert.equal(fs.existsSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'assets', 'public', 'index.html')), true);
   assert.equal(fs.existsSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'assets', 'public', 'sw.js')), true);
   assert.equal(fs.existsSync(path.join(__dirname, 'mobile', 'android', 'app', 'src', 'main', 'assets', 'public', 'vendor', 'qrcode.min.js')), true);
+  assert.match(showcase, /Enviar a Guatemala/);
+  assert.match(showcase, /#FF6A00/);
+  assert.match(marketplace, /VIVOAMIGOPAY/);
+  assert.match(marketplace, /Sync Offline Sales/);
 });
 
 test('ships production edge routing and HTTPS configuration', () => {
@@ -1141,8 +1192,9 @@ test('defines VIVO AMIGO Guatemala metadata and root layout', () => {
   assert.match(layout, /export default function RootLayout/);
   assert.match(layout, /lang="es"/);
   assert.match(layout, /next\/font\/google/);
-  assert.match(layout, /weight: \['400', '500', '700', '900'\]/);
-  assert.match(layout, /font-sans bg-\[#E3E6E6\]/);
+  assert.match(layout, /Montserrat/);
+  assert.match(layout, /weight: \['400', '500', '700', '800'\]/);
+  assert.match(layout, /font-sans bg-\[#F8F9FA\]/);
   assert.equal(fs.existsSync(path.join(__dirname, 'app', 'globals.css')), true);
 });
 

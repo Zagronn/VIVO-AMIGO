@@ -39,3 +39,20 @@ Fair-price classification can make a seller eligible for configured incentives s
 - Keep DPI, bank, device, and location data out of public listing records and model prompts.
 - Do not publish a listing solely because the UI displays a fair-price state.
 - Use currency-aware arithmetic and persist exact basis assumptions for later audit.
+
+## Instant Trade-In Appraisals
+
+- Trade-in credit is based only on a server-approved `VERI-SHIELD` valuation, not a client-entered price alone.
+- The appraisal record stores asset type, comparable-set/model version, currency, evidence references, score, timestamp, and reviewer or policy identity.
+- Supported asset classes are vehicle, real estate, and technology device; each class requires its applicable document, identity, and inspection gates.
+- The approved trade-in value becomes a provisional down-payment credit. It is not cash, a title transfer, or a guaranteed bank valuation until the required review completes.
+- The financing gap is `max(0, targetAssetPrice - approvedTradeInValue)`. Banco Industrial/Zigi or another approved lender owns any credit decision.
+- If evidence is missing, stale, mismatched, or below policy threshold, the result is manual review and no public credit promise.
+
+## Escrow Property Swaps
+
+- A real-estate swap requires verified ownership, title/gravamen evidence, location proof, signed contracts, and admin approval before escrow funding or transfer instructions.
+- `payvivoamigo.com` records the escrow intent, identities, currency, value references, and idempotency key; it never releases funds from a client click.
+- Title transfer, notarial completion, delivery/possession evidence, dispute resolution, and lender confirmation are separate gates.
+- `cargovivo.com` may coordinate physical documents or possession logistics, but logistics status cannot authorize property ownership transfer or escrow release.
+- A mismatch, dispute, lien, provider timeout, or emergency lock pauses the swap and routes it to manual review with append-only audit evidence.
