@@ -13,6 +13,7 @@ function allowedOrigins() {
     process.env.VIVO_ECOSYSTEM_ORIGIN || PRODUCTION_ORIGINS.ecosystem,
     process.env.PAY_VIVO_ORIGIN || PRODUCTION_ORIGINS.pay,
     process.env.CARGO_VIVO_ORIGIN || PRODUCTION_ORIGINS.cargo,
+    'https://myfrontend.com',
     'http://localhost:3001',
     'http://localhost:3002'
   ].join(',');
@@ -27,9 +28,11 @@ function corsWhitelist(request, response, next) {
     response.set('Access-Control-Allow-Origin', origin);
     response.set('Access-Control-Allow-Credentials', 'true');
     response.set('Vary', 'Origin');
+    response.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    response.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   }
   if (request.method === 'OPTIONS') {
-    response.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    response.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     response.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     return response.sendStatus(204);
   }

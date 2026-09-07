@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { BancoIndustrialBridge, type BICreditApplication } from '../../../../../../../services/bancoIndustrialBridge';
+import { BancoIndustrialBridge, type BICreditApplication } from '../../../../../../services/bancoIndustrialBridge';
 
 export async function POST(request: Request) {
   try {

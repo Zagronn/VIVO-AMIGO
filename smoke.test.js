@@ -185,7 +185,7 @@ test('defines the VIVO AMIGO marketplace showcase landing', () => {
   assert.match(landing, /Electrónica/);
   assert.match(landing, /Automotriz/);
   assert.match(landing, /Quetzales/);
-  assert.match(page, /VivoShowcaseLanding/);
+  assert.match(page, /MobileCommerceShell/);
 });
 
 test('defines the 250-agent dynamic NVIDIA NIM swarm', () => {
@@ -337,6 +337,383 @@ test('defines scalable VIVO-MERCADO platform architecture', () => {
   assert.match(architecture, /Trust Boundaries/);
   assert.match(architecture, /Scale Model/);
   assert.match(architecture, /Currency conversion requires/);
+});
+
+test('defines the versioned viral and wallet commission incentive model', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'viralIncentiveEngine.ts'), 'utf8');
+  const plan = fs.readFileSync(path.join(__dirname, 'docs', 'MASTER_PLAN.md'), 'utf8');
+  const whitepaper = fs.readFileSync(path.join(__dirname, 'docs', 'VERI_SHIELD_BANK_API_WHITEPAPER.md'), 'utf8');
+  assert.match(engine, /BASE_COMMISSION_BPS = 450/);
+  assert.match(engine, /socialShareVerified/);
+  assert.match(engine, /walletPaymentUsed/);
+  assert.match(engine, /Math\.max\(0/);
+  assert.match(engine, /policyVersion/);
+  assert.match(plan, /Viral incentive algorithm/);
+  assert.match(plan, /Asset-light and scalable architecture/);
+  assert.match(whitepaper, /Zero-Trust Controls/);
+  assert.match(whitepaper, /MANUAL_REVIEW/);
+});
+
+test('defines the first production kernel across the three official domains', () => {
+  const kernel = fs.readFileSync(path.join(__dirname, 'services', 'vivoAmigoProductionKernel.ts'), 'utf8');
+  const brief = fs.readFileSync(path.join(__dirname, 'docs', 'PRODUCTION_KERNEL_START.md'), 'utf8');
+  assert.match(kernel, /VivoAmigoProductionKernel/);
+  assert.match(kernel, /vivoamigo\.com/);
+  assert.match(kernel, /payvivoamigo\.com/);
+  assert.match(kernel, /cargovivo\.com/);
+  assert.match(kernel, /evaluateListing/);
+  assert.match(kernel, /lookupVivoScore/);
+  assert.match(kernel, /initializeEscrow/);
+  assert.match(kernel, /recordMigration/);
+  assert.match(brief, /Provider Activation Gate/);
+  assert.match(brief, /Missing integrations/);
+});
+
+test('connects the main marketplace landing to core ecosystem routes', () => {
+  const landing = fs.readFileSync(path.join(__dirname, 'components', 'VivoShowcaseLanding.tsx'), 'utf8');
+  assert.match(landing, /href="\/trade-in"/);
+  assert.match(landing, /href="\/fair-price"/);
+  assert.match(landing, /href="\/barter"/);
+});
+
+test('connects VivoWallet to the official PayVivo domain', () => {
+  const wallet = fs.readFileSync(path.join(__dirname, 'components', 'VivoWalletSystem.tsx'), 'utf8');
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'wallet', 'page.tsx'), 'utf8');
+  assert.match(wallet, /https:\/\/\$\{domain\}/);
+  assert.match(wallet, /payvivoamigo\.com/);
+  assert.match(route, /https:\/\/payvivoamigo\.com\/wallet/);
+  assert.match(wallet, /Transferir/);
+  assert.match(wallet, /Bank-Grade Encryption/);
+  assert.match(wallet, /same-day ACH/);
+  assert.match(wallet, /instantáneo/);
+});
+
+test('connects the marketplace navigation to CARGO VIVO', () => {
+  const landing = fs.readFileSync(path.join(__dirname, 'components', 'VivoShowcaseLanding.tsx'), 'utf8');
+  assert.match(landing, /href="https:\/\/cargovivo\.com"/);
+  assert.match(landing, /CARGO VIVO/);
+});
+
+test('defines PayVivo wallet, listing, and 4.5 percent commission contracts', () => {
+  const commission = fs.readFileSync(path.join(__dirname, 'services', 'payVivoCommission.ts'), 'utf8');
+  assert.match(commission, /interface PayVivoWalletState/);
+  assert.match(commission, /interface MarketplaceListing/);
+  assert.match(commission, /calculatePayVivoCommission/);
+  assert.match(commission, /BASE_COMMISSION_RATE = 10/);
+  assert.match(commission, /SOCIAL_SHARE_DISCOUNT = 2\.5/);
+  assert.match(commission, /PAYVIVO_DISCOUNT = 3/);
+  assert.match(commission, /MIN_COMMISSION_RATE = 4\.5/);
+  assert.match(commission, /FLAGGED_EXCESSIVE/);
+});
+
+test('defines PayVivo bank comparison rates engine', () => {
+  const rates = fs.readFileSync(path.join(__dirname, 'services', 'payVivoRatesEngine.ts'), 'utf8');
+  assert.match(rates, /interface BankComparisonResult/);
+  assert.match(rates, /PayVivoRatesEngine/);
+  assert.match(rates, /USD.*EUR.*TRY.*CNY/);
+  assert.match(rates, /0\.0075/);
+  assert.match(rates, /45/);
+  assert.match(rates, /0\.035/);
+  assert.match(rates, /userSavingsUSD/);
+});
+
+test('defines a client-safe return greeting without fabricated market claims', () => {
+  const greeting = fs.readFileSync(path.join(__dirname, 'components', 'ReturnGreeting.tsx'), 'utf8');
+  assert.match(greeting, /ReturnGreeting/);
+  assert.match(greeting, /localStorage/);
+  assert.match(greeting, /PAY VIVO/);
+  assert.match(greeting, /VERI-SHIELD/);
+  assert.doesNotMatch(greeting, /setTimeout/);
+  assert.doesNotMatch(greeting, /%2 güncellendi|kurun.*ulaştı/);
+});
+
+test('defines live FX widget integration in PayVivo mobile wallet', () => {
+  const widget = fs.readFileSync(path.join(__dirname, 'components', 'LiveCurrencyWidget.tsx'), 'utf8');
+  const shell = fs.readFileSync(path.join(__dirname, 'components', 'MobileCommerceShell.tsx'), 'utf8');
+  assert.match(widget, /WebSocket/);
+  assert.match(widget, /currencies/);
+  assert.match(widget, /PayVivoRatesEngine/);
+  assert.match(widget, /FX feed unavailable/);
+  assert.match(shell, /LiveCurrencyWidget/);
+  assert.match(shell, /ReturnGreeting/);
+});
+
+test('defines a safe CorporateBillboard partner component', () => {
+  const billboard = fs.readFileSync(path.join(__dirname, 'components', 'CorporateBillboard.tsx'), 'utf8');
+  const ecosystem = fs.readFileSync(path.join(__dirname, 'types', 'ecosystem.ts'), 'utf8');
+  assert.match(billboard, /CorporateBillboard/);
+  assert.match(billboard, /Verified Alliance/);
+  assert.match(billboard, /targetCategory/);
+  assert.match(billboard, /noopener noreferrer/);
+  assert.match(billboard, /partnerLink must use HTTPS/);
+  assert.match(billboard, /onImpression/);
+  assert.match(billboard, /onClick/);
+  assert.match(billboard, /offer/);
+  assert.match(ecosystem, /AdOffer/);
+  assert.doesNotMatch(billboard, /window\.open/);
+});
+
+test('defines shared VIVO AMIGO marketplace and wallet domain models', () => {
+  const models = fs.readFileSync(path.join(__dirname, 'types', 'vivoAmigoModels.ts'), 'utf8');
+  assert.match(models, /type CategoryType/);
+  assert.match(models, /HEAVY_B2B/);
+  assert.match(models, /type SecurityBadge/);
+  assert.match(models, /interface UserWallet/);
+  assert.match(models, /interface ListingItem/);
+  assert.match(models, /interface AdOffer/);
+});
+
+test('defines VERI-SHIELD dynamic commission and listing inspection engine', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'veriShieldEngine.ts'), 'utf8');
+  assert.match(engine, /class VeriShieldEngine/);
+  assert.match(engine, /calculateDynamicCommission/);
+  assert.match(engine, /MAX_ALLOWED_DEVIATION = 0\.4/);
+  assert.match(engine, /VERI_SHIELD_APPROVED/);
+  assert.match(engine, /FLAGGED/);
+  assert.match(engine, /MIN_COMMISSION_RATE = 4\.5/);
+});
+
+test('defines server-side Anthropic Opus design gateway', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'anthropicOpusDesignEngine.ts'), 'utf8');
+  assert.match(engine, /@anthropic-ai\/sdk/);
+  assert.match(engine, /callOpusDesignEngine/);
+  assert.match(engine, /ANTHROPIC_API_KEY/);
+  assert.match(engine, /messages\.create/);
+  assert.match(engine, /type === 'text'/);
+  assert.doesNotMatch(engine, /sk-ant-/);
+});
+
+test('defines contextual native ad server with safe partner fallback', () => {
+  const ads = fs.readFileSync(path.join(__dirname, 'services', 'adServerEngine.ts'), 'utf8');
+  assert.match(ads, /interface NativeAdOffer/);
+  assert.match(ads, /class AdServerEngine/);
+  assert.match(ads, /getContextualAd/);
+  assert.match(ads, /PAY_VIVO/);
+  assert.match(ads, /must use HTTPS|must be HTTPS|links must use HTTPS/);
+  assert.match(ads, /getOffers/);
+});
+
+test('integrates contextual corporate billboards into home and listing pages', () => {
+  const shell = fs.readFileSync(path.join(__dirname, 'components', 'MobileCommerceShell.tsx'), 'utf8');
+  const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
+  assert.match(shell, /CorporateBillboard/);
+  assert.match(shell, /AdServerEngine/);
+  assert.match(listing, /CorporateBillboard/);
+  assert.match(listing, /getContextualAd/);
+  assert.match(listing, /Sponsored partner/);
+});
+
+test('defines PayVivo local and cross-border transfer manager', () => {
+  const manager = fs.readFileSync(path.join(__dirname, 'services', 'payVivoTransferManager.ts'), 'utf8');
+  assert.match(manager, /interface CurrencyRate/);
+  assert.match(manager, /GTQ\/USD/);
+  assert.match(manager, /GTQ\/TRY/);
+  assert.match(manager, /GTQ\/CNY/);
+  assert.match(manager, /executeLocalTransfer/);
+  assert.match(manager, /SAME_DAY_ACH/);
+  assert.match(manager, /calculateCrossBorderRate/);
+  assert.match(manager, /marginPercent/);
+  assert.match(manager, /ourMarginPercent: 0\.0075/);
+  assert.match(manager, /processLocalTransfer/);
+  assert.match(manager, /getInternationalQuote/);
+  assert.match(manager, /WITHIN_24_HOURS/);
+  assert.match(manager, /feeGTQ: 35/);
+});
+
+test('defines VIVO trust escrow state machine', () => {
+  const escrow = fs.readFileSync(path.join(__dirname, 'services', 'vivoTrustEscrowEngine.ts'), 'utf8');
+  assert.match(escrow, /type EscrowStatus/);
+  assert.match(escrow, /createLockedContract/);
+  assert.match(escrow, /attachLogisticsData/);
+  assert.match(escrow, /triggerAutomaticRelease/);
+  assert.match(escrow, /CUSTOMS_CLEARED/);
+  assert.match(escrow, /SHIPMENT_FAILED/);
+  assert.match(escrow, /verified delivery evidence/i);
+  assert.match(escrow, /randomUUID/);
+});
+
+test('defines VIVO-TRUST escrow service and staged tracker UI', () => {
+  const service = fs.readFileSync(path.join(__dirname, 'services', 'vivoTrustEscrow.ts'), 'utf8');
+  const tracker = fs.readFileSync(path.join(__dirname, 'components', 'VivoTrustEscrowTracker.tsx'), 'utf8');
+  assert.match(service, /VivoTrustEscrowService/);
+  assert.match(service, /createLockedFunds/);
+  assert.match(service, /GTIP|gtipHsCode/);
+  assert.match(service, /trackingNumber/);
+  assert.match(service, /CUSTOMS_CLEARED/);
+  assert.match(service, /REFUND_IMPORTER/);
+  assert.match(tracker, /Eximbank Grade VIVO-TRUST Protection/);
+  assert.match(tracker, /Bill of Lading \/ AWB/);
+  assert.match(tracker, /Fondos bloqueados/);
+});
+
+test('defines partner-gated VivoInsure instant policy quotes', () => {
+  const insure = fs.readFileSync(path.join(__dirname, 'services', 'vivoInsureEngine.ts'), 'utf8');
+  assert.match(insure, /InsuranceCoverageType/);
+  assert.match(insure, /RETAIL_MICRO/);
+  assert.match(insure, /AUTOMOTIVE_FULL/);
+  assert.match(insure, /LOGISTICS_ESCROW/);
+  assert.match(insure, /minimum premium|Math\.max\(itemValueGTQ \* policy\.rate, 5\)/i);
+  assert.match(insure, /insurance partner adapter is not configured/);
+  assert.match(insure, /partner şartlarına tabi/);
+  assert.match(insure, /randomUUID/);
+});
+
+test('defines insurance partner ShieldBadge with transparent terms', () => {
+  const badge = fs.readFileSync(path.join(__dirname, 'components', 'InsuranceShieldBadge.tsx'), 'utf8');
+  assert.match(badge, /InsuranceShieldBadge/);
+  assert.match(badge, /Official assurance partner/);
+  assert.match(badge, /insuredValueGTQ/);
+  assert.match(badge, /Partner şartlarına tabi/);
+  assert.match(badge, /backdrop-blur-lg/);
+  assert.match(badge, /role="status"/);
+  assert.doesNotMatch(badge, /%100 kurumsal teminat/);
+});
+
+test('defines secure AI mail triage for info and sales channels', () => {
+  const mail = fs.readFileSync(path.join(__dirname, 'services', 'aiMailHandlerService.ts'), 'utf8');
+  assert.match(mail, /MailChannel/);
+  assert.match(mail, /processInfoMail/);
+  assert.match(mail, /processSalesMail/);
+  assert.match(mail, /SPAM_PHISHING/);
+  assert.match(mail, /HIGH_VALUE_B2B/);
+  assert.match(mail, /requiresHumanAction/);
+  assert.match(mail, /Unsafe attachment detected/);
+});
+
+test('defines the human-review MailLeadWidget', () => {
+  const widget = fs.readFileSync(path.join(__dirname, 'components', 'MailLeadWidget.tsx'), 'utf8');
+  assert.match(widget, /MailLeadWidget/);
+  assert.match(widget, /AIAnalyzedMail/);
+  assert.match(widget, /requiresHumanAction/);
+  assert.match(widget, /onApprove/);
+  assert.match(widget, /disabled=\{!onApprove\}/);
+  assert.doesNotMatch(widget, /fetch\(/);
+});
+
+test('integrates MailLeadWidget into executive admin dashboard', () => {
+  const dashboard = fs.readFileSync(path.join(__dirname, 'components', 'VivoAdminDashboard.tsx'), 'utf8');
+  assert.match(dashboard, /MailLeadWidget/);
+  assert.match(dashboard, /HIGH_VALUE_B2B/);
+  assert.match(dashboard, /sales@vivoamigo\.com/);
+  assert.match(dashboard, /no email was sent automatically/);
+});
+
+test('defines VIVO Flywheel cross-sell and verified review engine', () => {
+  const flywheel = fs.readFileSync(path.join(__dirname, 'services', 'vivoFlywheelEngine.ts'), 'utf8');
+  assert.match(flywheel, /VivoFlywheelEngine/);
+  assert.match(flywheel, /INSURANCE/);
+  assert.match(flywheel, /FINTECH_CREDIT/);
+  assert.match(flywheel, /SPARE_PARTS/);
+  assert.match(flywheel, /NOTARY_LEGAL/);
+  assert.match(flywheel, /canLeaveVerifiedReview/);
+  assert.match(flywheel, /Only transactions paid through PAY VIVO/);
+  assert.match(flywheel, /partner kararına tabidir/);
+  assert.match(flywheel, /getGoldTier/);
+  assert.match(flywheel, /escrowFeeDiscount: 100/);
+});
+
+test('defines fail-closed voice intent and demand prediction engine', () => {
+  const voice = fs.readFileSync(path.join(__dirname, 'services', 'vivoVoiceEngine.ts'), 'utf8');
+  assert.match(voice, /interface VoiceSearchIntent/);
+  assert.match(voice, /parseVoiceCommand/);
+  assert.match(voice, /authorizePaymentVoice/);
+  assert.match(voice, /voice biometric provider is not configured/);
+  assert.match(voice, /getRegionalDemandMap/);
+  assert.match(voice, /CONFIRM_PAYMENT/);
+  assert.doesNotMatch(voice, /voiceBiometricScore: 0\.98/);
+});
+
+test('defines Merchant Pulse regional demand and trust-layer view', () => {
+  const pulse = fs.readFileSync(path.join(__dirname, 'components', 'MerchantPulseView.tsx'), 'utf8');
+  assert.match(pulse, /MerchantPulseView/);
+  assert.match(pulse, /DemandPrediction/);
+  assert.match(pulse, /Merchant Pulse/);
+  assert.match(pulse, /VERI-SHIELD/);
+  assert.match(pulse, /PAY VIVO/);
+  assert.match(pulse, /VIVO-INSURE/);
+  assert.match(pulse, /VIVO-TRUST/);
+});
+
+test('defines Web Speech API VIVO Voice interface without simulation', () => {
+  const voice = fs.readFileSync(path.join(__dirname, 'components', 'VivoVoiceInterface.tsx'), 'utf8');
+  assert.match(voice, /VivoVoiceInterface/);
+  assert.match(voice, /SpeechRecognition/);
+  assert.match(voice, /es-GT/);
+  assert.match(voice, /parseVoiceCommand/);
+  assert.doesNotMatch(voice, /setTimeout/);
+  assert.doesNotMatch(voice, /0\.98/);
+});
+
+test('integrates Flywheel cross-sell and one-click checkout into listing detail', () => {
+  const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
+  assert.match(listing, /OneClickCheckoutBar/);
+  assert.match(listing, /VivoFlywheelEngine/);
+  assert.match(listing, /crossSellRecommendations/);
+});
+
+test('defines fail-closed PayVivo one-click checkout', () => {
+  const checkout = fs.readFileSync(path.join(__dirname, 'components', 'OneClickCheckoutBar.tsx'), 'utf8');
+  assert.match(checkout, /OneClickCheckoutBar/);
+  assert.match(checkout, /PASSKEY_OR_WALLET/);
+  assert.match(checkout, /authorize\?/);
+  assert.match(checkout, /PayVivo escrow intent/);
+  assert.doesNotMatch(checkout, /setTimeout/);
+  assert.doesNotMatch(checkout, /Math\.random/);
+});
+
+test('integrates VIVO-INSURE badges into listing, wallet, and billboard surfaces', () => {
+  const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
+  const shell = fs.readFileSync(path.join(__dirname, 'components', 'MobileCommerceShell.tsx'), 'utf8');
+  const billboard = fs.readFileSync(path.join(__dirname, 'components', 'CorporateBillboard.tsx'), 'utf8');
+  assert.match(listing, /InsuranceShieldBadge/);
+  assert.match(shell, /InsuranceShieldBadge/);
+  assert.match(billboard, /Official Assurance Partner/);
+  assert.match(billboard, /assurancePartner/);
+});
+
+test('defines universal PayVivo escrow for retail, automotive, and property assets', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'payVivoUniversalEscrowEngine.ts'), 'utf8');
+  assert.match(engine, /PayVivoUniversalEscrowEngine/);
+  assert.match(engine, /AssetClass/);
+  assert.match(engine, /LOGISTICS_CODE/);
+  assert.match(engine, /SAT_NOTARY_APPROVAL/);
+  assert.match(engine, /TAPU_REGISTRATION/);
+  assert.match(engine, /deviation > 0\.35/);
+  assert.match(engine, /provided release trigger does not match/);
+  assert.match(engine, /isFundsLocked: false/);
+});
+
+test('defines asset-aware PAY VIVO TrustBar', () => {
+  const trustBar = fs.readFileSync(path.join(__dirname, 'components', 'TrustBar.tsx'), 'utf8');
+  assert.match(trustBar, /interface TrustBarProps/);
+  assert.match(trustBar, /RETAIL/);
+  assert.match(trustBar, /AUTOMOTIVE/);
+  assert.match(trustBar, /REAL_ESTATE/);
+  assert.match(trustBar, /PAY VIVO TRUST SECURED/);
+  assert.match(trustBar, /toLocaleString\('es-GT'/);
+  assert.match(trustBar, /role="status"/);
+});
+
+test('integrates VIVO-TRUST canonical engine and TrustBar into payment surfaces', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'PayVivoUniversalEscrowEngine.ts'), 'utf8');
+  const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
+  const shell = fs.readFileSync(path.join(__dirname, 'components', 'MobileCommerceShell.tsx'), 'utf8');
+  assert.match(engine, /payVivoUniversalEscrowEngine/);
+  assert.match(listing, /TrustBar/);
+  assert.match(shell, /TrustBar/);
+});
+
+test('defines safe App Router listing SEO JSON-LD engine', () => {
+  const seo = fs.readFileSync(path.join(__dirname, 'components', 'ListingSeoEngine.tsx'), 'utf8');
+  assert.match(seo, /ListingSeoEngine/);
+  assert.match(seo, /application\/ld\+json/);
+  assert.match(seo, /schema\.org/);
+  assert.match(seo, /priceCurrency/);
+  assert.match(seo, /replace\(\/</);
+  assert.match(seo, /canonical/);
+  assert.match(seo, /createListingSeoTitle/);
+  assert.match(seo, /Garantizado/);
+  assert.doesNotMatch(seo, /next\/head/);
 });
 
 test('defines the multi-currency escrow API and B2B supplier verification spec', () => {
@@ -1104,6 +1481,16 @@ test('defines Guatemala Next.js production configuration', () => {
   assert.match(nextConfig, /NEXT_PUBLIC_LAUNCH_CITY: 'Guatemala City'/);
 });
 
+test('defines official ecosystem image domains and route rewrites', () => {
+  const nextConfig = fs.readFileSync(path.join(__dirname, 'next.config.js'), 'utf8');
+  assert.match(nextConfig, /payvivoamigo\.com/);
+  assert.match(nextConfig, /cargovivo\.com/);
+  assert.match(nextConfig, /source: '\/marketplace\/:path\*'/);
+  assert.match(nextConfig, /destination: 'https:\/\/vivoamigo\.com\/:path\*'/);
+  assert.match(nextConfig, /destination: 'https:\/\/payvivoamigo\.com\/:path\*'/);
+  assert.match(nextConfig, /destination: 'https:\/\/cargovivo\.com\/:path\*'/);
+});
+
 test('defines guarded production deployment gates', () => {
   const deploy = fs.readFileSync(path.join(__dirname, 'scripts', 'deploy-production.sh'), 'utf8');
   assert.match(deploy, /npm ci/);
@@ -1269,7 +1656,7 @@ test('defines Next.js root and dynamic listing page exports', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const listing = fs.readFileSync(path.join(__dirname, 'app', 'listings', '[id]', 'page.tsx'), 'utf8');
   assert.match(home, /export default function HomePage/);
-  assert.match(home, /VivoShowcaseLanding/);
+  assert.match(home, /MobileCommerceShell/);
   assert.match(listing, /export default async function ListingPage/);
   assert.match(listing, /dynamicParams = true/);
 });
@@ -1425,10 +1812,10 @@ test('defines the premium Vivo showcase', () => {
   assert.match(showcase, /Ecosistema Digital de Guatemala/);
 });
 
-test('uses the premium showcase as the root landing page', () => {
+test('uses the mobile commerce shell as the root landing page', () => {
   const home = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
   const design = fs.readFileSync(path.join(__dirname, 'docs', 'DESIGN_AGENT.md'), 'utf8');
-  assert.match(home, /VivoShowcaseLanding/);
+  assert.match(home, /MobileCommerceShell/);
   assert.match(design, /bento grids/i);
   assert.match(design, /Glass/);
   assert.match(design, /VIVO-CHECK/);
@@ -1615,6 +2002,22 @@ test('sync is idempotent for offline sales', async () => {
   assert.equal((await request(createPosApp({ store: reopenedStore }), '/v1/pos/sync', body)).json.sales.length, 1);
   reopenedStore.close();
   fs.rmSync(directory, { recursive: true, force: true });
+});
+
+test('defines the mobile-first commerce shell and Supabase adapter contracts', () => {
+  const shell = fs.readFileSync(path.join(__dirname, 'components', 'MobileCommerceShell.tsx'), 'utf8');
+  const page = fs.readFileSync(path.join(__dirname, 'app', 'page.tsx'), 'utf8');
+  const supabase = fs.readFileSync(path.join(__dirname, 'services', 'supabaseContracts.ts'), 'utf8');
+  assert.match(shell, /MobileCommerceShell/);
+  assert.match(shell, /Touch-ID \/ Face-ID/);
+  assert.match(shell, /VIVO-CHECK/);
+  assert.match(shell, /Trusted seller/);
+  assert.match(shell, /grid-cols-5/);
+  assert.match(page, /MobileCommerceShell/);
+  assert.match(supabase, /SupabaseAuthPort/);
+  assert.match(supabase, /SupabaseListingPort/);
+  assert.match(supabase, /SupabaseStoragePort/);
+  assert.match(supabase, /not configured/);
 });
 
 test('generates VIVOAMIGOPAY checkout QR and queues CARGO VIVO metadata', async () => {

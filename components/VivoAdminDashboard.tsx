@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { MailLeadWidget } from './MailLeadWidget';
+import type { AIAnalyzedMail } from '../services/aiMailHandlerService';
 
 interface SecurityStatus {
   isEmergencyLockActive: boolean;
@@ -24,11 +26,22 @@ const fleets = [
   ['SUNCOREX ANALYTICS', '#201-#250', '50 agentes registrados']
 ];
 
+const DEMO_B2B_LEAD: AIAnalyzedMail = {
+  originalMailId: 'sales-demo-001',
+  channel: 'SALES',
+  category: 'HIGH_VALUE_B2B',
+  priorityScore: 9,
+  aiSummary: 'Institutional partnership lead awaiting executive review.',
+  draftedResponse: 'Estimado socio, recibimos su solicitud de alianza. Nuestro equipo comercial revisará el perfil institucional.',
+  requiresHumanAction: true
+};
+
 export const VivoAdminDashboard = () => {
   const [securityStatus, setSecurityStatus] = useState(INITIAL_STATUS);
   const [isLoading, setIsLoading] = useState(true);
   const [isLocking, setIsLocking] = useState(false);
   const [message, setMessage] = useState('');
+  const [leadMessage, setLeadMessage] = useState('');
 
   useEffect(() => {
     let mounted = true;
@@ -81,6 +94,7 @@ export const VivoAdminDashboard = () => {
         <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-xl"><h2 className="mb-4 font-mono text-sm font-bold uppercase tracking-wider">Estado de flotas</h2><div className="space-y-3 text-xs font-mono">{fleets.map(([name, range, state]) => <div key={name} className="flex items-center justify-between gap-3 rounded-xl border border-white/5 bg-white/[0.02] p-3"><span>{name} ({range})</span><span className="whitespace-nowrap text-emerald-400">{state}</span></div>)}</div></div>
         <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-xl lg:col-span-2"><h2 className="mb-4 font-mono text-sm font-bold uppercase tracking-wider">Estado de seguridad</h2><div className="grid grid-cols-2 gap-3 text-xs"><Metric label="Threat level" value={isLoading ? 'Consultando...' : securityStatus.activeThreatLevel} accent={isLocked ? 'text-red-400' : 'text-emerald-400'} /><Metric label="Vault" value={securityStatus.vaultStatus === 'ISOLATED' ? 'Aislado' : 'Cifrado seguro'} accent="text-cyan-300" /><Metric label="Intentos bloqueados" value={String(securityStatus.totalBlockedAttempts)} /><Metric label="Escrow / OTP" value={isLocked ? 'Pausados' : 'Operativos'} accent={isLocked ? 'text-red-400' : 'text-emerald-400'} /></div>{message && <p className="mt-4 text-xs text-amber-200" role="alert">{message}</p>}</div>
       </section>
+      <section className="mx-auto mt-6 max-w-7xl rounded-3xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-xl" aria-labelledby="b2b-leads-title"><div className="mb-3 flex items-center justify-between"><h2 id="b2b-leads-title" className="font-mono text-sm font-bold uppercase tracking-wider">High-priority B2B opportunities</h2><span className="rounded-full border border-[#FF6B00]/30 bg-[#FF6B00]/10 px-3 py-1 font-mono text-[10px] text-[#FFB38A]">sales@vivoamigo.com</span></div><MailLeadWidget lead={DEMO_B2B_LEAD} onApprove={() => setLeadMessage('Draft approved for human review; no email was sent automatically.')} />{leadMessage && <p className="text-xs text-emerald-300" role="status">{leadMessage}</p>}</section>
     </main>
   );
 };

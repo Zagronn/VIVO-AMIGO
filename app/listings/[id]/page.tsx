@@ -2,6 +2,12 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BankCreditCalculator } from '../../../components/BankCreditCalculator';
 import { InspectionBadge } from '../../../components/InspectionBadge';
+import { CorporateBillboard } from '../../../components/CorporateBillboard';
+import { AdServerEngine } from '../../../services/adServerEngine';
+import { TrustBar } from '../../../components/TrustBar';
+import { InsuranceShieldBadge } from '../../../components/InsuranceShieldBadge';
+import { OneClickCheckoutBar } from '../../../components/OneClickCheckoutBar';
+import { VivoFlywheelEngine } from '../../../services/vivoFlywheelEngine';
 
 interface Listing {
   id: string;
@@ -68,6 +74,9 @@ export default async function ListingPage({ params }: ListingProps) {
   const inspectionScore = listing.inspectionScore ?? 0;
   const inspectionPdfUrl = listing.inspectionPdfUrl || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://vivoamigo.com'}/reports/${listing.id}.pdf`;
   const qrCodeUrl = listing.qrCodeUrl || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://vivoamigo.com'}/verify/${listing.id}`;
+  const partnerOffer = new AdServerEngine().getContextualAd(listing.category || 'PAY_VIVO');
+  const categoryForFlywheel = listing.category === 'VEHICLE' ? 'VEHICLE' : listing.category === 'ELECTRONICS' ? 'ELECTRONICS' : listing.category === 'REAL_ESTATE' ? 'REAL_ESTATE' : 'GENERAL';
+  const crossSellRecommendations = new VivoFlywheelEngine().generateCrossSellServices(categoryForFlywheel, listing.price);
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': listing.category === 'VEHICLE' ? 'Vehicle' : 'Product',
@@ -101,11 +110,16 @@ export default async function ListingPage({ params }: ListingProps) {
         <div className="my-2 text-2xl font-semibold tabular-nums">
           Q{listing.price.toLocaleString('es-GT')} GTQ
         </div>
+        <TrustBar assetClass={listing.category === 'VEHICLE' ? 'AUTOMOTIVE' : listing.category === 'REAL_ESTATE' ? 'REAL_ESTATE' : 'RETAIL'} amountGTQ={listing.price} />
+        <InsuranceShieldBadge partnerName="Seguros El Roble · partner terms required" insuredValueGTQ={listing.price} />
         <div className="mb-4 rounded-2xl border border-gray-800 bg-[#191919] p-4">
           <h2 className="mb-2 text-sm font-bold text-gray-400">Descripción</h2>
           <p className="leading-relaxed text-[#7A808A]">{description}</p>
           {listing.sellerName && <p className="mt-3 text-xs text-gray-400">Vendedor: <strong className="text-white">{listing.sellerName}</strong>{listing.isCorporate ? ' · Empresa verificada' : ''}</p>}
         </div>
+        <aside className="lg:float-right lg:ml-6 lg:w-72" aria-label="Sponsored partner"><CorporateBillboard {...partnerOffer} targetCategory={listing.category} /></aside>
+        <div className="my-4"><OneClickCheckoutBar itemId={listing.id} itemTitle={listing.title} priceGTQ={listing.price} isGoldMember={false} onSuccess={() => undefined} /></div>
+        {crossSellRecommendations.length > 0 && <section className="my-4 rounded-2xl border border-gray-800 bg-[#191919] p-4"><h2 className="text-sm font-bold text-[#FF6B00]">Servicios para completar tu compra</h2><div className="mt-3 grid gap-2 sm:grid-cols-2">{crossSellRecommendations.map((recommendation) => <a key={recommendation.serviceType} href={recommendation.actionUrl} className="rounded-xl border border-gray-700 p-3 text-xs transition hover:border-[#FF6B00]"><strong className="text-white">{recommendation.title}</strong><span className="mt-1 block text-gray-400">{recommendation.description}</span></a>)}</div></section>}
         {listing.inspectionScore !== undefined && <InspectionBadge inspectionId={`INSP-${listing.id}`} score={inspectionScore} qrCodeUrl={qrCodeUrl} pdfReportUrl={inspectionPdfUrl} />}
         {(listing.category === 'REAL_ESTATE' || listing.category === 'VEHICLE') && <BankCreditCalculator propertyPriceGTQ={listing.price} />}
         <div className="fixed bottom-0 left-0 right-0 mx-auto flex max-w-4xl gap-3 border-t border-gray-800 bg-[#111111]/90 p-4 backdrop-blur-md">
