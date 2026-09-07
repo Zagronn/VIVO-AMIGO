@@ -297,6 +297,28 @@ test('routes and documents institutional partnership pitch decks', () => {
   assert.match(tigo, /Tigo Money/);
 });
 
+test('defines the fail-closed Banco Industrial credit bridge', () => {
+  const bridge = fs.readFileSync(path.join(__dirname, 'services', 'bancoIndustrialBridge.ts'), 'utf8');
+  assert.match(bridge, /interface BICreditApplication/);
+  assert.match(bridge, /api\.bi\.com\.gt\/v1\/credits\/pre-approve/);
+  assert.match(bridge, /MIN_VERI_SHIELD_SCORE = 85/);
+  assert.match(bridge, /Banco Industrial adapter is not configured/);
+  assert.match(bridge, /REJECTED_OR_MANUAL_REVIEW/);
+  assert.match(bridge, /requestedLoanAmountGTQ <= application\.assetVerifiedValueGTQ/);
+  assert.doesNotMatch(bridge, /Math\.random/);
+});
+
+test('links BI credit actions in fair price and wallet surfaces', () => {
+  const fairPrice = fs.readFileSync(path.join(__dirname, 'components', 'FairPriceEngine.tsx'), 'utf8');
+  const wallet = fs.readFileSync(path.join(__dirname, 'components', 'VivoWalletSystem.tsx'), 'utf8');
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'finance', 'bi', 'pre-approve', 'route.ts'), 'utf8');
+  for (const source of [fairPrice, wallet]) assert.match(source, /v1\/finance\/bi\/pre-approve/);
+  assert.match(route, /BancoIndustrialBridge/);
+  assert.match(route, /processInstantLoan/);
+  assert.match(fairPrice, /Solicitar crédito BI \/ Zigi/);
+  assert.match(wallet, /Solicitar crédito BI \/ Zigi/);
+});
+
 test('routes and documents the VERI-SHIELD fair-price engine', () => {
   const route = fs.readFileSync(path.join(__dirname, 'app', 'fair-price', 'page.tsx'), 'utf8');
   const spec = fs.readFileSync(path.join(__dirname, 'docs', 'VERI_SHIELD_SPEC.md'), 'utf8');

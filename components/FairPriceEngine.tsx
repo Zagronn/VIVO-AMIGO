@@ -6,14 +6,31 @@ interface FairPriceEngineProps {
   minMarketValue?: number;
   maxMarketValue?: number;
   initialAskingPrice?: number;
+  userId?: string;
 }
 
-export const FairPriceEngine = ({ minMarketValue = 44_000, maxMarketValue = 48_000, initialAskingPrice = 46_500 }: FairPriceEngineProps) => {
+export const FairPriceEngine = ({ minMarketValue = 44_000, maxMarketValue = 48_000, initialAskingPrice = 46_500, userId = 'current-user' }: FairPriceEngineProps) => {
   const [askingPrice, setAskingPrice] = useState(initialAskingPrice);
+  const [creditMessage, setCreditMessage] = useState('');
+  const [isRequestingCredit, setIsRequestingCredit] = useState(false);
   const hardCapPrice = maxMarketValue * 1.2;
   const isFairPrice = askingPrice >= minMarketValue && askingPrice <= maxMarketValue;
   const isSlightlyHigh = askingPrice > maxMarketValue && askingPrice <= hardCapPrice;
   const isPriceGouging = askingPrice > hardCapPrice;
+
+  const requestCredit = async () => {
+    setIsRequestingCredit(true);
+    setCreditMessage('');
+    try {
+      const response = await fetch('/api/v1/finance/bi/pre-approve', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId, assetType: 'VEHICLE', assetVerifiedValueGTQ: maxMarketValue, veriShieldScore: isFairPrice ? 85 : 70, requestedLoanAmountGTQ: askingPrice }) });
+      const result = await response.json() as { message?: string; status?: string };
+      setCreditMessage(result.message || 'Solicitud enviada a revisión.');
+    } catch {
+      setCreditMessage('La solicitud requiere revisión manual del socio financiero.');
+    } finally {
+      setIsRequestingCredit(false);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-[#06040A] p-6 font-sans text-white">
@@ -26,6 +43,7 @@ export const FairPriceEngine = ({ minMarketValue = 44_000, maxMarketValue = 48_0
           {isFairPrice && <StatusPanel tone="emerald" title="DÜRÜST FİYAT TESPİT EDİLDİ · TEŞVİK UYGUNLUĞU" copy={<>İlanınız VERI-SHIELD piyasa bandındadır. <strong>Promosyon ve öne çıkarma avantajları kampanya koşullarına tabidir.</strong></>} />}
           {isSlightlyHigh && <StatusPanel tone="amber" title="SARI BAYRAK · PİYASA ORTALAMASININ ÜZERİNDE" copy={<>İlan yayınlanabilir; alıcılara piyasa ortalamasının üzerinde olduğu gösterilir. Uygunluk için fiyatı Q {maxMarketValue.toLocaleString('es-GT')} seviyesine çekebilirsiniz.</>} />}
           {isPriceGouging && <StatusPanel tone="red" title="FAHİŞ FİYAT ENGELİ · İLAN REDDEDİLDİ" copy={<>Alıcı haklarını ve piyasa dengesini korumak için piyasa bandının %20 üzerindeki ilanlar yayınlanamaz.</>} />}
+          {!isPriceGouging && <div><button type="button" onClick={requestCredit} disabled={isRequestingCredit} className="rounded-xl border border-purple-400/40 bg-purple-500/10 px-4 py-3 text-xs font-bold text-purple-200 disabled:opacity-50">{isRequestingCredit ? 'BI revisando...' : 'Solicitar crédito BI / Zigi'}</button>{creditMessage && <p className="mt-2 text-xs text-gray-400" role="status">{creditMessage}</p>}</div>}
         </section>
 
         <aside className="space-y-1 rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-950/40 to-indigo-950/40 p-5 font-mono text-xs"><p className="font-bold text-purple-300">Döngüsel Adalet</p><p className="text-[11px] text-gray-400">Bugün piyasa değerinde satış yaparak güven ekosistemini güçlendirirsiniz. Yarın alıcı olduğunuzda aynı kalkan fahiş fiyatlara karşı sizi korur.</p></aside>
