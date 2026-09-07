@@ -27,6 +27,10 @@
 - `swarm.config.yml`: persisted master-agent and subgroup model/role configuration.
 - `agent-swarm` Compose service: one-shot production container initializes the configured swarm after Redis becomes healthy, with production origin routing injected.
 - Autonomous execution policy: `agent_master_01` and privileged DevOps alias `verishield_01` run in autonomous mode for approved local actions; external CI/deployment operations remain credential-gated.
+- Official brand UI refactor: Next/Tailwind tokens now use Montserrat, #FF6A00/#EB5C00 orange, #111111 shield black, #FBF7AA/#F8F9FA surfaces, and SHIP/ADS/SUPPORT accent colors.
+- `components/VivoShowcaseLanding.tsx`: rebuilt shared marketplace surface with Guatemala location badge, search/action header, hero CTAs, seven category grid, Quetzal product cards, VIVO PAY escrow widget, VIVO SHIP tracking card, and SUPPORT panel.
+- `mobile/App.js`: native shell typography aligned to Montserrat with orange brand action styling.
+- `components/VivoTradeInEngine.tsx` and `app/trade-in/page.tsx`: interactive vehicle, property, and device trade-in calculator with live Quetzal loan simulation, VIVO PAY action, and CARGO VIVO delivery handoff.
 - SQLite fallback: `vivopos.service.js` now persists offline sales through `node:sqlite` when available, with an in-memory compatibility fallback for older Node builds.
 - `package.json` and `package-lock.json`: Node runtime metadata and Express dependency.
 
@@ -46,6 +50,11 @@
 - Swarm stress simulation: 1,000 concurrent VERI-SHIELD, VIVOAMIGOPAY, CARGO VIVO, and VIVO POS task dispatches completed with 0 drops, 0 unhandled rejections, 1,000 consensus-log entries, 0 master-route violations, and all 35 sub-agents exercised.
 - Stress metrics: 2.723 ms aggregate dispatch time, 367,197.11 TPS, and 2.163 ms p95 dispatch latency. These are the latest in-process orchestration measurements and exclude external provider/database/network latency.
 - `npm test`: passed, 10 tests, 0 failures after swarm stress coverage.
+- `npm test`: passed, 118 tests, 0 failures after frontend brand-system and mobile integration assertions.
+- `npm test`: passed, 119 tests, 0 failures after adding the VIVO trade-in route and calculator contract.
+- Browser verification: primary portal, `/pay`, `/cargo`, and `/marketplace` loaded with zero console errors and no horizontal overflow at desktop and 390px mobile viewport.
+- Mobile/native checks: `npm run check:mobile` and `npm run check:native` passed.
+- Next build: not run because this workspace has no local `next` dependency or Next build script; the shared Next source and Tailwind configuration were statically validated.
 - Autonomous stress execution: latest 1,000-task run completed with 0 drops, 0 unhandled rejections, 1,000 consensus entries, 0 master-route violations, and 35 unique sub-agents.
 - Latest performance metrics: 3.121 ms aggregate dispatch time, 320,367.32 TPS, and 2.463 ms p95 dispatch latency. Measurements are in-process and exclude external provider, database, and network latency.
 - Local health checks: `compliance-api=ok`, `pos-api=ok`.

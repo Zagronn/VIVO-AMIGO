@@ -97,3 +97,24 @@ Canonical high-intent pages include rentals in Zone 10, affordable used vehicles
 ## Release gates
 
 Before expanding the pilot, verify active corporate supply, inspection turnaround, escrow delivery/release, dispute handling, fee reconciliation, fraud false-positive rate, and privacy consent coverage. Build, platform SDK, cloud deployment, payment gateway, government adapter, and signing checks must be reported as unavailable rather than simulated when their tools or credentials are absent.
+
+## Strategic Engineering Notes
+
+### Viral incentive algorithm
+
+The default campaign policy begins at a 450 BPS (4.5%) commission. A verified social share and a completed PayVivo wallet payment can each reduce the applied rate through the versioned `viralIncentiveEngine`; discounts are bounded at zero and are recorded with transaction and campaign IDs. This creates a measurable referral loop without treating unverified posts or wallet claims as rewards.
+
+### Asset-light and scalable architecture
+
+VIVO-MERCADO owns trust, transaction state, evidence, and partner orchestration rather than physical inventory. Warehousing, transport, bank underwriting, and telecom distribution remain adapter-backed partner capabilities. New countries add corridor configuration, local currency, compliance policy, and provider adapters rather than duplicating the core ledger.
+
+### Digital barter and circular value
+
+Partner media, payment discovery, and logistics placement can be exchanged in a capped, consent-gated pilot. “Zero budget” means zero upfront media target, not zero operating cost or guaranteed sponsorship. Barter, revenue share, exclusivity, and data-sharing require signed terms.
+
+| Criterion | Typical classifieds | VIVO-MERCADO |
+| --- | --- | --- |
+| Trust | Seller-led, variable evidence | VERI-SHIELD, VIVO-VERIFY, audit gates |
+| Payment | Cash or external link | PayVivo wallet and escrow intent |
+| Speed | Manual coordination | Adapter-backed score and workflow status |
+| Marketing | Purchased inventory | Consent-gated viral and partner pilots |

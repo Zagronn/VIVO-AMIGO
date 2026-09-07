@@ -23,6 +23,8 @@ export const VivoWalletSystem = ({ userId, balanceGTQ = 12500, escrowLockedGTQ =
   const [verification, setVerification] = useState<VerificationResponse | null>(null);
   const [creditMessage, setCreditMessage] = useState('');
   const [isRequestingCredit, setIsRequestingCredit] = useState(false);
+  const [transferMode, setTransferMode] = useState<'P2P' | 'ACH'>('P2P');
+  const [transferAmount, setTransferAmount] = useState(0);
 
   const handleDevinVerification = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -60,9 +62,11 @@ export const VivoWalletSystem = ({ userId, balanceGTQ = 12500, escrowLockedGTQ =
     <main className="min-h-screen bg-[#070312] p-6 font-sans text-white">
       <div className="mx-auto max-w-5xl space-y-8">
         <header className="flex flex-col items-start justify-between gap-4 rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl md:flex-row md:items-center">
-          <div><div className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-emerald-500/30 bg-emerald-500/20 px-3 py-0.5 font-mono text-[10px] font-bold text-emerald-400">AES-256 vault policy</span><span className="rounded-full border border-purple-500/30 bg-purple-500/20 px-3 py-0.5 font-mono text-[10px] text-purple-300">payvivoamigo.com</span></div><h1 className="mt-2 text-2xl font-black">VivoWallet · Billetera segura</h1><p className="font-mono text-xs text-gray-400">Custodia VIVO-CHECK con controles verificables</p></div>
-          <div className="text-left md:text-right"><p className="font-mono text-[10px] uppercase text-gray-400">Saldo disponible · demo</p><h2 className="font-mono text-3xl font-black text-emerald-400">Q {balanceGTQ.toLocaleString('es-GT', { minimumFractionDigits: 2 })} GTQ</h2><p className="mt-1 font-mono text-[11px] text-purple-300">Escrow retenido: Q {escrowLockedGTQ.toLocaleString('es-GT', { minimumFractionDigits: 2 })} GTQ</p></div>
+          <div><div className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-[#002E5D]/30 bg-[#002E5D] px-3 py-0.5 font-mono text-[10px] font-bold text-white">Bank-Grade Encryption</span><span className="rounded-full border border-[#FF6B00]/30 bg-[#FF6B00]/15 px-3 py-0.5 font-mono text-[10px] text-[#FF6B00]">payvivoamigo.com</span></div><h1 className="mt-2 text-2xl font-black">VivoWallet · Billetera segura</h1><p className="font-mono text-xs text-gray-400">Custodia VIVO-CHECK con controles verificables</p></div>
+          <div className="text-left md:text-right"><p className="font-mono text-[10px] uppercase text-gray-400">Saldo disponible · demo</p><h2 className="font-mono text-3xl font-black text-emerald-400">Q {balanceGTQ.toLocaleString('es-GT', { minimumFractionDigits: 2 })} GTQ</h2><p className="mt-1 font-mono text-[11px] text-purple-300">Escrow retenido: Q {escrowLockedGTQ.toLocaleString('es-GT', { minimumFractionDigits: 2 })} GTQ</p><button type="button" onClick={() => setTransferMode(transferMode === 'P2P' ? 'ACH' : 'P2P')} className="mt-3 rounded-full bg-[#FF6B00] px-4 py-2 text-xs font-extrabold text-white shadow-lg shadow-orange-500/20">Transferir</button></div>
         </header>
+
+        <section className="rounded-3xl border border-[#002E5D]/20 bg-white/[0.03] p-5 text-white" aria-label="Transfer quote"><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="font-mono text-[10px] uppercase text-[#FF6B00]">Global transfer</p><h2 className="text-lg font-bold">{transferMode === 'P2P' ? 'Wallet a wallet' : 'Transferencia bancaria ACH'}</h2></div><span className="rounded-full bg-[#002E5D] px-3 py-1 font-mono text-[10px] font-bold text-white">{transferMode === 'P2P' ? '0 GTQ · instantáneo' : '5 GTQ · same-day ACH'}</span></div><div className="mt-4 flex gap-3"><input type="number" min="0" value={transferAmount || ''} onChange={(event) => setTransferAmount(Number(event.target.value))} placeholder="Monto GTQ" className="w-full rounded-xl border border-white/10 bg-black/30 p-3 text-sm text-white" /><button type="button" className="rounded-xl bg-[#FF6B00] px-4 py-3 text-xs font-bold">Cotizar</button></div><p className="mt-3 text-[11px] text-gray-400">Quote informativo; la transferencia requiere wallet, saldo, autenticación y adapter PayVivo configurado.</p></section>
 
         <section className="rounded-3xl border border-purple-500/30 bg-gradient-to-br from-purple-950/40 via-black to-indigo-950/40 p-6 backdrop-blur-xl" aria-labelledby="wallet-promo-title">
           <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-center"><div><span className="rounded-full border border-amber-500/30 bg-amber-500/20 px-2.5 py-0.5 font-mono text-[10px] font-bold text-amber-300">45-SEC VIVOAMIGO PROMO</span><h2 id="wallet-promo-title" className="mt-1 text-lg font-bold">Comparte y solicita la verificación de tu promoción</h2></div>{verification?.success && <span className="animate-pulse rounded-full border border-emerald-500/40 bg-emerald-500/20 px-3 py-1 font-mono text-xs font-bold text-emerald-400">VERIFICADO · 0% COMISIÓN</span>}</div>
@@ -83,5 +87,5 @@ function PromoCard({ title, copy, accent }: { title: string; copy: string; accen
 }
 
 function DomainCard({ domain, copy, accent }: { domain: string; copy: string; accent: string }) {
-  return <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4"><span className={`mb-1 block font-bold ${accent}`}>{domain}</span><p className="text-[11px] text-gray-400">{copy}</p></div>;
+  return <a href={`https://${domain}`} target="_blank" rel="noreferrer" className="block rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition hover:border-purple-400/50"><span className={`mb-1 block font-bold ${accent}`}>{domain}</span><p className="text-[11px] text-gray-400">{copy}</p></a>;
 }

@@ -1,5 +1,5 @@
-import { VivoShowcaseLanding } from '../components/VivoShowcaseLanding';
+import { MobileCommerceShell } from '../components/MobileCommerceShell';
 
 export default function HomePage() {
-  return <VivoShowcaseLanding />;
+  return <MobileCommerceShell />;
 }

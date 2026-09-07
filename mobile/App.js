@@ -32,14 +32,14 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#111111' },
   content: { flexGrow: 1, padding: 24, gap: 18 },
   kicker: { color: '#FF6A00', fontSize: 11, fontWeight: '800', letterSpacing: 2 },
-  title: { color: '#f5f5f5', fontFamily: 'Amazon Ember', fontSize: 42, fontWeight: '700', letterSpacing: -0.42, marginTop: 18 },
-  copy: { color: '#a7a7a7', fontFamily: 'Amazon Ember', fontSize: 17, fontWeight: '400', lineHeight: 24, maxWidth: 520 },
+  title: { color: '#f5f5f5', fontFamily: 'Montserrat', fontSize: 42, fontWeight: '800', letterSpacing: -0.42, marginTop: 18 },
+  copy: { color: '#a7a7a7', fontFamily: 'Montserrat', fontSize: 17, fontWeight: '400', lineHeight: 24, maxWidth: 520 },
   switcher: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 16 },
   tab: { borderColor: '#284044', borderWidth: 1, paddingHorizontal: 12, paddingVertical: 10 },
   activeTab: { backgroundColor: '#FF6A00', borderColor: '#FF6A00' },
-  tabText: { color: '#a7a7a7', fontFamily: 'Amazon Ember', fontSize: 12, fontWeight: '500' },
+  tabText: { color: '#a7a7a7', fontFamily: 'Montserrat', fontSize: 12, fontWeight: '500' },
   activeTabText: { color: '#111111' },
   panel: { backgroundColor: '#191919', borderColor: '#3c3c3c', borderWidth: 1, marginTop: 24, padding: 20 },
-  panelTitle: { color: '#f5f5f5', fontFamily: 'Amazon Ember', fontSize: 20, fontWeight: '700', letterSpacing: -0.2, marginBottom: 14 },
+  panelTitle: { color: '#f5f5f5', fontFamily: 'Montserrat', fontSize: 20, fontWeight: '800', letterSpacing: -0.2, marginBottom: 14 },
   flow: { color: '#7A808A', fontSize: 16, marginTop: 10, textTransform: 'capitalize' }
 });
