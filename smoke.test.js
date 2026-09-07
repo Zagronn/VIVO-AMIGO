@@ -313,6 +313,46 @@ test('routes and documents institutional partnership pitch decks', () => {
   assert.match(tigo, /Tigo Money/);
 });
 
+test('defines the VivoMercado cross-border escrow and trade-in engine', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'vivoMercadoEngine.ts'), 'utf8');
+  assert.match(engine, /B2BImportExportDeal/);
+  assert.match(engine, /initializeCrossBorderEscrow/);
+  assert.match(engine, /TR.*CN/);
+  assert.match(engine, /VERI_SHIELD_CARGO_INSPECTION_PASSED/);
+  assert.match(engine, /calculateTradeInDifference/);
+  assert.match(engine, /MIN_CREDIT_SCORE = 650/);
+  assert.match(engine, /TERM_MONTHS = 48/);
+  assert.doesNotMatch(engine, /Math\.random/);
+});
+
+test('defines scalable VIVO-MERCADO platform architecture', () => {
+  const engine = fs.readFileSync(path.join(__dirname, 'services', 'vivoMercadoPlatformEngine.ts'), 'utf8');
+  const architecture = fs.readFileSync(path.join(__dirname, 'docs', 'VIVO_MERCADO_ARCHITECTURE.md'), 'utf8');
+  assert.match(engine, /VivoMercadoPlatformEngine/);
+  assert.match(engine, /MX.*CO.*PE.*CL.*BR/);
+  assert.match(engine, /securityLockActive/);
+  assert.match(engine, /payvivoamigo\.com/);
+  assert.match(engine, /cargovivo\.com/);
+  assert.match(engine, /scoreProvider/);
+  assert.match(architecture, /Trust Boundaries/);
+  assert.match(architecture, /Scale Model/);
+  assert.match(architecture, /Currency conversion requires/);
+});
+
+test('defines the multi-currency escrow API and B2B supplier verification spec', () => {
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'escrow', 'route.ts'), 'utf8');
+  const spec = fs.readFileSync(path.join(__dirname, 'docs', 'B2B_SUPPLIER_VERIFICATION.md'), 'utf8');
+  assert.match(route, /VivoMercadoEngine/);
+  assert.match(route, /securityLockActive/);
+  assert.match(route, /payvivoamigo\.com/);
+  assert.match(route, /MANUAL_REVIEW/);
+  assert.match(spec, /Onboarding Gates/);
+  assert.match(spec, /Settlement currencies/);
+  assert.match(spec, /USD.*GTQ.*TRY.*CNY/);
+  assert.match(spec, /cargovivo\.com/);
+  assert.match(spec, /idempotent escrow/);
+});
+
 test('defines the fail-closed Banco Industrial credit bridge', () => {
   const bridge = fs.readFileSync(path.join(__dirname, 'services', 'bancoIndustrialBridge.ts'), 'utf8');
   assert.match(bridge, /interface BICreditApplication/);
