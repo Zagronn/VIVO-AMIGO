@@ -1,4 +1,4 @@
-import { VivoWalletSystem } from '@/components/VivoWalletSystem';
+import { VivoPayDashboard } from '@/components/VivoPayDashboard';
 
 export const metadata = {
   title: 'VivoWallet | payvivoamigo.com',
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function WalletPage() {
-  return <VivoWalletSystem userId="wallet-session-user" />;
+  return <VivoPayDashboard />;
 }

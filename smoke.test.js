@@ -163,6 +163,25 @@ test('defines the API-backed VIVO-VIRAL share modal', () => {
   assert.doesNotMatch(modal, /setTimeout/);
 });
 
+test('defines a secure WhatsApp seller contact button', () => {
+  const button = fs.readFileSync(path.join(__dirname, 'components', 'WhatsAppButton.tsx'), 'utf8');
+  assert.match(button, /wa\.me/);
+  assert.match(button, /encodeURIComponent/);
+  assert.match(button, /noopener noreferrer/);
+  assert.match(button, /normalizePhone/);
+  assert.match(button, /aria-label/);
+});
+
+test('defines validated Gemini AI analysis route', () => {
+  const route = fs.readFileSync(path.join(__dirname, 'app', 'api', 'v1', 'ai', 'analyze', 'route.ts'), 'utf8');
+  assert.match(route, /GoogleGenerativeAI/);
+  assert.match(route, /GEMINI_API_KEY/);
+  assert.match(route, /gemini-2\.5-flash/);
+  assert.match(route, /description.length > 10_000/);
+  assert.match(route, /JSON.parse/);
+  assert.match(route, /status: 503/);
+});
+
 test('keeps the Spanish Llevamos Vidas campaign branding consistent', () => {
   const script = fs.readFileSync(path.join(__dirname, 'docs', 'VIVO_PROMO_VIDEO_SCRIPT.md'), 'utf8');
   const modal = fs.readFileSync(path.join(__dirname, 'components', 'VivoViralShareModal.tsx'), 'utf8');

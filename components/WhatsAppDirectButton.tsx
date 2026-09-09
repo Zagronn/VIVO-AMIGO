@@ -1,3 +1,6 @@
+import { motion } from 'framer-motion';
+import { MessageCircle } from 'lucide-react';
+
 interface WhatsAppDirectButtonProps {
   phone: string;
   title: string;
@@ -17,14 +20,17 @@ export const WhatsAppDirectButton = ({
   title,
   isOfficialDealer = false
 }: WhatsAppDirectButtonProps) => (
-  <a
+  <motion.a
     href={buildWhatsAppUrl(phone, title, isOfficialDealer)}
     target="_blank"
     rel="noopener noreferrer"
     aria-label={isOfficialDealer ? `Programar prueba de manejo para ${title} por WhatsApp` : `Contactar al vendedor de ${title} por WhatsApp`}
-    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3.5 font-extrabold text-black shadow-lg transition-transform hover:bg-[#20ba5a] active:scale-95"
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3.5 font-extrabold text-black shadow-lg outline-none transition-colors hover:bg-[#20ba5a] focus-visible:ring-2 focus-visible:ring-green-200"
   >
-    <span className="text-xl" aria-hidden="true">💬</span>
+    <MessageCircle size={20} aria-hidden="true" />
     <span>{isOfficialDealer ? 'Prueba de Manejo por WhatsApp' : 'Contactar al Vendedor (WhatsApp)'}</span>
-  </a>
+  </motion.a>
 );

@@ -1,5 +1,5 @@
-import { MobileCommerceShell } from '../components/MobileCommerceShell';
+import { VivoMarketplaceHome } from '../components/VivoMarketplaceHome';
 
 export default function HomePage() {
-  return <MobileCommerceShell />;
+  return <VivoMarketplaceHome />;
 }

@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { CircleCheck } from 'lucide-react';
 
 interface FormData {
   name: string;
@@ -43,13 +45,14 @@ export const BydLeadForm = () => {
   };
 
   return (
-    <div className="rounded-2xl border border-[#FF6A00] bg-[#111111] p-6 text-white">
+    <motion.div layout className="rounded-2xl border border-[#FF6A00] bg-[#111111] p-6 text-white">
       <h3 className="mb-2 text-xl font-bold text-[#FF6A00]">Prueba de Manejo BYD Eléctrico</h3>
       <p className="mb-4 text-xs text-gray-400">Agenda tu cita directa por WhatsApp sin compromisos.</p>
+      <AnimatePresence mode="wait" initial={false}>
       {submitted ? (
-        <div role="status" className="font-bold text-green-400">¡Solicitud enviada! Redirigiendo a WhatsApp...</div>
+        <motion.div key="lead-confirmed" role="status" initial={{ opacity: 0, height: 0, scale: 0.96 }} animate={{ opacity: 1, height: 'auto', scale: 1 }} exit={{ opacity: 0, height: 0 }} transition={{ type: 'spring', stiffness: 400, damping: 25 }} className="flex items-center gap-2 overflow-hidden font-bold text-green-400"><motion.span animate={{ scale: [1, 1.15, 1] }} transition={{ type: 'spring', stiffness: 400, damping: 25 }}><CircleCheck size={20} aria-hidden="true" /></motion.span>¡Solicitud enviada! Redirigiendo a WhatsApp...</motion.div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <motion.form key="lead-form" layout onSubmit={handleSubmit} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ type: 'spring', stiffness: 400, damping: 25 }} className="space-y-3 overflow-hidden">
           <label className="sr-only" htmlFor="byd-name">Nombre completo</label>
           <input id="byd-name" type="text" placeholder="Nombre completo" required value={formData.name} onChange={(event) => setFormData({ ...formData, name: event.target.value })} className="w-full rounded-xl border border-gray-800 bg-[#1e1e1e] p-3 text-sm focus:border-[#FF6A00] focus:outline-none" />
           <label className="sr-only" htmlFor="byd-phone">Teléfono / WhatsApp</label>
@@ -58,12 +61,13 @@ export const BydLeadForm = () => {
           <select id="byd-zone" value={formData.zone} onChange={(event) => setFormData({ ...formData, zone: event.target.value })} className="w-full rounded-xl border border-gray-800 bg-[#1e1e1e] p-3 text-sm text-white focus:border-[#FF6A00] focus:outline-none">
             {Array.from({ length: 21 }, (_, index) => <option key={index} value={`Zona ${index + 1}`}>Zona {index + 1}</option>)}
           </select>
-          <button type="submit" disabled={isSubmitting} className="w-full rounded-xl bg-[#25D366] py-3.5 text-center font-extrabold text-black shadow-lg transition-all hover:bg-[#20ba5a] disabled:cursor-not-allowed disabled:opacity-60">
+          <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ type: 'spring', stiffness: 400, damping: 25 }} className="w-full rounded-xl bg-[#25D366] py-3.5 text-center font-extrabold text-black shadow-lg transition-all hover:bg-[#20ba5a] disabled:cursor-not-allowed disabled:opacity-60">
             {isSubmitting ? 'Enviando solicitud...' : 'Solicitar Test Drive por WhatsApp'}
-          </button>
+          </motion.button>
           {error && <p role="alert" className="text-sm text-red-400">{error}</p>}
-        </form>
+        </motion.form>
       )}
-    </div>
+      </AnimatePresence>
+    </motion.div>
   );
 };

@@ -9,7 +9,7 @@ interface VivoHeroRewardModalProps {
 }
 
 export const VivoHeroRewardModal = ({ userName = 'Serdar', issueTitle = 'Ajuste de respuesta en pasarela Visanet', onClose }: VivoHeroRewardModalProps) => (
-  <section className="relative mx-auto max-w-md overflow-hidden rounded-3xl border border-purple-500/40 bg-[#070312] p-6 text-white shadow-2xl backdrop-blur-2xl" role="dialog" aria-label={`Recompensas VIVO-HERO para ${userName}`}>
+  <section className="vivo-modal-enter relative mx-auto max-w-md overflow-hidden rounded-3xl border border-purple-500/40 bg-[#070312] p-6 text-white shadow-2xl backdrop-blur-2xl" role="dialog" aria-label={`Recompensas VIVO-HERO para ${userName}`}>
     <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-purple-500/20 blur-2xl" />
     <div className="mb-4 flex items-center gap-2"><span className="flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 font-mono text-xs font-bold text-amber-400">VIVO-HERO · Héroe del Sistema</span></div>
     <h2 className="mb-2 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-2xl font-extrabold text-transparent">¡Gracias, {userName}!</h2>

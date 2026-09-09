@@ -25,7 +25,7 @@ export const VivoAssistSosModal = ({ onTriggerSos }: { onTriggerSos?: (issue: So
   };
 
   return (
-    <section className="my-4 rounded-2xl border border-red-600/50 bg-[#111111] p-5 text-white shadow-2xl" aria-label="VIVO-ASSIST auxilio vial 24/7">
+    <section className="vivo-modal-enter my-4 rounded-2xl border border-red-600/50 bg-[#111111] p-5 text-white shadow-2xl" aria-label="VIVO-ASSIST auxilio vial 24/7">
       <div className="mb-3 flex items-center justify-between gap-3"><h3 className="font-black text-sm text-red-500">VIVO-ASSIST · Auxilio Vial 24/7</h3><span className="rounded border border-red-600/30 bg-red-600/20 px-2.5 py-1 text-[10px] font-bold uppercase text-red-400">Tarifa Fija Garantizada</span></div>
       <p className="mb-4 text-xs text-gray-300">Solicita grúa o auxilio mecánico inmediato con precio transparente e integración Escrow.</p>
       {!activeSos ? (

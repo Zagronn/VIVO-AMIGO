@@ -24,7 +24,7 @@ export const VivoCritiqueModal = ({ onSubmitCritique }: { onSubmitCritique?: (co
   };
 
   return (
-    <section className="mx-auto max-w-md rounded-3xl border border-purple-500/30 bg-[#070312] p-6 text-white shadow-2xl backdrop-blur-xl" aria-label="VIVO-CRITIQUE feedback">
+    <section className="vivo-modal-enter mx-auto max-w-md rounded-3xl border border-purple-500/30 bg-[#070312] p-6 text-white shadow-2xl backdrop-blur-xl" aria-label="VIVO-CRITIQUE feedback">
       <div className="mb-4 flex items-center justify-between"><span className="rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1 font-mono text-xs font-bold text-purple-400">VIVO-CRITIQUE · Sistema Self-Healing</span><span className="animate-pulse font-mono text-[10px] text-emerald-400">Devin AI Active</span></div>
       <h3 className="mb-1 text-lg font-bold">¿Encontraste un problema o falla?</h3>
       <p className="mb-4 text-xs leading-relaxed text-gray-400">Tu crítica es analizada por nuestro agente de IA. Las fallas se enrutan según su severidad y aprobación requerida.</p>
