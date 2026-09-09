@@ -10,6 +10,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://vivoamigo.com'),
   title: 'VIVO AMIGO | Mercado Digital Guatemala',
   description: 'Compra, venta, servicios y vehículos con Escrow seguro en Guatemala.',
   icons: {

@@ -42,7 +42,7 @@ export const VivoViralShareModal = ({ userId }: VivoViralShareModalProps) => {
   };
 
   return (
-    <section className="mx-auto my-6 max-w-lg rounded-3xl border border-purple-500/30 bg-[#070312] p-6 text-white shadow-2xl backdrop-blur-2xl" aria-labelledby="viral-share-title">
+    <section className="vivo-modal-enter mx-auto my-6 max-w-lg rounded-3xl border border-purple-500/30 bg-[#070312] p-6 text-white shadow-2xl backdrop-blur-2xl" aria-labelledby="viral-share-title">
       <div className="mb-4 text-center">
         <span className="rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-purple-400">VIVO-VIRAL · 0% de comisión</span>
         <h2 id="viral-share-title" className="mt-2 text-xl font-extrabold text-white">¿Quieres tu primera venta con 0% comisión?</h2>

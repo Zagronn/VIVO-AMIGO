@@ -12,10 +12,14 @@
     "start:web": "next start",
     "start": "node vivopos.service.js",
     "test": "node --test smoke.test.js",
+    "test:e2e": "playwright test e2e/production.spec.cjs",
     "check:mobile": "npm run check --prefix mobile",
     "check:native": "test -f mobile/ios/project.yml && test -f mobile/ios/ExportOptions.plist && test -f mobile/android/settings.gradle && test -f mobile/android/app/build.gradle && test -f mobile/android/app/src/main/AndroidManifest.xml",
     "security:audit": "bash scripts/security-audit.sh",
     "security:pentest": "node scripts/iron-shield-pentest.js",
+    "dns:plan": "node scripts/cloudflare-dns-sync.mjs",
+    "dns:apply": "node scripts/cloudflare-dns-sync.mjs --apply",
+    "setup:dns": "tsx scripts/setup-dns.ts",
     "start:compliance": "node compliance.api.js",
     "start:pos": "node vivopos.service.js"
   },
@@ -24,6 +28,9 @@
     "@aws-sdk/client-dynamodb": "^3.864.0",
     "@aws-sdk/client-s3": "^3.864.0",
     "@aws-sdk/lib-dynamodb": "^3.864.0",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.20.0",
+    "clsx": "^2.1.1",
     "express": "^5.1.0",
     "framer-motion": "^11.18.2",
     "js-yaml": "^4.1.0",
@@ -33,9 +40,11 @@
     "pg": "^8.16.0",
     "qrcode": "^1.5.4",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/node": "^20.19.43",
     "@types/pg": "^8.23.1",
     "@types/react": "^18.3.31",
@@ -43,6 +52,7 @@
     "browserify": "^17.0.1",
     "postcss": "^8.5.28",
     "tailwindcss": "^3.4.19",
+    "tsx": "^4.23.13",
     "typescript": "^5.9.3"
   }
 }
