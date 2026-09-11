@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 import React, { ReactNode } from 'react';
+import { GlobalServiceHeader } from '../components/GlobalServiceHeader';
+import { GlobalFooter } from '../components/GlobalFooter';
+import { PublicLaunchNotice } from '../components/PublicLaunchNotice';
+import { SiteConfigEffects } from '../components/SiteConfigEffects';
 import './globals.css';
 
 const montserrat = Montserrat({
@@ -11,16 +16,16 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://vivoamigo.com'),
-  title: 'VIVO AMIGO | Mercado Digital Guatemala',
-  description: 'Compra, venta, servicios y vehículos con Escrow seguro en Guatemala.',
+  title: 'VIVO AMIGO | Digital Marketplace Guatemala',
+  description: 'VIVO AMIGO public marketplace preview for products, services, jobs, property, and vehicles in Guatemala.',
   icons: {
-    icon: '/images/logo.png',
-    apple: '/images/logo.png'
+    icon: '/brand-mark.svg',
+    apple: '/brand-mark.svg'
   },
   openGraph: {
-    title: 'VIVO AMIGO | Mercado Digital',
-    description: 'Compra, venta, servicios y vehículos con Escrow seguro en Guatemala.',
-    images: ['/images/logo.png'],
+    title: 'VIVO AMIGO | Digital Marketplace Guatemala',
+    description: 'VIVO AMIGO public marketplace preview for products, services, jobs, property, and vehicles in Guatemala.',
+    images: ['/brand-mark.svg'],
     locale: 'es_GT',
     type: 'website'
   }
@@ -29,7 +34,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es" className={montserrat.variable}>
-      <body className="font-sans bg-[#F8F9FA] text-[#111111] antialiased">{children}</body>
+      <body className="font-sans bg-[#F8F9FA] text-[#111111] antialiased"><SiteConfigEffects /><GlobalServiceHeader /><PublicLaunchNotice />{children}<GlobalFooter /><Analytics /></body>
     </html>
   );
 }
