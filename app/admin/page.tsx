@@ -1,5 +1,5 @@
-import { VivoAdminDashboard } from '@/components/VivoAdminDashboard';
+import { SuperAdminWorkspace } from '@/components/SuperAdminWorkspace';
 
-export default function AdminDashboardPage() {
-  return <VivoAdminDashboard />;
+export default function AdminPage() {
+  return <SuperAdminWorkspace />;
 }
