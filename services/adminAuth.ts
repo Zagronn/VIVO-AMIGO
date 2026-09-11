@@ -4,32 +4,31 @@ import { cookies } from 'next/headers';
 export const ADMIN_SESSION_COOKIE = 'vivo_admin_session';
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 
-type AdminSession = { email: string; role: 'SUPER_ADMIN'; expiresAt: number };
+type AdminSession = { name: string; role: 'SUPER_ADMIN'; expiresAt: number };
 const sessions = new Map<string, AdminSession>();
 
 const hashToken = (token: string) => createHash('sha256').update(token).digest('hex');
 const passwordHash = (password: string, salt: string) => scryptSync(password, salt, 64).toString('hex');
 
 function configuredAdmin() {
-  const email = process.env.VIVO_ADMIN_EMAIL;
-  const credential = process.env.VIVO_ADMIN_PASSWORD_SCRYPT;
-  if (!email || !credential) return null;
+  const credential = process.env.VIVO_SUPER_ADMIN_PASSWORD_SCRYPT || process.env.VIVO_ADMIN_PASSWORD_SCRYPT;
+  if (!credential) return null;
   const [salt, expected] = credential.split(':');
   if (!salt || !expected) return null;
-  return { email: email.toLowerCase(), salt, expected };
+  return { salt, expected };
 }
 
-export function validateAdminCredentials(email: string, password: string) {
+export function validateAdminCredentials(name: string, accessKey: string, password: string) {
   const admin = configuredAdmin();
-  if (!admin || email.toLowerCase() !== admin.email) return false;
+  if (!admin || name.trim().toUpperCase() !== 'SERDAR CEVIK' || accessKey.trim().toUpperCase() !== 'SUPER ADMIN') return false;
   const actual = Buffer.from(passwordHash(password, admin.salt), 'hex');
   const expected = Buffer.from(admin.expected, 'hex');
   return actual.length === expected.length && timingSafeEqual(actual, expected);
 }
 
-export function createAdminSession(email: string) {
+export function createAdminSession(name: string) {
   const token = randomBytes(32).toString('base64url');
-  sessions.set(hashToken(token), { email: email.toLowerCase(), role: 'SUPER_ADMIN', expiresAt: Date.now() + SESSION_TTL_MS });
+  sessions.set(hashToken(token), { name: name.trim(), role: 'SUPER_ADMIN', expiresAt: Date.now() + SESSION_TTL_MS });
   return token;
 }
 
