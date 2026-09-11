@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, BriefcaseBusiness, Building2, CarFront, Heart, Home, Laptop, MapPin, Menu, Search, ShoppingBag, SlidersHorizontal, Store, Wheat, Wrench, X } from 'lucide-react';
 import { VivoBrandLogo } from './VivoBrandLogo';
+import { useSiteConfig } from './siteConfig';
 
 const copy = { all: 'All', electronics: 'Electronics', automotive: 'Automotive', home: 'Home', agriculture: 'Agriculture', jobs: 'Jobs', realEstate: 'Real estate', services: 'Services', saved: 'Saved to favorites', added: 'Saved to preview cart. Transactions open soon.', smartSearch: 'Search products, jobs, services or properties', search: 'Search', cart: 'Cart', marketplace: 'Marketplace', quickView: 'Quick view', addCart: 'Add to cart', noResults: 'No products found.', close: 'Close', business: 'VIVO BUSINESS' };
 
@@ -34,6 +35,7 @@ type Product = (typeof products)[number];
 
 export function VivoMarketplaceHomeI18n() {
   const router = useRouter();
+  const { config } = useSiteConfig();
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All');
   const [favorites, setFavorites] = useState<string[]>([]);
@@ -63,6 +65,7 @@ export function VivoMarketplaceHomeI18n() {
     notify(copy.saved);
   };
   const addToCart = (name: string) => {
+    if (!config.modules.marketplacePreview) return notify('Marketplace preview is currently disabled by site administration.');
     setCart((current) => {
       const next = [...current, name];
       window.localStorage.setItem('vivo-amigo-cart', JSON.stringify(next));
