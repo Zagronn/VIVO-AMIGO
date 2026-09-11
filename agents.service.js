@@ -30,12 +30,13 @@ class SwarmOrchestrator {
     groups.forEach((group) => {
       for (let index = 1; index <= group.count; index++) {
         const agentId = `${group.group.toLowerCase()}_${index.toString().padStart(2, '0')}`;
-        this.agents.set(agentId, { id: agentId, group: group.group, roles: group.roles, model: group.model, status: 'IDLE', executionMode: 'AUTONOMOUS' });
+        const role = group.roles[(index - 1) % group.roles.length];
+        this.agents.set(agentId, { id: agentId, group: group.group, role, roles: group.roles, model: group.model, status: 'IDLE', executionMode: 'AUTONOMOUS' });
         totalSpawned++;
       }
     });
     const privilegedId = this.config.orchestration.autonomy?.privileged_sub_agent;
-    const firstComplianceAgent = [...this.agents.values()].find((agent) => agent.group === 'VERI_SHIELD_COMPLIANCE');
+    const firstComplianceAgent = [...this.agents.values()].find((agent) => agent.group === 'TRUST_COMPLIANCE' || agent.group === 'VERI_SHIELD_COMPLIANCE');
     if (privilegedId && firstComplianceAgent) {
       this.agents.set(privilegedId, { ...firstComplianceAgent, id: privilegedId, role: 'devops_executor', status: 'IDLE', aliasOf: firstComplianceAgent.id });
     }
@@ -64,13 +65,9 @@ class SwarmOrchestrator {
     const master = this.agents.get(this.config.orchestration.master_agent.id);
     if (!master) throw new Error('swarm is not initialized');
     const normalizedTaskType = String(taskType).toUpperCase();
-    const groupMatchers = {
-      VERI_SHIELD_COMPLIANCE: ['VERI', 'RENAP', 'IDENTITY', 'KYC', 'FRAUD', 'SAT'],
-      PAY_VIVO_FINANCE: ['PAY', 'ESCROW', 'LEDGER', 'SETTLEMENT'],
-      CARGO_VIVO_LOGISTICS: ['CARGO', 'ROUTE', 'SHIPMENT', 'DELIVERY'],
-      VIVO_POS_OPERATIONS: ['POS', 'QR', 'OFFLINE', 'INVOICE']
-    };
-    const group = this.config.orchestration.sub_agents.find((candidate) => groupMatchers[candidate.group]?.some((keyword) => normalizedTaskType.includes(keyword)));
+    const groups = this.config.orchestration.sub_agents;
+    const group = groups.find((candidate) => candidate.task_keywords?.some((keyword) => normalizedTaskType.includes(keyword)))
+      || groups.find((candidate) => candidate.group === 'PLATFORM_RELIABILITY');
     const candidates = group ? [...this.agents.values()].filter((agent) => agent.group === group.group && !agent.aliasOf) : [];
     const offset = group ? this.roundRobinOffsets.get(group.group) || 0 : 0;
     const assignedAgent = candidates.length ? candidates[offset % candidates.length] : null;

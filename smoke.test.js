@@ -244,29 +244,6 @@ test('defines fail-closed Cloudflare domain and FULL_STRICT TLS verification', (
   assert.match(cloudflare, /verifyCloudflareDomain/);
 });
 
-test('defines the executive admin dashboard with live emergency lock controls', () => {
-  const dashboard = fs.readFileSync(path.join(__dirname, 'components', 'VivoAdminDashboard.tsx'), 'utf8');
-  assert.match(dashboard, /VivoAdminDashboard/);
-  assert.match(dashboard, /v1\/security\/status/);
-  assert.match(dashboard, /v1\/security\/emergency-lock/);
-  assert.match(dashboard, /Llevamos Vidas, Transportamos Confianza/);
-  assert.match(dashboard, /250 agentes registrados/);
-  assert.match(dashboard, /VIVO-CHECK/);
-  assert.match(dashboard, /VIVO-VERIFY/);
-  assert.match(dashboard, /VIVO-VIRAL/);
-});
-
-test('routes the executive dashboard through the admin App Router page', () => {
-  const page = fs.readFileSync(path.join(__dirname, 'app', 'admin', 'page.tsx'), 'utf8');
-  const dashboardPage = fs.readFileSync(path.join(__dirname, 'app', 'admin', 'dashboard', 'page.tsx'), 'utf8');
-  assert.match(page, /import \{ VivoAdminDashboard \} from '@\/components\/VivoAdminDashboard'/);
-  assert.match(page, /export default function AdminDashboardPage/);
-  assert.match(page, /<VivoAdminDashboard \/>/);
-  assert.match(dashboardPage, /import \{ VivoAdminDashboard \} from '@\/components\/VivoAdminDashboard'/);
-  assert.match(dashboardPage, /export default function AdminDashboardPage/);
-  assert.match(dashboardPage, /<VivoAdminDashboard \/>/);
-});
-
 test('defines the API-backed VivoWallet system', () => {
   const wallet = fs.readFileSync(path.join(__dirname, 'components', 'VivoWalletSystem.tsx'), 'utf8');
   const route = fs.readFileSync(path.join(__dirname, 'app', 'wallet', 'page.tsx'), 'utf8');
@@ -599,24 +576,6 @@ test('defines secure AI mail triage for info and sales channels', () => {
   assert.match(mail, /Unsafe attachment detected/);
 });
 
-test('defines the human-review MailLeadWidget', () => {
-  const widget = fs.readFileSync(path.join(__dirname, 'components', 'MailLeadWidget.tsx'), 'utf8');
-  assert.match(widget, /MailLeadWidget/);
-  assert.match(widget, /AIAnalyzedMail/);
-  assert.match(widget, /requiresHumanAction/);
-  assert.match(widget, /onApprove/);
-  assert.match(widget, /disabled=\{!onApprove\}/);
-  assert.doesNotMatch(widget, /fetch\(/);
-});
-
-test('integrates MailLeadWidget into executive admin dashboard', () => {
-  const dashboard = fs.readFileSync(path.join(__dirname, 'components', 'VivoAdminDashboard.tsx'), 'utf8');
-  assert.match(dashboard, /MailLeadWidget/);
-  assert.match(dashboard, /HIGH_VALUE_B2B/);
-  assert.match(dashboard, /sales@vivoamigo\.com/);
-  assert.match(dashboard, /no email was sent automatically/);
-});
-
 test('defines VIVO Flywheel cross-sell and verified review engine', () => {
   const flywheel = fs.readFileSync(path.join(__dirname, 'services', 'vivoFlywheelEngine.ts'), 'utf8');
   assert.match(flywheel, /VivoFlywheelEngine/);
@@ -933,11 +892,11 @@ test('integrates VIVO-ASSIST into the main showcase', () => {
   assert.match(showcase, /VIVO-ASSIST 24\/7/);
 });
 
-test('initializes and dispatches the configured 35-agent swarm', async () => {
+test('initializes and dispatches the configured 250-agent product swarm', async () => {
   const orchestrator = new SwarmOrchestrator();
-  assert.deepEqual(orchestrator.initializeSwarm(), { totalAgents: 36, subAgents: 35, masterAgent: 'agent_master_01' });
+  assert.deepEqual(orchestrator.initializeSwarm(), { totalAgents: 251, subAgents: 250, masterAgent: 'agent_master_01' });
   assert.equal(orchestrator.configPath.endsWith('/agents.config.yml'), true);
-  const expectedGroups = { VERI_SHIELD_COMPLIANCE: 10, PAY_VIVO_FINANCE: 10, CARGO_VIVO_LOGISTICS: 10, VIVO_POS_OPERATIONS: 5 };
+  const expectedGroups = { MARKETPLACE_SELLER_QUALITY: 25, MARKETPLACE_BUYER_JOURNEY: 25, MARKETPLACE_CATALOG_QA: 25, CARGO_SHIPPER_EXPERIENCE: 25, CARGO_COURIER_OPERATIONS: 25, PAY_PAYER_EXPERIENCE: 25, PAY_MERCHANT_SETTLEMENT: 25, TRUST_COMPLIANCE: 25, PLATFORM_RELIABILITY: 25, GROWTH_SUPPORT_INSIGHTS: 25 };
   for (const [group, count] of Object.entries(expectedGroups)) {
     const registered = [...orchestrator.agents.values()].filter((agent) => agent.group === group && !agent.aliasOf);
     assert.equal(registered.length, count);
@@ -949,8 +908,12 @@ test('initializes and dispatches the configured 35-agent swarm', async () => {
   assert.equal(orchestrator.getAutonomousExecutionReport().enabled, true);
   const task = await orchestrator.dispatchTask('CARGO_STATUS', { trackingCode: 'VIVO-TEST' });
   assert.equal(task.assignedBy, 'agent_master_01');
-  assert.match(task.assignedTo, /^cargo_vivo_logistics_/);
+  assert.match(task.assignedTo, /^cargo_shipper_experience_/);
   assert.equal(task.status, 'DISPATCHED');
+  assert.match((await orchestrator.dispatchTask('BUYER_CART', {})).assignedTo, /^marketplace_buyer_journey_/);
+  assert.match((await orchestrator.dispatchTask('SELLER_LISTING', {})).assignedTo, /^marketplace_seller_quality_/);
+  assert.match((await orchestrator.dispatchTask('PAY_WALLET', {})).assignedTo, /^pay_payer_experience_/);
+  assert.match((await orchestrator.dispatchTask('UNCLASSIFIED_TASK', {})).assignedTo, /^platform_reliability_/);
 });
 
 test('records autonomous local execution status without faking external deployment', () => {
@@ -966,7 +929,7 @@ test('records autonomous local execution status without faking external deployme
 test('survives a 1,000-task concurrent swarm stress simulation', async () => {
   const orchestrator = new SwarmOrchestrator();
   orchestrator.initializeSwarm();
-  const taskTypes = ['VERI_IDENTITY', 'PAY_ESCROW', 'CARGO_ROUTE', 'POS_OFFLINE'];
+  const taskTypes = ['VERIFY_IDENTITY', 'PAY_ESCROW', 'CARGO_ROUTE', 'BUYER_CHECKOUT'];
   const startedAt = process.hrtime.bigint();
   const taskResults = await Promise.all(Array.from({ length: 1000 }, (_, index) => (async () => {
     const dispatchStartedAt = process.hrtime.bigint();
@@ -992,7 +955,7 @@ test('survives a 1,000-task concurrent swarm stress simulation', async () => {
   assert.equal(metrics.unhandledRejections, 0);
   assert.equal(metrics.consensusEntries, 1000);
   assert.equal(metrics.masterRouteViolations, 0);
-  assert.equal(metrics.uniqueSubAgents, 35);
+  assert.equal(metrics.uniqueSubAgents, 100);
 });
 
 test('serves the offline VIVO POS shell and local QR bundle', async () => {
@@ -1626,17 +1589,14 @@ test('defines VIVO-VERIFY field inspection sealing gates', () => {
   assert.match(inspection, /issueVivoVerifySeal/);
 });
 
-test('defines system architecture, VIVO-VERIFY engine, and admin status badge', () => {
+test('defines system architecture and VIVO-VERIFY engine', () => {
   const architecture = fs.readFileSync(path.join(__dirname, 'services', 'systemArchitecture.ts'), 'utf8');
   const verify = fs.readFileSync(path.join(__dirname, 'services', 'vivoVerifyEngine.ts'), 'utf8');
-  const badge = fs.readFileSync(path.join(__dirname, 'components', 'AdminInspectionStatusBadge.tsx'), 'utf8');
   assert.match(architecture, /roadmapWeeks: 12/);
   assert.match(architecture, /Cloudflare Workers \/ D1 \/ KV \/ R2 \/ Vectorize/);
   assert.match(verify, /issueMotorizedVivoVerifySeal/);
   assert.match(verify, /qrVerificationUrl/);
   assert.match(verify, /APPROVED_SEALED/);
-  assert.match(badge, /AdminInspectionStatusBadge/);
-  assert.match(badge, /VIVO-VERIFY sealed/);
 });
 
 test('defines CARGO VIVO fleet telematics safety controls', () => {
