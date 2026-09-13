@@ -1,0 +1,23 @@
+appId: com.vivoamigo.commandcenter
+directories:
+  output: dist
+electronVersion: 39.0.0
+productName: VIVO AMIGO Command Center
+files:
+  - electron/**
+afterPack: electron/after-pack.cjs
+mac:
+  target:
+    - zip
+  artifactName: VIVO_AMIGO_Command_Center_Mac.zip
+  identity: null
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+win:
+  target:
+    - nsis
+linux:
+  target:
+    - AppImage

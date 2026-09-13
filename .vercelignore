@@ -1,0 +1,9 @@
+private/downloads/
+release/
+.next/
+node_modules/
+mobile/android/build/
+mobile/android/.gradle/
+*.blockmap
+public/downloads/VIVO_AMIGO_Admin_Setup.zip
+public/downloads/

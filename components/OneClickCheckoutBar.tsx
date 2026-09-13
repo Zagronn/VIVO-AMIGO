@@ -7,7 +7,7 @@ interface OneClickCheckoutProps {
   itemTitle: string;
   priceGTQ: number;
   isGoldMember: boolean;
-  onSuccess: (txId: string) => void;
+  onSuccess?: (txId: string) => void;
   authorize?: (request: { itemId: string; itemTitle: string; amountGTQ: number; authMethod: 'PASSKEY_OR_WALLET' }) => Promise<{ authorized: boolean; transactionId?: string }>;
 }
 
@@ -29,7 +29,7 @@ export const OneClickCheckoutBar = ({ itemId, itemTitle, priceGTQ, isGoldMember,
     try {
       const result = await authorize({ itemId, itemTitle, amountGTQ: priceGTQ, authMethod: 'PASSKEY_OR_WALLET' });
       if (!result.authorized || !result.transactionId) throw new Error('La autorización PayVivo fue rechazada.');
-      onSuccess(result.transactionId);
+      onSuccess?.(result.transactionId);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'No se pudo autorizar el pago.');
     } finally {

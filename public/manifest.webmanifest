@@ -7,7 +7,7 @@
   "display_override": ["window-controls-overlay", "standalone"],
   "background_color": "#111111",
   "theme_color": "#111111",
-  "icons": [{ "src": "/images/logo.png", "sizes": "any", "type": "image/png", "purpose": "any maskable" }],
+  "icons": [{ "src": "/brand-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }],
   "description": "Offline-ready VIVO AMIGO commerce with VIVOAMIGOPAY wallet services",
   "scope": "/",
   "prefer_related_applications": false,
