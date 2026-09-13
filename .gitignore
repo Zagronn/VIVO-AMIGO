@@ -15,3 +15,4 @@ mobile/android/app/build/
 .vercel
 .env*.local
 .env*
+release/
