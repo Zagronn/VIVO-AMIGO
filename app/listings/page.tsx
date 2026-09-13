@@ -1,0 +1,18 @@
+import Link from 'next/link';
+
+const listings = [
+  { id: 'macbook-pro-m3', title: 'MacBook Pro M3', category: 'Electrónica', price: 'Q 14,500' },
+  { id: 'toyota-hilux-2022', title: 'Toyota Hilux 2022', category: 'Automotriz', price: 'Q 215,000' },
+  { id: 'cafe-altura-500g', title: 'Café de altura 500g', category: 'Agricultura', price: 'Q 18.00' },
+  { id: 'casa-zona-14', title: 'Casa en Zona 14', category: 'Hogar', price: 'Q 2,500,000' }
+];
+
+export const metadata = { title: 'Marketplace | VIVO AMIGO', description: 'Productos y servicios verificados en Guatemala.' };
+
+export default function ListingsPage({ searchParams }: { searchParams?: { category?: string; q?: string } }) {
+  const query = (searchParams?.q || '').toLowerCase();
+  const category = searchParams?.category || '';
+  const filtered = listings.filter((listing) => (!query || `${listing.title} ${listing.category}`.toLowerCase().includes(query)) && (!category || listing.category.toLowerCase().includes(category.toLowerCase()) || category === 'ELECTRONICS'));
+
+  return <main className="min-h-screen bg-[#F8F9FA] px-4 py-8 text-[#25262C] sm:px-6"><div className="mx-auto max-w-6xl"><header className="flex flex-col justify-between gap-4 border-b border-gray-200 pb-6 sm:flex-row sm:items-center"><div><Link href="/" className="text-sm font-bold text-[#EB5A00]">← VIVO AMIGO</Link><h1 className="mt-2 text-3xl font-extrabold tracking-tight">Marketplace</h1><p className="mt-1 text-sm text-gray-500">Productos y servicios verificados, protegidos por VIVO PAY.</p></div><Link href="/business" className="rounded-lg bg-[#FF6A00] px-4 py-3 text-sm font-bold text-white hover:bg-[#EB5A00]">Publicar un producto</Link></header><div className="grid gap-6 py-8 lg:grid-cols-[220px_1fr]"><aside className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm"><h2 className="font-extrabold tracking-tight">Filtros</h2><nav className="mt-4 space-y-2 text-sm"><Link href="/listings" className="block font-bold text-[#EB5A00]">Todos</Link><Link href="/listings?category=Electrónica" className="block text-gray-600 hover:text-[#EB5A00]">Electrónica</Link><Link href="/listings?category=Automotriz" className="block text-gray-600 hover:text-[#EB5A00]">Automotriz</Link><Link href="/listings?category=Agricultura" className="block text-gray-600 hover:text-[#EB5A00]">Agricultura</Link><Link href="/listings?category=Hogar" className="block text-gray-600 hover:text-[#EB5A00]">Hogar</Link></nav></aside><section><div className="mb-4 flex items-center justify-between"><h2 className="text-xl font-extrabold tracking-tight">{filtered.length} resultados</h2><span className="text-xs text-gray-500">Escrow disponible</span></div><div className="grid gap-4 sm:grid-cols-2">{filtered.map((listing) => <Link key={listing.id} href={`/listings/${listing.id}`} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md"><div className="grid aspect-[4/3] place-items-center rounded-md bg-[#EDF2F7] text-3xl font-extrabold text-[#FF6A00]">{listing.title.slice(0, 2).toUpperCase()}</div><p className="mt-4 text-xs text-gray-500">{listing.category}</p><h3 className="mt-1 font-extrabold tracking-tight">{listing.title}</h3><p className="mt-3 text-lg font-extrabold">{listing.price}</p><span className="mt-3 inline-flex rounded-md bg-[#FF6A00] px-3 py-2 text-xs font-bold text-white">Ver detalle</span></Link>)}</div>{filtered.length === 0 && <div className="rounded-lg border border-gray-200 bg-white p-8 text-center text-sm text-gray-500">No encontramos resultados. <Link href="/listings" className="font-bold text-[#EB5A00]">Ver todos</Link></div>}</section></div></div></main>;
+}

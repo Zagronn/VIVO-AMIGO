@@ -398,3 +398,87 @@ CREATE INDEX IF NOT EXISTS idx_job_matches_candidate ON job_matches(candidate_id
 CREATE INDEX IF NOT EXISTS idx_leads_provider_status ON marketplace_leads(provider_id, status);
 CREATE INDEX IF NOT EXISTS idx_transactions_status_created ON marketplace_transactions(status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_ad_leads_campaign_status ON ad_leads(campaign_id, status);
+
+-- Isolated customer knowledge base: customer-owned data only.
+CREATE TABLE IF NOT EXISTS customer_profiles (
+    customer_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    preferred_locale TEXT NOT NULL DEFAULT 'es',
+    phone TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS customer_orders (
+    order_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    customer_id UUID NOT NULL REFERENCES customer_profiles(customer_id) ON DELETE CASCADE,
+    transaction_id UUID REFERENCES marketplace_transactions(id) ON DELETE SET NULL,
+    status TEXT NOT NULL CHECK (status IN ('PENDING', 'PAID', 'SHIPPED', 'COMPLETED', 'CANCELLED', 'REFUNDED')),
+    total_gtq NUMERIC(18, 2) NOT NULL CHECK (total_gtq >= 0),
+    category TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS customer_wallets (
+    wallet_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    customer_id UUID UNIQUE NOT NULL REFERENCES customer_profiles(customer_id) ON DELETE CASCADE,
+    balance_gtq NUMERIC(18, 2) NOT NULL DEFAULT 0 CHECK (balance_gtq >= 0),
+    escrow_held_gtq NUMERIC(18, 2) NOT NULL DEFAULT 0 CHECK (escrow_held_gtq >= 0),
+    reward_points INTEGER NOT NULL DEFAULT 0 CHECK (reward_points >= 0),
+    last_activity_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS customer_reviews (
+    review_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    customer_id UUID NOT NULL REFERENCES customer_profiles(customer_id) ON DELETE CASCADE,
+    listing_id UUID REFERENCES listings(id) ON DELETE SET NULL,
+    rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    body TEXT NOT NULL DEFAULT '',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS customer_favorites (
+    customer_id UUID NOT NULL REFERENCES customer_profiles(customer_id) ON DELETE CASCADE,
+    listing_id UUID NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (customer_id, listing_id)
+);
+
+-- Isolated seller knowledge base: seller/store data only.
+CREATE TABLE IF NOT EXISTS seller_profiles (
+    seller_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    store_id UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+    store_name TEXT NOT NULL,
+    legal_name TEXT NOT NULL,
+    verification_status TEXT NOT NULL DEFAULT 'PENDING' CHECK (verification_status IN ('PENDING', 'VERIFIED', 'REJECTED')),
+    commission_rate_bps INTEGER NOT NULL DEFAULT 450 CHECK (commission_rate_bps BETWEEN 0 AND 10000),
+    rating NUMERIC(3, 2) NOT NULL DEFAULT 0 CHECK (rating BETWEEN 0 AND 5),
+    contact_email TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS store_inventory (
+    inventory_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    store_id UUID NOT NULL REFERENCES seller_profiles(store_id) ON DELETE CASCADE,
+    listing_id UUID REFERENCES listings(id) ON DELETE SET NULL,
+    title TEXT NOT NULL,
+    price_gtq NUMERIC(18, 2) NOT NULL CHECK (price_gtq >= 0),
+    stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0),
+    variants JSONB NOT NULL DEFAULT '[]'::jsonb,
+    status TEXT NOT NULL DEFAULT 'DRAFT' CHECK (status IN ('DRAFT', 'ACTIVE', 'OUT_OF_STOCK', 'ARCHIVED'))
+);
+CREATE TABLE IF NOT EXISTS seller_payouts (
+    payout_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    seller_id UUID NOT NULL REFERENCES seller_profiles(seller_id) ON DELETE CASCADE,
+    gross_gtq NUMERIC(18, 2) NOT NULL CHECK (gross_gtq >= 0),
+    commission_gtq NUMERIC(18, 2) NOT NULL CHECK (commission_gtq >= 0),
+    net_gtq NUMERIC(18, 2) NOT NULL CHECK (net_gtq >= 0),
+    status TEXT NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'PROCESSING', 'PAID', 'HELD')),
+    requested_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS seller_analytics (
+    seller_id UUID PRIMARY KEY REFERENCES seller_profiles(seller_id) ON DELETE CASCADE,
+    total_gmv_gtq NUMERIC(18, 2) NOT NULL DEFAULT 0,
+    net_earnings_gtq NUMERIC(18, 2) NOT NULL DEFAULT 0,
+    gross_commission_gtq NUMERIC(18, 2) NOT NULL DEFAULT 0,
+    return_cancellation_rate NUMERIC(6, 3) NOT NULL DEFAULT 0,
+    top_products JSONB NOT NULL DEFAULT '[]'::jsonb,
+    store_rating NUMERIC(3, 2) NOT NULL DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_customer_orders_customer_status ON customer_orders(customer_id, status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_customer_reviews_customer ON customer_reviews(customer_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_store_inventory_store_status ON store_inventory(store_id, status);
+CREATE INDEX IF NOT EXISTS idx_seller_payouts_seller_status ON seller_payouts(seller_id, status, requested_at DESC);

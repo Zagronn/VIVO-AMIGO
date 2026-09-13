@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/business":{},"/api/v1/ai/analyze":{},"/wallet":{},"/listings/[id]":{}}}
+{"version":1,"functions":{"/business":{},"/categories/[slug]":{},"/api/v1/ai/analyze":{},"/listings":{},"/wallet":{},"/seller/dashboard":{},"/listings/[id]":{}}}
