@@ -1,5 +1,7 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+'use client';
+
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { checkIsSuperAdmin } from '../services/adminAuth';
 
 interface AdminRouteGuardProps {
@@ -7,10 +9,15 @@ interface AdminRouteGuardProps {
 }
 
 export const AdminRouteGuard: React.FC<AdminRouteGuardProps> = ({ children }) => {
-  const isAuthenticatedAdmin = checkIsSuperAdmin();
-  if (!isAuthenticatedAdmin) {
-    return <Navigate to="/login" replace />;
-  }
+  const router = useRouter();
+
+  useEffect(() => {
+    const isAuthenticatedAdmin = checkIsSuperAdmin();
+    if (!isAuthenticatedAdmin) {
+      router.replace('/login');
+    }
+  }, [router]);
+
   return <>{children}</>;
 };
 
