@@ -1,0 +1,284 @@
+VIVO AMIGO deep audit — Tue Sep 15 23:18:21 CST 2026
+
+== 0. Git status ==
+This IS a git repository.
+ D .next/BUILD_ID
+ D .next/app-build-manifest.json
+ D .next/app-path-routes-manifest.json
+ D .next/build-manifest.json
+ D .next/cache/.tsbuildinfo
+ D .next/cache/webpack/client-production/0.pack
+ D .next/cache/webpack/client-production/index.pack
+ D .next/cache/webpack/edge-server-production/0.pack
+ D .next/cache/webpack/edge-server-production/index.pack
+ D .next/cache/webpack/server-production/0.pack
+ D .next/cache/webpack/server-production/index.pack
+ D .next/export-marker.json
+ D .next/images-manifest.json
+ D .next/next-minimal-server.js.nft.json
+ D .next/next-server.js.nft.json
+ D .next/package.json
+ D .next/prerender-manifest.json
+ D .next/required-server-files.json
+ D .next/routes-manifest.json
+ D .next/server/app-paths-manifest.json
+ D .next/server/app/_not-found.html
+ D .next/server/app/_not-found.meta
+ D .next/server/app/_not-found.rsc
+ D .next/server/app/_not-found/page.js
+ D .next/server/app/_not-found/page.js.nft.json
+ D .next/server/app/_not-found/page_client-reference-manifest.js
+ D .next/server/app/admin.html
+ D .next/server/app/admin.meta
+ D .next/server/app/admin.rsc
+ D .next/server/app/admin/dashboard.html
+ D .next/server/app/admin/dashboard.meta
+ D .next/server/app/admin/dashboard.rsc
+ D .next/server/app/admin/dashboard/page.js
+ D .next/server/app/admin/dashboard/page.js.nft.json
+ D .next/server/app/admin/dashboard/page_client-reference-manifest.js
+ D .next/server/app/admin/page.js
+ D .next/server/app/admin/page.js.nft.json
+ D .next/server/app/admin/page_client-reference-manifest.js
+ D .next/server/app/api/escrow/route.js
+ D .next/server/app/api/escrow/route.js.nft.json
+ D .next/server/app/api/health.body
+ D .next/server/app/api/health.meta
+ D .next/server/app/api/health/route.js
+ D .next/server/app/api/health/route.js.nft.json
+ D .next/server/app/api/v1/ai/analyze/route.js
+ D .next/server/app/api/v1/ai/analyze/route.js.nft.json
+ D .next/server/app/api/v1/finance/bi/pre-approve/route.js
+ D .next/server/app/api/v1/finance/bi/pre-approve/route.js.nft.json
+ D .next/server/app/api/v1/health.body
+ D .next/server/app/api/v1/health.meta
+ D .next/server/app/api/v1/health/route.js
+ D .next/server/app/api/v1/health/route.js.nft.json
+ D .next/server/app/api/v1/listings/route.js
+ D .next/server/app/api/v1/listings/route.js.nft.json
+ D .next/server/app/api/v1/promotions/social-share/route.js
+ D .next/server/app/api/v1/promotions/social-share/route.js.nft.json
+ D .next/server/app/api/v1/transactions/route.js
+ D .next/server/app/api/v1/transactions/route.js.nft.json
+ D .next/server/app/api/v1/verify/inspection/route.js
+ D .next/server/app/api/v1/verify/inspection/route.js.nft.json
+ D .next/server/app/api/v1/verify/vehicle/route.js
+ D .next/server/app/api/v1/verify/vehicle/route.js.nft.json
+ D .next/server/app/barter.html
+ D .next/server/app/barter.meta
+ D .next/server/app/barter.rsc
+ D .next/server/app/barter/page.js
+ D .next/server/app/barter/page.js.nft.json
+ D .next/server/app/barter/page_client-reference-manifest.js
+ D .next/server/app/business.html
+ D .next/server/app/business.meta
+ D .next/server/app/business.rsc
+ D .next/server/app/business/page.js
+ D .next/server/app/business/page.js.nft.json
+ D .next/server/app/business/page_client-reference-manifest.js
+ D .next/server/app/fair-price.html
+ D .next/server/app/fair-price.meta
+ D .next/server/app/fair-price.rsc
+ D .next/server/app/fair-price/page.js
+ D .next/server/app/fair-price/page.js.nft.json
+ D .next/server/app/fair-price/page_client-reference-manifest.js
+ D .next/server/app/listings/[id]/page.js
+ D .next/server/app/listings/[id]/page.js.nft.json
+ D .next/server/app/listings/[id]/page_client-reference-manifest.js
+ D .next/server/app/migration.html
+ D .next/server/app/migration.meta
+ D .next/server/app/migration.rsc
+ D .next/server/app/migration/page.js
+ D .next/server/app/migration/page.js.nft.json
+ D .next/server/app/migration/page_client-reference-manifest.js
+ D .next/server/app/page.js
+ D .next/server/app/page.js.nft.json
+ D .next/server/app/page_client-reference-manifest.js
+ D .next/server/app/partnerships.html
+ D .next/server/app/partnerships.meta
+ D .next/server/app/partnerships.rsc
+ D .next/server/app/partnerships/page.js
+ D .next/server/app/partnerships/page.js.nft.json
+ D .next/server/app/partnerships/page_client-reference-manifest.js
+ D .next/server/app/sitemap.xml.body
+ D .next/server/app/sitemap.xml.meta
+ D .next/server/app/sitemap.xml/route.js
+ D .next/server/app/sitemap.xml/route.js.nft.json
+ D .next/server/app/trade-in.html
+ D .next/server/app/trade-in.meta
+ D .next/server/app/trade-in.rsc
+ D .next/server/app/trade-in/page.js
+ D .next/server/app/trade-in/page.js.nft.json
+ D .next/server/app/trade-in/page_client-reference-manifest.js
+ D .next/server/app/wallet.html
+ D .next/server/app/wallet.meta
+ D .next/server/app/wallet.rsc
+ D .next/server/app/wallet/page.js
+ D .next/server/app/wallet/page.js.nft.json
+ D .next/server/app/wallet/page_client-reference-manifest.js
+ D .next/server/chunks/682.js
+ D .next/server/chunks/948.js
+ D .next/server/chunks/972.js
+ D .next/server/chunks/font-manifest.json
+ D .next/server/font-manifest.json
+ D .next/server/functions-config-manifest.json
+ D .next/server/interception-route-rewrite-manifest.js
+ M .next/server/middleware-build-manifest.js
+ D .next/server/middleware-manifest.json
+ M .next/server/middleware-react-loadable-manifest.js
+ M .next/server/next-font-manifest.js
+ M .next/server/next-font-manifest.json
+ D .next/server/pages-manifest.json
+ D .next/server/pages/404.html
+ D .next/server/pages/500.html
+ D .next/server/pages/_app.js
+ D .next/server/pages/_app.js.nft.json
+ D .next/server/pages/_document.js
+ D .next/server/pages/_document.js.nft.json
+ D .next/server/pages/_error.js
+ D .next/server/pages/_error.js.nft.json
+ D .next/server/server-reference-manifest.js
+ D .next/server/server-reference-manifest.json
+ D .next/server/webpack-runtime.js
+ D .next/static/chunks/framework-f66176bb897dc684.js
+ D .next/static/chunks/main-app-d54b3a6bc3c7ac12.js
+ D .next/static/chunks/pages/_app-72b849fbd24ac258.js
+ D .next/static/chunks/pages/_error-7ba65e1336b92748.js
+ D .next/static/chunks/polyfills-42372ed130431b0a.js
+ D .next/static/chunks/webpack-776ed83ce246cff4.js
+ D .next/static/media/1f173e5e25f3efee-s.woff2
+ D .next/static/media/48e2044251ef3125-s.woff2
+ D .next/static/media/904be59b21bd51cb-s.p.woff2
+ D .next/static/media/b1f344208eb4edfe-s.woff2
+ D .next/static/media/bf24a9759715e608-s.woff2
+ D .next/trace
+ D .next/types/app/admin/dashboard/page.ts
+ D .next/types/app/admin/page.ts
+ D .next/types/app/api/escrow/route.ts
+ D .next/types/app/api/health/route.ts
+ D .next/types/app/api/v1/ai/analyze/route.ts
+ D .next/types/app/api/v1/finance/bi/pre-approve/route.ts
+ D .next/types/app/api/v1/health/route.ts
+ D .next/types/app/api/v1/listings/route.ts
+ D .next/types/app/api/v1/promotions/social-share/route.ts
+ D .next/types/app/api/v1/transactions/route.ts
+ D .next/types/app/api/v1/verify/inspection/route.ts
+ D .next/types/app/api/v1/verify/vehicle/route.ts
+ D .next/types/app/barter/page.ts
+ D .next/types/app/business/page.ts
+ D .next/types/app/fair-price/page.ts
+ D .next/types/app/layout.ts
+ D .next/types/app/listings/[id]/page.ts
+ D .next/types/app/migration/page.ts
+ D .next/types/app/page.ts
+ D .next/types/app/partnerships/page.ts
+ D .next/types/app/trade-in/page.ts
+ D .next/types/app/wallet/page.ts
+ D .next/types/package.json
+ M app/admin/dashboard/page.tsx
+ M components/AdminRouteGuard.tsx
+ M components/SuperAdminWorkspace.tsx
+ M package-lock.json
+ M package.json
+ M services/adminAuth.ts
+?? CLAUDE_AUDIT_REPORT_20260915_231821.txt
+?? CLAUDE_DIAGNOSTIC_REPORT.txt
+?? Claude.mobileconfig
+?? app/api/admin/security/
+?? app/api/admin/system-status/
+?? components/CiaInteractiveButton.tsx
+?? components/CiaTelemetryModal.tsx
+?? components/SecurityAlertsWidget.tsx
+?? components/admin/
+?? node
+?? scripts/test-system-status-api.ts
+?? tsconfig.tsbuildinfo
+?? utils/
+?? vivo-amigo-sovereign-os@0.1.0
+
+== 1. Archiving release/, .vercel/, emil-kowalski-agent/ into /Users/serdarcevik/Desktop/VIVO AMIGO/_archive_20260915_231821 ==
+Archived release (675M)
+Archived .vercel (3.9M)
+Archived emil-kowalski-agent (236M)
+
+== 2. Inspecting stray paths at project root ==
+--- vivo-amigo-sovereign-os@0.1.0 ---
+vivo-amigo-sovereign-os@0.1.0: empty
+-rw-r--r--  1 serdarcevik  staff  0 Sep 13 22:56 vivo-amigo-sovereign-os@0.1.0
+  0B	vivo-amigo-sovereign-os@0.1.0
+--- node ---
+node: empty
+-rw-r--r--  1 serdarcevik  staff  0 Sep 13 22:56 node
+  0B	node
+
+== 3. Database layer usage (grep across real source, not node_modules) ==
+--- Prisma ---
+--- DynamoDB ---
+./components/admin/SuperAdminDatabaseSecurityWidget.tsx
+./services/dynamoListings.ts
+--- Raw SQL / pg ---
+./smoke.test.js
+
+== 4. Duplicate-file check ==
+DIFFERENT: components/CiaInteractiveButton.tsx  vs  components/admin/CiaInteractiveButton.tsx  (sizes:        3 lines /       32 lines)
+DIFFERENT: components/CiaTelemetryModal.tsx  vs  components/admin/CiaTelemetryModal.tsx  (sizes:        3 lines /       95 lines)
+DIFFERENT: components/SecurityAlertsWidget.tsx  vs  components/admin/SecurityAlertsWidget.tsx  (sizes:        1 lines /      174 lines)
+DIFFERENT: utils/soundEffects.ts  vs  components/admin/soundEffects.ts  (sizes:        2 lines /       59 lines)
+
+-- General duplicate basenames across app/components/services/utils --
+CiaInteractiveButton.tsx
+CiaTelemetryModal.tsx
+layout.tsx
+page.tsx
+route.ts
+SecurityAlertsWidget.tsx
+soundEffects.ts
+
+== 5. TypeScript check (npx tsc --noEmit) ==
+tsc exit code: 0 | error count: 0 (see full errors above, capped at 60 lines)
+
+== 6. Available npm scripts (package.json) ==
+predev
+dev
+prebuild
+build
+smoke-test
+desktop
+desktop:dist
+desktop:quarantine:mac
+desktop:dist:mac
+start:web
+start
+test
+test:e2e
+check:mobile
+check:native
+security:audit
+security:pentest
+dns:plan
+dns:apply
+setup:dns
+start:compliance
+start:pos
+
+== 7. Top 20 largest items (excluding node_modules, .git, _archive) ==
+304M	.git
+496K	components
+456K	mobile
+308K	tsconfig.tsbuildinfo
+308K	package-lock.json
+296K	services
+148K	app
+144K	docs
+104K	smoke.test.js
+ 84K	.next
+ 32K	scripts
+ 28K	types
+ 24K	schema.sql
+ 24K	CLAUDE_DIAGNOSTIC_REPORT.txt
+ 20K	locales
+ 20K	deploy
+ 20K	.github
+ 12K	handoff.md
+ 12K	dotnet
+ 12K	compliance.api.js
