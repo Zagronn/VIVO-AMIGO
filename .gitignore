@@ -16,3 +16,5 @@ mobile/android/app/build/
 .env*.local
 .env*
 release/
+*.tsbuildinfo
+_archive_*/

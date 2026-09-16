@@ -1,0 +1,594 @@
+VIVO AMIGO diagnostic report — Tue Sep 15 23:05:32 CST 2026
+Project: /Users/serdarcevik/Desktop/VIVO AMIGO
+
+== 1. Killing stray dev servers on ports 3000-3010 ==
+Killing process on port 3000 (pid 25737)
+Killing process on port 3001 (pid 35017)
+Killing process on port 3002 (pid 44990)
+Killing process on port 3003 (pid 47664)
+Killing process on port 3004 (pid 48614)
+Killing process on port 3005 (pid 49617)
+
+== 2. Removing safe junk / build caches (no source files touched) ==
+Removed .DS_Store, *.log, .next, out, dist
+
+== 3. Checking Prisma is pinned in package.json (fixes the 'generate' error you hit) ==
+prisma missing from package.json devDependencies -- installing a pinned stable version (5.20.0)
+
+added 6 packages, and audited 638 packages in 18s
+
+112 packages are looking for funding
+  run `npm fund` for details
+
+6 vulnerabilities (4 low, 1 high, 1 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn install-scripts 5 packages have install scripts not yet covered by allowScripts:
+npm warn install-scripts   electron-winstaller@5.4.0 (install: node ./script/select-7z-arch.js)
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts   fsevents@2.3.3 (install: (install scripts present))
+npm warn install-scripts   prisma@5.20.0 (preinstall: node scripts/preinstall-entry.js)
+npm warn install-scripts   @prisma/engines@5.20.0 (postinstall: node scripts/postinstall.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+@prisma/client missing -- installing pinned version (5.20.0)
+
+added 1 package, and audited 639 packages in 8s
+
+112 packages are looking for funding
+  run `npm fund` for details
+
+6 vulnerabilities (4 low, 1 high, 1 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn install-scripts 6 packages have install scripts not yet covered by allowScripts:
+npm warn install-scripts   @prisma/engines@5.20.0 (postinstall: node scripts/postinstall.js)
+npm warn install-scripts   electron-winstaller@5.4.0 (install: node ./script/select-7z-arch.js)
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts   fsevents@2.3.3 (install: (install scripts present))
+npm warn install-scripts   prisma@5.20.0 (preinstall: node scripts/preinstall-entry.js)
+npm warn install-scripts   @prisma/client@5.20.0 (postinstall: node scripts/postinstall.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+
+== 4. npm install ==
+
+up to date, audited 639 packages in 2s
+
+112 packages are looking for funding
+  run `npm fund` for details
+
+6 vulnerabilities (4 low, 1 high, 1 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn install-scripts 6 packages have install scripts not yet covered by allowScripts:
+npm warn install-scripts   @prisma/client@5.20.0 (postinstall: node scripts/postinstall.js)
+npm warn install-scripts   @prisma/engines@5.20.0 (postinstall: node scripts/postinstall.js)
+npm warn install-scripts   electron-winstaller@5.4.0 (install: node ./script/select-7z-arch.js)
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts   fsevents@2.3.3 (install: (install scripts present))
+npm warn install-scripts   prisma@5.20.0 (preinstall: node scripts/preinstall-entry.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+
+== 5. npx prisma generate (using the now-local pinned version) ==
+Error: Could not find Prisma Schema that is required for this command.
+You can either provide it with `--schema` argument, set it as `prisma.schema` in your package.json or put it into the default location.
+Checked following paths:
+
+schema.prisma: file not found
+prisma/schema.prisma: file not found
+prisma/schema: directory not found
+
+See also https://pris.ly/d/prisma-schema-location
+
+== 6. TypeScript check (npx tsc --noEmit) ==
+
+== 7. Lint (npm run lint, if the script exists) ==
+npm error Missing script: "lint"
+npm error
+npm error Did you mean this?
+npm error   npm link # Symlink a package folder
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: /Users/serdarcevik/.npm/_logs/2026-09-16T05_06_03_607Z-debug-0.log
+
+== 8. npm audit summary ==
+# npm audit report
+
+elliptic  *
+Elliptic Uses a Cryptographic Primitive with a Risky Implementation - https://github.com/advisories/GHSA-848j-6mx2-7j84
+fix available via `npm audit fix`
+node_modules/elliptic
+  browserify-sign  >=2.4.0
+  Depends on vulnerable versions of elliptic
+  node_modules/browserify-sign
+    crypto-browserify  >=3.4.0
+    Depends on vulnerable versions of browserify-sign
+    Depends on vulnerable versions of create-ecdh
+    node_modules/crypto-browserify
+  create-ecdh  *
+  Depends on vulnerable versions of elliptic
+  node_modules/create-ecdh
+
+next  9.3.4-canary.0 - 16.3.0-preview.10
+Severity: critical
+Next.js self-hosted applications vulnerable to DoS via Image Optimizer remotePatterns configuration - https://github.com/advisories/GHSA-9g9p-9gw9-jx7f
+Next.js HTTP request deserialization can lead to DoS when using insecure React Server Components - https://github.com/advisories/GHSA-h25m-26qc-wcjf
+Next.js: HTTP request smuggling in rewrites - https://github.com/advisories/GHSA-ggv3-7p47-pfv8
+Next.js: Unbounded next/image disk cache growth can exhaust storage - https://github.com/advisories/GHSA-3x4c-7xq6-9pq8
+Next.js has a Denial of Service with Server Components - https://github.com/advisories/GHSA-q4gf-8mx6-v5v3
+Next.js Vulnerable to Denial of Service with Server Components - https://github.com/advisories/GHSA-8h8q-6873-q5fj
+Next.js's Middleware / Proxy redirects can be cache-poisoned - https://github.com/advisories/GHSA-3g8h-86w9-wvmq
+Next.js vulnerable to cross-site scripting in App Router applications using CSP nonces - https://github.com/advisories/GHSA-ffhc-5mcf-pf4q
+Next.js vulnerable to cache poisoning via collisions in React Server Component cache-busting - https://github.com/advisories/GHSA-vfv6-92ff-j949
+Next.js has cross-site scripting in beforeInteractive scripts with untrusted input - https://github.com/advisories/GHSA-gx5p-jg67-6x7h
+Next.js has a Denial of Service in the Image Optimization API - https://github.com/advisories/GHSA-h64f-5h5j-jqjh
+Next.js vulnerable to server-side request forgery in applications using WebSocket upgrades - https://github.com/advisories/GHSA-c4j6-fc7j-m34r
+Next.js vulnerable to cache poisoning in React Server Component responses - https://github.com/advisories/GHSA-wfc6-r584-vfw7
+Next.js has a Middleware / Proxy bypass in Pages Router applications using i18n - https://github.com/advisories/GHSA-36qx-fr4f-26g5
+Next.js: Denial of Service in App Router using Server Actions - https://github.com/advisories/GHSA-m99w-x7hq-7vfj
+Next.js: Server-Side Request Forgery in Server Actions on custom servers - https://github.com/advisories/GHSA-89xv-2m56-2m9x
+Next.js: Cache confusion of response bodies for requests with bodies - https://github.com/advisories/GHSA-68g3-v927-f742
+Next.js: Cache confusion of response bodies for requests with bodies containing invalid UTF-8 byte sequences - https://github.com/advisories/GHSA-4633-3j49-mh5q
+Next.js: Unbounded Server Action payload in Edge runtime - https://github.com/advisories/GHSA-4c39-4ccg-62r3
+Next.js: Server-Side Request Forgery in rewrites via attacker-controlled destination hostname - https://github.com/advisories/GHSA-p9j2-gv94-2wf4
+Next.js: Unauthenticated disclosure of internal Server Function endpoints - https://github.com/advisories/GHSA-955p-x3mx-jcvp
+Next.js: Unauthenticated Remote Code Execution on windows-hosted servers - https://github.com/advisories/GHSA-p293-qw3h-jr36
+Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used - https://github.com/advisories/GHSA-2xp9-vwfh-vxw4
+Depends on vulnerable versions of postcss
+fix available via `npm audit fix --force`
+Will install next@16.3.5, which is a breaking change
+node_modules/next
+
+postcss  <=8.5.22
+Severity: high
+PostCSS has XSS via Unescaped </style> in its CSS Stringify Output - https://github.com/advisories/GHSA-qx2v-qp2m-jg93
+PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments - https://github.com/advisories/GHSA-6g55-p6wh-862q
+PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset - https://github.com/advisories/GHSA-fxqj-rqcc-2cmp
+PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure - https://github.com/advisories/GHSA-r28c-9q8g-f849
+fix available via `npm audit fix --force`
+Will install next@16.3.5, which is a breaking change
+node_modules/next/node_modules/postcss
+
+6 vulnerabilities (4 low, 1 high, 1 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+== 9. Project file listing (top 3 levels, excluding node_modules/.git) ==
+.
+./PROJECT_CONTEXT.md
+./App.tsx
+./.vercel
+./.vercel/project.json
+./.vercel/output
+./.vercel/output/config.json
+./.vercel/output/static
+./.vercel/output/diagnostics
+./.vercel/output/functions
+./.vercel/output/builds.json
+./.vercel/.env.production.local
+./.vercel/README.txt
+./.vercel/node
+./.vercel/node/package-manifest.json
+./DEVIN_INVISIBLE_FILTER.md
+./vivo-amigo-sovereign-os@0.1.0
+./types
+./types/vivoAmigoModels.ts
+./types/sellerData.ts
+./types/ecosystem.ts
+./types/securityModule.ts
+./types/customerData.ts
+./types/adEngine.ts
+./types/verification.ts
+./tailwind.config.js
+./locales
+./locales/zh.json
+./locales/tr.json
+./locales/de.json
+./locales/en.json
+./locales/es.json
+./.env.local
+./app
+./app/seller
+./app/seller/dashboard
+./app/trade-in
+./app/trade-in/page.tsx
+./app/barter
+./app/barter/page.tsx
+./app/listings
+./app/listings/[id]
+./app/listings/page.tsx
+./app/business
+./app/business/page.tsx
+./app/admin
+./app/admin/dashboard
+./app/admin/layout.tsx
+./app/admin/page.tsx
+./app/admin/login
+./app/fair-price
+./app/fair-price/page.tsx
+./app/sitemap.ts
+./app/layout.tsx
+./app/partnerships
+./app/partnerships/page.tsx
+./app/wallet
+./app/wallet/page.tsx
+./app/cart
+./app/cart/page.tsx
+./app/api
+./app/api/v1
+./app/api/health
+./app/api/admin
+./app/api/escrow
+./app/(auth)
+./app/(auth)/admin
+./app/page.tsx
+./app/categories
+./app/categories/[slug]
+./app/migration
+./app/migration/page.tsx
+./app/globals.css
+./agents.service.js
+./vivopos.service.js
+./vercel.json
+./DEVIN_FINANCE_MODEL.md
+./config
+./config/seoKeywords.ts
+./CLAUDE_DIAGNOSTIC_REPORT.txt
+./schema.sql
+./Dockerfile
+./deploy
+./deploy/snippets
+./deploy/snippets/vivo-tls.conf
+./deploy/snippets/vivo-proxy.conf
+./deploy/dynamodb
+./deploy/dynamodb/VivoAmigo_Production_Listings.json
+./deploy/nginx.conf
+./deploy/wrangler.toml
+./tsconfig.tsbuildinfo
+./next.config.js
+./utils
+./utils/soundEffects.ts
+./utils/ciaAudioEngine.ts
+./release
+./release/latest-mac.yml
+./release/builder-effective-config.yaml
+./release/builder-debug.yml
+./release/VIVO AMIGO Command Center-0.1.0-arm64-mac.zip
+./release/mac-arm64
+./release/mac-arm64/VIVO AMIGO Command Center.app
+./release/VIVO AMIGO Command Center-0.1.0-arm64-mac.zip.blockmap
+./release/VIVO AMIGO Command Center-0.1.0-arm64.dmg.blockmap
+./docs
+./docs/VIVO_PROMO_VIDEO_SCRIPT.md
+./docs/INSTITUTIONAL_PITCH_TIGO.md
+./docs/daily-strategic-ai-report.md
+./docs/job-listing-engine.md
+./docs/VIVO_IRON_SHIELD_PROTOCOL.md
+./docs/DEVI_TASKS_PROMPT.md
+./docs/NIGHTLY_BUILD_REPORT.md
+./docs/VIVO_MERCADO_ARCHITECTURE.md
+./docs/EXECUTIVE_PITCH_DATA.md
+./docs/VERI_SHIELD_BANK_API_WHITEPAPER.md
+./docs/LIVE_DEPLOYMENT_SUMMARY.md
+./docs/MASTER_PLAN.md
+./docs/PRO-VIVO_2026_ULUSAL_GUVENLIK_BELGESI.md
+./docs/MASTER_ZERO_BUDGET_EXPANSION.md
+./docs/PRO_VIVO_2026_NATIONAL_SECURITY.md
+./docs/master-blueprint.md
+./docs/VIVOAMIGO_CINEMATIC_PROMO.md
+./docs/guatemala-revenue-engine.md
+./docs/DAILY_STRATEGIC_REPORT_TEMPLATE.md
+./docs/VERI_SHIELD_SPEC.md
+./docs/security-finance-gates.md
+./docs/INSTITUTIONAL_PITCH_BANCO_INDUSTRIAL.md
+./docs/PRODUCTION_KERNEL_START.md
+./docs/250_SPECIFIC_AGENTS_MANIFEST.md
+./docs/DESIGN_AGENT.md
+./docs/CLOUDFLARE_DOMAIN_SETUP.md
+./docs/corporate-trust-chain.md
+./docs/B2B_SUPPLIER_VERIFICATION.md
+./next-env.d.ts
+./dotnet
+./dotnet/VivoAmigo.Api.csproj
+./dotnet/Controllers
+./dotnet/Controllers/ListingsController.cs
+./dotnet/Data
+./dotnet/Data/VivoAmigoDbContext.cs
+./DEVIN_HERO_PROMPT.md
+./components
+./components/CiaInteractiveButton.tsx
+./components/ExecutivePitchCard.tsx
+./components/WhatsAppButton.tsx
+./components/Navbar.tsx
+./components/CardVerificationBadge.tsx
+./components/CategoryShowcase.tsx
+./components/VivoBrandLogo.tsx
+./components/VivoPayDashboard.tsx
+./components/VivoTradeInEngine.tsx
+./components/GlobalFooter.tsx
+./components/VivoCheckModal.tsx
+./components/ListingSeoEngine.tsx
+./components/CiaTelemetryModal.tsx
+./components/SiteConfigEffects.tsx
+./components/AdminCommandCenterTelemetry.tsx
+./components/TradeInUpgradeModule.tsx
+./components/VivoViralShareModal.tsx
+./components/TrustBar.tsx
+./components/SuperAdminWorkspace.tsx
+./components/StoreRentBadge.tsx
+./components/CargoVivoTracking.tsx
+./components/VivoPremiumShowcase.tsx
+./components/PublicLaunchNotice.tsx
+./components/VoiceListingInput.tsx
+./components/SiteConfigManager.tsx
+./components/VivoMarketplaceHomeI18n.tsx
+./components/admin
+./components/admin/CiaInteractiveButton.tsx
+./components/admin/CiaTelemetryModal.tsx
+./components/admin/soundEffects.ts
+./components/admin/SuperAdminDatabaseSecurityWidget.tsx
+./components/admin/SecurityAlertsWidget.tsx
+./components/GuatemalaMarketplaceExperience.tsx
+./components/WorldMapDashboard.tsx
+./components/GuatemalaMercadoHeader.tsx
+./components/BankPartnershipProposal.tsx
+./components/VivoCritiqueModal.tsx
+./components/VivoVerifyForm.tsx
+./components/VivoValuationDashboard.tsx
+./components/DriverQrVerificationCard.tsx
+./components/BydLeadForm.tsx
+./components/VivoSecurityShieldDashboard.tsx
+./components/WhatsAppDirectButton.tsx
+./components/VivoVozFeedbackCard.tsx
+./components/PayVivoMigrationOnboarding.tsx
+./components/OnboardingVerificationPanel.tsx
+./components/InsuranceShieldBadge.tsx
+./components/VivoBarterEngine.tsx
+./components/GlobalHomeButton.tsx
+./components/SellerDashboard.tsx
+./components/PersonalizedOfferCard.tsx
+./components/ReturnGreeting.tsx
+./components/VivoTrustEscrowTracker.tsx
+./components/InspectionBadge.tsx
+./components/VivoShowcaseLanding.tsx
+./components/VivoHeroRewardModal.tsx
+./components/VivoMarketplaceHome.tsx
+./components/BankCreditCalculator.tsx
+./components/FairPriceEngine.tsx
+./components/LogisticsTelematicsPanel.tsx
+./components/VivoWalletSystem.tsx
+./components/VivoAssistSosModal.tsx
+./components/CorporateBillboard.tsx
+./components/OneClickCheckoutBar.tsx
+./components/siteConfig.ts
+./components/MobileCommerceShell.tsx
+./components/VivoBusinessDashboard.tsx
+./components/adminBrowserAuth.ts
+./components/GlobalServiceHeader.tsx
+./components/SecurityAlertsWidget.tsx
+./components/VivoVoiceInterface.tsx
+./components/AdminRouteGuard.tsx
+./components/LiveCurrencyWidget.tsx
+./.dockerignore
+./public
+./public/index.html
+./public/styles.css
+./public/images
+./public/images/catalog
+./public/images/logo.png
+./public/brand-mark.svg
+./public/manifest.webmanifest
+./public/downloads
+./public/app.js
+./public/sw.js
+./public/vendor
+./public/vendor/qrcode.min.js
+./smoke.test.js
+./Claude.mobileconfig
+./.gitignore
+./package-lock.json
+./package.json
+./private
+./private/downloads
+./emil-kowalski-agent
+./emil-kowalski-agent/dist
+./emil-kowalski-agent/dist/testeSkillAgent.js
+./emil-kowalski-agent/dist/index.js
+./emil-kowalski-agent/dist/adapters
+./emil-kowalski-agent/dist/components
+./emil-kowalski-agent/dist/testeExample.js
+./emil-kowalski-agent/dist/impeccableAgent.js
+./emil-kowalski-agent/dist/emilAgent.js
+./emil-kowalski-agent/dist/AgentDashboard.js
+./emil-kowalski-agent/dist/example.js
+./emil-kowalski-agent/dist/opusDesignAgent.js
+./emil-kowalski-agent/dist/runAgent3.js
+./emil-kowalski-agent/dist/impeccableExample.js
+./emil-kowalski-agent/dist/App.js
+./emil-kowalski-agent/dist/jarvisPipeline.js
+./emil-kowalski-agent/dist/src
+./emil-kowalski-agent/package-lock.json
+./emil-kowalski-agent/package.json
+./emil-kowalski-agent/tsconfig.json
+./emil-kowalski-agent/src
+./emil-kowalski-agent/src/impeccableAgent.ts
+./emil-kowalski-agent/src/testeExample.ts
+./emil-kowalski-agent/src/App.tsx
+./emil-kowalski-agent/src/emilAgent.ts
+./emil-kowalski-agent/src/impeccableExample.ts
+./emil-kowalski-agent/src/jarvisPipeline.ts
+./emil-kowalski-agent/src/example.ts
+./emil-kowalski-agent/src/opusDesignAgent.ts
+./emil-kowalski-agent/src/runAgent3.ts
+./emil-kowalski-agent/src/adapters
+./emil-kowalski-agent/src/components
+./emil-kowalski-agent/src/AgentDashboard.tsx
+./emil-kowalski-agent/src/testeSkillAgent.ts
+./emil-kowalski-agent/src/index.ts
+./DEVIN_VOZ_PROMPT.md
+./mobile
+./mobile/app.json
+./mobile/ios
+./mobile/ios/native-placeholder
+./mobile/ios/project.yml
+./mobile/ios/ExportOptions.plist
+./mobile/ios/README.md
+./mobile/ios/Info.plist
+./mobile/README.md
+./mobile/package.json
+./mobile/android
+./mobile/android/app
+./mobile/android/README.md
+./mobile/android/build.gradle
+./mobile/android/.gradle
+./mobile/android/build
+./mobile/android/settings.gradle
+./mobile/assets
+./mobile/assets/brand-mark.svg
+./mobile/App.js
+./mobile/src
+./mobile/src/offlineQueue.js
+./mobile/src/biometrics.js
+./mobile/src/apps.js
+./mobile/src/index.js
+./mobile/src/config.js
+./mobile/src/qr.js
+./mobile/src/api.js
+./OVERNIGHT_DEPLOYMENT_LOG.md
+./scripts
+./scripts/smoke-test.cjs
+./scripts/security-audit.sh
+./scripts/setup-dns.ts
+./scripts/iron-shield-pentest.js
+./scripts/cloudflare-dns-sync.mjs
+./scripts/test-system-status-api.ts
+./scripts/deploy-production.sh
+./scripts/remove-macos-quarantine.sh
+./.github
+./.github/instructions
+./.github/instructions/emil-kowalski-ui.instructions.md
+./.github/workflows
+./.github/workflows/production-deployment.yml
+./.github/workflows/deploy.yml
+./.github/agents
+./.github/agents/vivo-amigo-product-engineer.agent.md
+./.github/agents/vivo-design.agent.md
+./electron-builder.yml
+./tsconfig.json
+./docker-compose.yml
+./.cline
+./.cline/prompts
+./.cline/prompts/emil-kowalski.md
+./.env.example
+./node
+./swarm.config.yml
+./electron
+./electron/main.cjs
+./electron/after-pack.cjs
+./e2e
+./e2e/i18n.spec.cjs
+./e2e/production.spec.cjs
+./DEVIN_TASK.md
+./agents.config.yml
+./postcss.config.js
+./.vercelignore
+./handoff.md
+./services
+./services/vivoVozEngine.ts
+./services/dynamicSwarmOrchestrator.ts
+./services/vivoFlywheelEngine.ts
+./services/vivoScoreBridge.ts
+./services/adServerEngine.ts
+./services/storeSubscription.ts
+./services/cloudflareDomainVerification.ts
+./services/dynamoListings.ts
+./services/vivoAmigoProductionKernel.ts
+./services/vivoHeroEngine.ts
+./services/fieldInspection.ts
+./services/jobListingPolicy.ts
+./services/payVivoCommission.ts
+./services/cardSecurityEngine.ts
+./services/commissionEngine.ts
+./services/bidSecurity.ts
+./services/vivoTrustEscrowEngine.ts
+./services/payVivoRatesEngine.ts
+./services/bancoIndustrialBridge.ts
+./services/VectorSearchService.cs
+./services/sellerService.ts
+./services/vivoVoiceEngine.ts
+./services/tradeInUpgradeEngine.ts
+./services/vivoCheck.ts
+./services/dynamicAgentRegistry.ts
+./services/socialShareVerification.ts
+./services/systemArchitecture.ts
+./services/vivoInsureEngine.ts
+./services/securityEngine.ts
+./services/vivoTrustEscrow.ts
+./services/communityAutomation.ts
+./services/vivoVerifyEngine.ts
+./services/vivoMercadoEngine.ts
+./services/storageService.ts
+./services/veriShieldEngine.ts
+./services/customerService.ts
+./services/vivoMercadoPlatformEngine.ts
+./services/communityFeatureEngine.ts
+./services/predictiveDataEngine.ts
+./services/vivoFinancialProjectionEngine.ts
+./services/payVivoTransferManager.ts
+./services/antiScamGuard.ts
+./services/cardVerification.ts
+./services/penaltyEngine.ts
+./services/payVivoUniversalEscrowEngine.ts
+./services/payVivoEngine.ts
+./services/cargoEscrow.ts
+./services/heroRewards.ts
+./services/logisticsEscrow.ts
+./services/antiScamValidation.ts
+./services/legalConsentShield.ts
+./services/vivoSecurityShieldEngine.ts
+./services/cloudflareDomainSync.ts
+./services/privacyShield.ts
+./services/intentCampaignEngine.ts
+./services/fleetTelematics.ts
+./services/vivoVerifyDispatch.ts
+./services/invisibleVehicleFilter.ts
+./services/ironShieldProtocol.js
+./services/sosEmergency.ts
+./services/vivoAssistEngine.ts
+./services/communityRewardAutomation.ts
+./services/adminAuth.ts
+./services/viralIncentiveEngine.ts
+./services/vivoCritiqueEngine.ts
+./services/vivoPayDataArchitecture.ts
+./services/critiqueEngine.ts
+./services/ecosystemProjection.ts
+./entities
+./entities/MarketplaceEntities.cs
+./compliance.api.js
+./src
+./src/worker.ts
