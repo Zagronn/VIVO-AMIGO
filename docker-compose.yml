@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vivo
+      POSTGRES_PASSWORD: vivo
+      POSTGRES_DB: vivoamigo
+    ports:
+      - "5432:5432"
+    volumes:
+      - vivo_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  vivo_postgres_data:
