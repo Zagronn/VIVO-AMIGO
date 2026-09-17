@@ -1,0 +1,15 @@
+<resources>
+    <style name="AppTheme" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">@color/vivo_orange</item>
+        <item name="android:navigationBarColor">@color/vivo_black</item>
+        <item name="android:statusBarColor">@color/vivo_black</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    <style name="AppTheme.Splash" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@drawable/va_splash</item>
+        <item name="android:colorAccent">@color/vivo_orange</item>
+        <item name="android:navigationBarColor">@color/vivo_black</item>
+        <item name="android:statusBarColor">@color/vivo_black</item>
+    </style>
+</resources>

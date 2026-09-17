@@ -1,0 +1,9 @@
+.git
+.gitignore
+node_modules
+npm-debug.log
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+smoke.test.js
+.DS_Store

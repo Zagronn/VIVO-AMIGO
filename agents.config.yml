@@ -1,0 +1,66 @@
+version: "1.0"
+swarm_name: "VIVO_AMIGO_MASTER_SWARM"
+orchestration:
+  autonomy:
+    enabled: true
+    mode: "autonomous"
+    master_agent: "agent_master_01"
+    privileged_sub_agent: "verishield_01"
+    allowed_actions: ["run_tests", "inspect_logs", "run_health_checks", "commit_build_artifacts"]
+    external_operations: "require_credentials"
+  master_agent:
+    id: "agent_master_01"
+    model: "nvidia/nemotron-3.5-70b"
+    capabilities: ["task_routing", "consensus_verification", "handoff_logging"]
+
+  sub_agents:
+    - group: "MARKETPLACE_SELLER_QUALITY"
+      count: 25
+      model: "meta-llama/llama-3.1-70b-instruct"
+      task_keywords: ["SELLER", "LISTING", "CATALOG", "INVENTORY", "STOREFRONT"]
+      roles: ["seller_journey_tester", "listing_publisher", "catalog_quality_reviewer", "inventory_workflow_tester", "seller_support_simulator"]
+    - group: "MARKETPLACE_BUYER_JOURNEY"
+      count: 25
+      model: "meta-llama/llama-3.1-70b-instruct"
+      task_keywords: ["BUYER", "SHOPPER", "CART", "CHECKOUT", "SEARCH", "FAVORITE"]
+      roles: ["buyer_journey_tester", "search_relevance_reviewer", "cart_flow_tester", "checkout_guard_tester", "accessibility_reviewer"]
+    - group: "MARKETPLACE_CATALOG_QA"
+      count: 25
+      model: "meta-llama/llama-3.1-8b-instruct"
+      task_keywords: ["MARKETPLACE", "PRODUCT", "CATEGORY", "JOB", "PROPERTY", "AUTOMOTIVE"]
+      roles: ["category_experience_tester", "product_detail_reviewer", "job_application_reviewer", "real_estate_flow_tester", "automotive_flow_tester"]
+    - group: "CARGO_SHIPPER_EXPERIENCE"
+      count: 25
+      model: "meta-llama/llama-3.1-8b-instruct"
+      task_keywords: ["CARGO", "SHIPPER", "SHIPMENT", "TRACKING", "PICKUP"]
+      roles: ["shipper_journey_tester", "tracking_accuracy_reviewer", "pickup_flow_tester", "delivery_status_reviewer", "shipment_support_simulator"]
+    - group: "CARGO_COURIER_OPERATIONS"
+      count: 25
+      model: "meta-llama/llama-3.1-8b-instruct"
+      task_keywords: ["COURIER", "DRIVER", "ROUTE", "DELIVERY", "PROOF_OF_DELIVERY"]
+      roles: ["courier_workflow_tester", "route_optimizer", "proof_of_delivery_reviewer", "driver_safety_reviewer", "exception_handler"]
+    - group: "PAY_PAYER_EXPERIENCE"
+      count: 25
+      model: "meta-llama/llama-3.1-70b-instruct"
+      task_keywords: ["PAY", "PAYER", "WALLET", "TRANSFER", "TOPUP", "BILL"]
+      roles: ["payer_journey_tester", "wallet_flow_reviewer", "transfer_quote_reviewer", "topup_flow_tester", "payment_support_simulator"]
+    - group: "PAY_MERCHANT_SETTLEMENT"
+      count: 25
+      model: "meta-llama/llama-3.1-70b-instruct"
+      task_keywords: ["ESCROW", "LEDGER", "SETTLEMENT", "PAYOUT", "MERCHANT", "REFUND"]
+      roles: ["merchant_settlement_tester", "escrow_gate_reviewer", "ledger_auditor", "payout_release_reviewer", "refund_workflow_tester"]
+    - group: "TRUST_COMPLIANCE"
+      count: 25
+      model: "meta-llama/llama-3.1-8b-instruct"
+      task_keywords: ["VERIFY", "KYC", "FRAUD", "RENAP", "SAT", "COMPLIANCE", "DISPUTE"]
+      roles: ["kyc_checker", "fraud_detector", "identity_verifier", "compliance_auditor", "dispute_evidence_reviewer"]
+    - group: "PLATFORM_RELIABILITY"
+      count: 25
+      model: "meta-llama/llama-3.1-8b-instruct"
+      task_keywords: ["QA", "TEST", "API", "PERFORMANCE", "SECURITY", "RELIABILITY", "DEPLOY"]
+      roles: ["end_to_end_tester", "api_contract_reviewer", "performance_observer", "security_reviewer", "release_verifier"]
+    - group: "GROWTH_SUPPORT_INSIGHTS"
+      count: 25
+      model: "meta-llama/llama-3.1-8b-instruct"
+      task_keywords: ["SUPPORT", "ANALYTICS", "GROWTH", "FEEDBACK", "CAMPAIGN", "CONVERSION"]
+      roles: ["support_journey_tester", "feedback_triage_reviewer", "conversion_analyst", "campaign_reviewer", "product_insights_analyst"]

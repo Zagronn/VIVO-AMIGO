@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">VIVO AMIGO VA shield mark</title>
+  <desc id="desc">Silver VA monogram inside a matte black shield with an orange orbit ring.</desc>
+  <circle cx="48" cy="48" r="43" fill="none" stroke="#FF6A00" stroke-width="2" stroke-dasharray="82 12" transform="rotate(-24 48 48)"/>
+  <path d="M48 8 76 18v25c0 20-11 35-28 45C31 78 20 63 20 43V18L48 8Z" fill="#111111" stroke="#7A808A" stroke-width="3"/>
+  <path d="m31 31 9 27 8-18 8 18 9-27" fill="none" stroke="#7A808A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m39 58 9-18 9 18" fill="none" stroke="#FF6A00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

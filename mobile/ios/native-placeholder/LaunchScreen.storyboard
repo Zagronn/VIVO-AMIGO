@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21512" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" initialViewController="VC">
+  <scenes>
+    <scene sceneID="SCENE"><objects><viewController id="VC"><view key="view" contentMode="scaleToFill" id="VIEW"><rect key="frame" x="0.0" y="0.0" width="393" height="852"/><subviews><imageView contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" image="VivoAmigoMark" id="MARK"/><constraints><constraint firstItem="MARK" firstAttribute="centerX" secondItem="VIEW" secondAttribute="centerX" id="X"/><constraint firstItem="MARK" firstAttribute="centerY" secondItem="VIEW" secondAttribute="centerY" id="Y"/><constraint firstItem="MARK" firstAttribute="width" constant="160" id="W"/><constraint firstItem="MARK" firstAttribute="height" constant="160" id="H"/></constraints></subviews><color key="backgroundColor" red="0.067" green="0.067" blue="0.067" alpha="1"/></view></viewController></objects></scene>
+  </scenes>
+  <resources><image name="VivoAmigoMark" width="96" height="96"/></resources>
+</document>
