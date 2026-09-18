@@ -1,0 +1,428 @@
+// VIVO AMIGO — multi-vendor marketplace on PostgreSQL.
+// Core models below are exactly as specified by the user; Session and
+// Category are additions on top: Session backs the existing cookie-auth
+// helper, Category gives the storefront/dashboard something to group and
+// chart products by.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  VENDOR
+  ADMIN
+}
+
+enum SharePlatform {
+  WHATSAPP
+  FACEBOOK
+  NATIVE
+}
+
+enum VendorStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  // Addition: a display name — needed for the navbar greeting, review
+  // bylines, and vendor contact info; not in the original field list.
+  name         String
+  passwordHash String   @map("password_hash")
+  role         Role     @default(CUSTOMER)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  vendorProfile VendorProfile?
+  cartItems     CartItem[]
+  orders        Order[]
+  reviews       Review[]
+  sessions      Session[]
+
+  // Additions: the classifieds verticals (real estate, vehicles, jobs,
+  // second-hand) — any signed-in user can post in any of these, so they
+  // hang directly off User rather than VendorProfile.
+  realEstateListings  RealEstateListing[]
+  vehicleListings     VehicleListing[]
+  jobListings         JobListing[]
+  secondHandListings  SecondHandListing[]
+
+  // Addition: VIVO POS — a lightweight point-of-sale for street sellers and
+  // independent shops. Deliberately open to any signed-in user (same as the
+  // classifieds verticals above), not gated behind vendor approval, since
+  // the whole point is a solo seller can start today with zero setup.
+  posCatalogItems PosCatalogItem[]
+  posSales        PosSale[]
+  shares          UserShare[]
+
+  @@map("users")
+}
+
+enum ListingType {
+  SALE
+  RENT
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  LAND
+  COMMERCIAL
+}
+
+enum VehicleCondition {
+  NEW
+  USED
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+}
+
+enum ItemCondition {
+  LIKE_NEW
+  GOOD
+  FAIR
+}
+
+// Classifieds: real estate for sale or rent. Deliberately outside the
+// Product/Order/Payment pipeline — these are big-ticket listings a buyer
+// contacts the owner about directly, not an "add to cart" purchase.
+model RealEstateListing {
+  id           String       @id @default(uuid())
+  ownerId      String       @map("owner_id")
+  title        String
+  description  String?      @db.Text
+  price        Decimal      @db.Decimal(12, 2)
+  listingType  ListingType  @default(SALE) @map("listing_type")
+  propertyType PropertyType @map("property_type")
+  bedrooms     Int?
+  bathrooms    Int?
+  areaSqm      Int?         @map("area_sqm")
+  city         String
+  country      String       @default("Guatemala")
+  images       String[]     @default([])
+  isActive     Boolean      @default(true) @map("is_active")
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@map("real_estate_listings")
+}
+
+// Classifieds: vehicles for sale.
+model VehicleListing {
+  id           String            @id @default(uuid())
+  ownerId      String            @map("owner_id")
+  title        String
+  description  String?           @db.Text
+  price        Decimal           @db.Decimal(12, 2)
+  make         String
+  model        String
+  year         Int
+  mileageKm    Int?              @map("mileage_km")
+  condition    VehicleCondition  @default(USED)
+  transmission String?
+  fuelType     String?           @map("fuel_type")
+  city         String
+  images       String[]          @default([])
+  isActive     Boolean           @default(true) @map("is_active")
+  createdAt    DateTime          @default(now()) @map("created_at")
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@map("vehicle_listings")
+}
+
+// Classifieds: a simple job board. Any signed-in user can post on behalf
+// of a company (no separate employer-account model, to keep this in scope).
+model JobListing {
+  id             String         @id @default(uuid())
+  posterId       String         @map("poster_id")
+  title          String
+  description    String         @db.Text
+  company        String
+  location       String
+  employmentType EmploymentType @default(FULL_TIME) @map("employment_type")
+  salaryMin      Int?           @map("salary_min")
+  salaryMax      Int?           @map("salary_max")
+  remote         Boolean        @default(false)
+  isActive       Boolean        @default(true) @map("is_active")
+  createdAt      DateTime       @default(now()) @map("created_at")
+
+  poster User @relation(fields: [posterId], references: [id], onDelete: Cascade)
+
+  @@map("job_listings")
+}
+
+// Classifieds: peer-to-peer second-hand items (distinct from the vendor
+// marketplace's new-product `Product` model).
+model SecondHandListing {
+  id          String        @id @default(uuid())
+  sellerId    String        @map("seller_id")
+  title       String
+  description String?       @db.Text
+  price       Decimal       @db.Decimal(10, 2)
+  category    String
+  condition   ItemCondition @default(GOOD)
+  city        String
+  images      String[]      @default([])
+  isActive    Boolean       @default(true) @map("is_active")
+  createdAt   DateTime      @default(now()) @map("created_at")
+
+  seller User @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  @@map("second_hand_listings")
+}
+
+// The /contact page's submissions. Deliberately not tied to a signed-in
+// user — anyone can reach out.
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("contact_messages")
+}
+
+// Addition: backs lib/session.ts's cookie-based auth (unchanged from before).
+model Session {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model VendorProfile {
+  id        String       @id @default(uuid())
+  userId    String       @unique @map("user_id")
+  storeName String       @map("store_name")
+  status    VendorStatus @default(PENDING)
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products Product[]
+
+  @@map("vendor_profiles")
+}
+
+// Addition: lets the storefront/dashboard group and chart products.
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+  slug String @unique
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id            String   @id @default(uuid())
+  vendorId      String   @map("vendor_id")
+  title         String
+  description   String?  @db.Text
+  price         Decimal  @db.Decimal(10, 2)
+  stockQuantity Int      @default(0) @map("stock_quantity")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Addition, optional so it never blocks a vendor from listing uncategorized.
+  categoryId String?   @map("category_id")
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  vendor     VendorProfile @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+  reviews    Review[]
+  images     String[]      @default([])
+
+  @@map("products")
+}
+
+model CartItem {
+  id        String @id @default(uuid())
+  userId    String @map("user_id")
+  productId String @map("product_id")
+  quantity  Int    @default(1)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("cart_items")
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  customerId  String      @map("customer_id")
+  totalAmount Decimal     @db.Decimal(10, 2) @map("total_amount")
+  status      OrderStatus @default(PENDING)
+  createdAt   DateTime    @default(now()) @map("created_at")
+
+  customer   User        @relation(fields: [customerId], references: [id])
+  orderItems OrderItem[]
+  payment    Payment?
+  shipment   Shipment?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String  @map("order_id")
+  productId String  @map("product_id")
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2) @map("unit_price")
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  productId String   @map("product_id")
+  rating    Int
+  comment   String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("reviews")
+}
+
+model Payment {
+  id             String   @id @default(uuid())
+  orderId        String   @unique @map("order_id")
+  paymentGateway String   @map("payment_gateway")
+  status         String
+  amount         Decimal  @db.Decimal(10, 2)
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model Shipment {
+  id           String   @id @default(uuid())
+  orderId      String   @unique @map("order_id")
+  carrier      String
+  trackingCode String   @map("tracking_code")
+  status       String
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("shipments")
+}
+
+// --- VIVO POS: point-of-sale for street sellers & independent shops -------
+//
+// Deliberately its own light pipeline, separate from Product/VendorProfile:
+// a street seller has no storefront to approve and no stock system to run —
+// just a quick catalog and a register. `PosCatalogItem` is the seller's own
+// mini price list; a `PosSale` is one completed transaction (possibly logged
+// while offline and synced later), snapshotting each line's name/price onto
+// `PosSaleItem` so a later catalog edit never rewrites history.
+
+enum PosSmsStatus {
+  NOT_SENT
+  SENT
+  FAILED
+}
+
+model PosCatalogItem {
+  id        String   @id @default(uuid())
+  sellerId  String   @map("seller_id")
+  name      String
+  price     Decimal  @db.Decimal(10, 2)
+  imageUrl  String?  @map("image_url")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  seller    User          @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  saleItems PosSaleItem[]
+
+  @@map("pos_catalog_items")
+}
+
+model PosSale {
+  id            String       @id @default(uuid())
+  sellerId      String       @map("seller_id")
+  totalAmount   Decimal      @db.Decimal(10, 2) @map("total_amount")
+  // The client generates this offline (crypto.randomUUID-based) so a sale
+  // logged with no connection already has its final, stable receipt code —
+  // syncing later never has to rename a receipt a customer may have saved.
+  clientSaleId  String       @unique @map("client_sale_id")
+  receiptCode   String       @unique @map("receipt_code")
+  customerPhone String?      @map("customer_phone")
+  smsStatus     PosSmsStatus @default(NOT_SENT) @map("sms_status")
+  createdAt     DateTime     @default(now()) @map("created_at")
+
+  seller User          @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  items  PosSaleItem[]
+
+  @@map("pos_sales")
+}
+
+model PosSaleItem {
+  id       String  @id @default(uuid())
+  saleId   String  @map("sale_id")
+  // Optional — nullable so a catalog item can later be deleted without
+  // breaking a past sale's history.
+  catalogItemId String? @map("catalog_item_id")
+  name      String
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2) @map("unit_price")
+
+  sale        PosSale         @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  catalogItem PosCatalogItem? @relation(fields: [catalogItemId], references: [id], onDelete: SetNull)
+
+  @@map("pos_sale_items")
+}
+
+model UserShare {
+  id        String        @id @default(uuid())
+  userId    String        @map("user_id")
+  platform  SharePlatform
+  createdAt DateTime      @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, platform])
+  @@map("user_shares")
+}

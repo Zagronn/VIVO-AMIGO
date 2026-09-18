@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: var(--font-montserrat), system-ui, sans-serif;
+
+  /* Dataviz reference palette (dark-mode slots) — used verbatim on the
+     admin/vendor glass surfaces below. See dataviz skill references/palette.md. */
+  --viz-surface: #1a1a19;
+  --viz-plane: #0d0d0d;
+  --viz-ink-primary: #ffffff;
+  --viz-ink-secondary: #c3c2b7;
+  --viz-ink-muted: #898781;
+  --viz-grid: #2c2c2a;
+  --viz-axis: #383835;
+
+  --viz-blue: #3987e5;
+  --viz-orange: #d95926;
+  --viz-aqua: #199e70;
+  --viz-yellow: #c98500;
+  --viz-magenta: #d55181;
+  --viz-green: #008300;
+  --viz-violet: #9085e9;
+  --viz-red: #e66767;
+
+  --viz-good: #0ca30c;
+  --viz-warning: #fab219;
+  --viz-serious: #ec835a;
+  --viz-critical: #d03b3b;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 800px at 10% -10%, rgba(255, 106, 26, 0.16), transparent 60%),
+    radial-gradient(1000px 700px at 92% 0%, rgba(74, 58, 167, 0.14), transparent 55%),
+    radial-gradient(900px 900px at 50% 130%, rgba(27, 175, 122, 0.1), transparent 55%),
+    #fff8f2;
+  color: #161616;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-vivo-orange px-6 py-3 font-semibold text-white transition hover:bg-vivo-orange-dark disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-vivo-black/10 bg-white px-6 py-3 font-semibold text-vivo-black transition hover:border-vivo-orange hover:text-vivo-orange disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.input-field {
+  @apply w-full rounded-xl border border-vivo-black/10 bg-white px-4 py-2.5 text-sm text-vivo-black placeholder:text-vivo-black/40 focus:border-vivo-orange focus:outline-none focus:ring-2 focus:ring-vivo-orange/20;
+}
+
+.card {
+  @apply rounded-2xl border border-vivo-black/5 bg-white shadow-card;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Glassmorphism layer — light "frosted" glass for the storefront, and a   */
+/* dark glass system (paired with the validated dataviz palette above)     */
+/* for the admin / vendor consoles.                                       */
+/* ---------------------------------------------------------------------- */
+
+.glass-card {
+  @apply relative overflow-hidden rounded-2xl border border-white/60 bg-white/50 shadow-card backdrop-blur-xl;
+}
+
+.glass-nav {
+  @apply border-b border-white/40 bg-white/60 backdrop-blur-xl;
+}
+
+.admin-shell {
+  background:
+    radial-gradient(1100px 700px at 8% -10%, rgba(57, 135, 229, 0.22), transparent 55%),
+    radial-gradient(900px 800px at 95% 0%, rgba(144, 133, 233, 0.2), transparent 55%),
+    radial-gradient(1000px 900px at 50% 110%, rgba(25, 158, 112, 0.16), transparent 55%),
+    var(--viz-plane);
+  color: var(--viz-ink-primary);
+}
+
+.admin-glass {
+  @apply relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.06] shadow-[0_8px_40px_rgba(0,0,0,0.35)] backdrop-blur-2xl;
+}
+
+.admin-glass-hover {
+  @apply transition duration-300 hover:border-white/20 hover:bg-white/[0.09];
+}
+
+.admin-chip {
+  @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.08] px-3 py-1 text-xs font-semibold backdrop-blur;
+}
+
+.admin-input {
+  @apply w-full rounded-xl border border-white/15 bg-white/[0.07] px-4 py-2.5 text-sm text-white placeholder:text-white/40 backdrop-blur focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10;
+}
+
+.admin-btn {
+  @apply inline-flex items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40;
+}
+
+.admin-btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[var(--viz-blue)] to-[var(--viz-violet)] px-4 py-2 text-sm font-semibold text-white shadow-[0_4px_20px_rgba(57,135,229,0.35)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40;
+}
+
+.admin-btn-danger {
+  @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold text-white backdrop-blur transition disabled:cursor-not-allowed disabled:opacity-40;
+  border: 1px solid rgba(208, 59, 59, 0.4);
+  background-color: rgba(208, 59, 59, 0.15);
+}
+
+.admin-btn-danger:hover {
+  background-color: rgba(208, 59, 59, 0.3);
+}
+
+/* ---------------------------------------------------------------------- */
+/* VIVO POS — when installed as a standalone app (see components/          */
+/* PosAppShell.tsx), the marketing chrome is redundant real estate on a    */
+/* small screen a street seller is using between customers, so it's        */
+/* hidden. Navbar/Footer are direct children of <body> in app/layout.tsx.  */
+/* ---------------------------------------------------------------------- */
+body.pos-standalone > header,
+body.pos-standalone > footer {
+  display: none;
+}
