@@ -66,6 +66,26 @@ export async function Navbar() {
             VIVO PAY
           </Link>
 
+        <Link href="/ship" className="hidden hover:text-vivo-orange lg:block uppercase font-bold">
+          CARGO VIVO
+        </Link>
+
+        <Link href="/ads" className="hidden hover:text-vivo-orange lg:block uppercase font-bold">
+          VIVO ADS
+        </Link>
+
+        <Link href="/business" className="hidden hover:text-vivo-orange lg:block uppercase font-bold">
+          VIVO BUSINESS
+        </Link>
+
+        <Link href="/support" className="hidden hover:text-vivo-orange lg:block uppercase font-bold">
+          VIVO SUPPORT
+        </Link>
+
+        <Link href="/pos" className="hidden hover:text-vivo-orange lg:block uppercase font-bold">
+          VIVO POS
+        </Link>
+
           <div className="flex items-center gap-4">
             {!user ? (
               <>
