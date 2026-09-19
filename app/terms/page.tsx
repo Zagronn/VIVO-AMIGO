@@ -33,7 +33,7 @@ export default function TermsPage() {
 
       <div className="mt-10 space-y-8">
         {sections.map((s) => (
-          <div key={s.title}>
+          <div key={String(s.title)}>
             <h2 className="text-lg font-bold text-vivo-black">{s.title}</h2>
             <p className="mt-2 text-vivo-black/70">{s.body}</p>
           </div>
