@@ -38,7 +38,7 @@ export function ShareButtons({ title, url: providedUrl }: ShareButtonsProps) {
   };
 
   const handleNativeShare = async () => {
-    if (navigator.share) {
+    if (typeof navigator.share === "function") {
       try {
         await navigator.share({
           title: title,
@@ -104,7 +104,7 @@ export function ShareButtons({ title, url: providedUrl }: ShareButtonsProps) {
         onClick={handleNativeShare}
         disabled={isPending}
         className="flex h-10 w-10 items-center justify-center rounded-full bg-vivo-black text-white transition hover:bg-vivo-orange hover:scale-110 shadow-sm disabled:opacity-50"
-        title={navigator.share ? "Share" : "Copy Link"}
+        title={typeof navigator.share === "function" ? "Share" : "Copy Link"}
       >
         {copied ? (
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

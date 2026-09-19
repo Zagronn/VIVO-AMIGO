@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { recordPosSale } from '@/actions/pos';
-import { Trash2, Plus, Minus, ShoppingCart, Receipt, User, CreditCard } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingCart, Receipt, User, CreditCard, CheckCircle, Activity } from 'lucide-react';
 
 type CatalogItem = { id: string; name: string; price: number; imageUrl: string | null };
 type CartLine = { catalogItemId: string; name: string; unitPrice: number; quantity: number };
